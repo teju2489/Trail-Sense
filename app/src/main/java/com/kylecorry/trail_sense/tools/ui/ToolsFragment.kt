@@ -18,52 +18,17 @@ import com.kylecorry.andromeda.list.ListView
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolsBinding
 import com.kylecorry.trail_sense.databinding.ListItemToolBinding
+import com.kylecorry.trail_sense.shared.navigation.NavControllerAppNavigation
 
 
 class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
 
-    private lateinit var toolsList: ListView<ToolListItem>
     private val tools by lazy { Tools.getTools(requireContext()) }
+    private val navigation by lazy { NavControllerAppNavigation(findNavController()) }
+    private val mapper by lazy { ToolListItemMapper(requireContext(), navigation) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val primaryColor = Resources.getAndroidColorAttr(requireContext(), androidx.appcompat.R.attr.colorPrimary)
-        val textColor = Resources.androidTextColorPrimary(requireContext())
-        val attrs = intArrayOf(android.R.attr.selectableItemBackground)
-        val typedArray = requireContext().obtainStyledAttributes(attrs)
-        val selectableBackground = typedArray.getResourceId(0, 0)
-        typedArray.recycle()
-        toolsList = ListView(binding.toolRecycler, R.layout.list_item_tool) { itemView, tool ->
-            val toolBinding = ListItemToolBinding.bind(itemView)
-
-            if (tool.action != null && tool.icon != null) {
-                // Tool
-                toolBinding.root.setBackgroundResource(selectableBackground)
-                toolBinding.title.text = tool.name.capitalizeWords()
-                toolBinding.title.setTextColor(textColor)
-                toolBinding.description.text = tool.description
-                toolBinding.icon.isVisible = true
-                toolBinding.description.isVisible = tool.description != null
-                toolBinding.icon.setImageResource(tool.icon)
-                Colors.setImageColor(toolBinding.icon, Resources.androidTextColorSecondary(requireContext()))
-                toolBinding.root.setOnClickListener {
-                    tryOrNothing {
-                        findNavController().navigate(tool.action)
-                    }
-                }
-            } else {
-                // Tool group
-                toolBinding.root.setBackgroundResource(0)
-                toolBinding.title.text = tool.name
-                toolBinding.title.setTextColor(primaryColor)
-                toolBinding.description.text = ""
-                toolBinding.icon.isVisible = false
-                toolBinding.description.isVisible = false
-                toolBinding.root.setOnClickListener(null)
-            }
-
-        }
-
         binding.searchbox.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 updateToolList()
@@ -119,7 +84,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
             }
         }
 
-        toolsList.setData(toolListItems)
+        binding.toolList.setItems(toolListItems, mapper)
     }
 
     override fun generateBinding(
@@ -129,7 +94,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
         return FragmentToolsBinding.inflate(layoutInflater, container, false)
     }
 
-    internal data class ToolListItem(
+    data class ToolListItem(
         val name: String,
         val description: String?,
         @DrawableRes val icon: Int?,
