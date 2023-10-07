@@ -199,7 +199,17 @@ F. Point of Contact: Any Recipient contact with Government Agency is to be direc
 Global Relief Model. NOAA National Centers for Environmental Information.
 https://doi.org/10.25921/fd45-gt74 . Accessed 2023-05-26.
 ETOPO 2022 metadata may be accessed here: ETOPO 2022 metadata landing page"""
-        )
+        ),
+        Library(
+            "Tensorflow",
+            "https://github.com/tensorflow/tensorflow",
+            apache2("", "The TensorFlow Authors", "")
+        ),
+        Library(
+            "TFLite Support",
+            "https://github.com/tensorflow/tflite-support",
+            apache2("2020", "The TensorFlow Authors", "")
+        ),
     )
 
 
