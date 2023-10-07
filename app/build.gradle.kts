@@ -45,6 +45,7 @@ android {
     buildFeatures {
         // Support for view binding
         viewBinding = true
+        mlModelBinding = true
     }
     buildTypes {
         // Release build (Google Play / F-Droid)
@@ -169,9 +170,8 @@ dependencies {
     implementation("com.github.kylecorry31.ceres:image:$ceresVersion")
 
     // Tensorflow
-    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.0")
-    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0")
-    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
 
     // Misc
     implementation("com.github.kylecorry31:subsampling-scale-image-view:3.11.9")
