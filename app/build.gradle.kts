@@ -168,6 +168,11 @@ dependencies {
     implementation("com.github.kylecorry31.ceres:chart:$ceresVersion")
     implementation("com.github.kylecorry31.ceres:image:$ceresVersion")
 
+    // Tensorflow
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
+
     // Misc
     implementation("com.github.kylecorry31:subsampling-scale-image-view:3.11.9")
     implementation("com.github.kylecorry31:sol:8.0.1")

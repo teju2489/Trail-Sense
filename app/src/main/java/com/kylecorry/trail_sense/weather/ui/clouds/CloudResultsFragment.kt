@@ -32,6 +32,7 @@ import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.io.DeleteTempFilesCommand
 import com.kylecorry.trail_sense.weather.domain.clouds.classification.ICloudClassifier
 import com.kylecorry.trail_sense.weather.domain.clouds.classification.SoftmaxCloudClassifier
+import com.kylecorry.trail_sense.weather.domain.clouds.classification.TensorflowCloudClassifier
 import com.kylecorry.trail_sense.weather.infrastructure.persistence.CloudObservation
 import com.kylecorry.trail_sense.weather.infrastructure.persistence.CloudRepo
 import java.time.Instant
@@ -40,7 +41,7 @@ import kotlin.math.abs
 class CloudResultsFragment : BoundFragment<FragmentCloudResultsBinding>() {
 
     private var image: Bitmap? = null
-    private var classifier: ICloudClassifier = SoftmaxCloudClassifier(this::debugLogFeatures)
+    private val classifier: ICloudClassifier by lazy { TensorflowCloudClassifier(requireContext()) }
     private var selection: List<CloudSelection> = emptyList()
     private val repo by lazy { CloudRepo.getInstance(requireContext()) }
     private var time = Instant.now()
@@ -141,10 +142,6 @@ class CloudResultsFragment : BoundFragment<FragmentCloudResultsBinding>() {
                 findNavController().navigateUp()
             }
         }
-    }
-
-    private fun debugLogFeatures(features: List<Float>) {
-        DebugCloudCommand(requireContext(), features).execute()
     }
 
     private fun analyze() {
