@@ -25,6 +25,7 @@ import com.kylecorry.andromeda.sense.orientation.DeviceOrientation
 import com.kylecorry.andromeda.sense.orientation.GameRotationSensor
 import com.kylecorry.andromeda.sense.orientation.Gyroscope
 import com.kylecorry.andromeda.sense.orientation.IOrientationSensor
+import com.kylecorry.andromeda.sense.orientation.MadgwickAHRS
 import com.kylecorry.andromeda.sense.pedometer.IPedometer
 import com.kylecorry.andromeda.sense.pedometer.Pedometer
 import com.kylecorry.andromeda.sense.temperature.AmbientThermometer
@@ -194,7 +195,7 @@ class SensorService(ctx: Context) {
     }
 
     fun getOrientation(): IOrientationSensor? {
-        return CompassProvider(context, userPrefs.compass).getOrientationSensor()
+        return MadgwickAHRS2(context, sensorDelay = MOTION_SENSOR_DELAY)//CompassProvider(context, userPrefs.compass).getOrientationSensor()
     }
 
     fun getDeviceOrientationSensor(): DeviceOrientation {
