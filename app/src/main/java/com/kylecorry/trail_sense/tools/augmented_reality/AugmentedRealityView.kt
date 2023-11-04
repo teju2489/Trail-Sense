@@ -3,7 +3,6 @@ package com.kylecorry.trail_sense.tools.augmented_reality
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Path
-import android.hardware.SensorManager
 import android.opengl.Matrix
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -17,7 +16,6 @@ import com.kylecorry.andromeda.sense.clinometer.CameraClinometer
 import com.kylecorry.andromeda.sense.clinometer.SideClinometer
 import com.kylecorry.sol.math.Euler
 import com.kylecorry.sol.math.Quaternion
-import com.kylecorry.sol.math.QuaternionMath
 import com.kylecorry.sol.math.SolMath.real
 import com.kylecorry.sol.math.SolMath.toDegrees
 import com.kylecorry.sol.math.SolMath.toRadians
@@ -38,6 +36,7 @@ import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+
 
 // TODO: Notify location change
 // TODO: This needs a parent view that has the camera, this, and any buttons (like the freeform button)
@@ -341,7 +340,7 @@ class AugmentedRealityView : CanvasView {
     }
 
     private fun applyRotation(vector: Vector3): Vector3 {
-        if (orientationSensor == null){
+        if (orientationSensor == null) {
             return legacyOrientation.rotate(vector)
         }
         tempWorldVector[0] = vector.x
@@ -385,19 +384,25 @@ class AugmentedRealityView : CanvasView {
 
         val world = toWorldSpace(bearing, coordinate.elevation, 1f)
         val rotated = applyRotation(world)
-        val spherical = toSpherical(rotated)
+
+//        if (cameraCoordinateVector[2] < 0) {
+        val x = (0.5f + tempRotationResult[0] / tempRotationResult[3]) * width
+        val y = (0.5f - tempRotationResult[1] / tempRotationResult[3]) * height
+
+        return PixelCoordinate(x, y)
+//        val spherical = toSpherical(rotated)
 
         // TODO: Try out Matrix.perspectiveM
 
         // The rotation of the device has been negated, so azimuth = 0 and inclination = 0 is used
-        return AugmentedRealityUtils.getPixelLinear(
-            spherical.z,
-            0f,
-            spherical.y,
-            0f,
-            Size(width.toFloat(), height.toFloat()),
-            fov
-        )
+//        return AugmentedRealityUtils.getPixelLinear(
+//            spherical.z,
+//            0f,
+//            spherical.y,
+//            0f,
+//            Size(width.toFloat(), height.toFloat()),
+//            fov
+//        )
     }
 
     fun toPixel(coordinate: Coordinate, elevation: Float? = null): PixelCoordinate {
@@ -430,9 +435,10 @@ class AugmentedRealityView : CanvasView {
     }
 
     private fun updateOrientation() {
-        if (orientationSensor == null){
+        if (orientationSensor == null) {
             // TODO: This fails when the device is pointed almost straight up or down
-            legacyOrientation = Quaternion.from(Euler(inclination, -sideInclination, -azimuth)).inverse()
+            legacyOrientation =
+                Quaternion.from(Euler(inclination, -sideInclination, -azimuth)).inverse()
             return
         }
 
@@ -443,6 +449,15 @@ class AugmentedRealityView : CanvasView {
             orientation,
             if (isTrueNorth) declinationProvider.getDeclination() else null
         )
+
+        val ratio = width.toFloat() / height.toFloat()
+        val projectionMatrix = FloatArray(16)
+        Matrix.perspectiveM(projectionMatrix, 0, fov.width, ratio, 0.1f, 100f)
+
+        val result = FloatArray(16)
+        Matrix.multiplyMM(result, 0, projectionMatrix, 0, rotationMatrix, 0)
+
+        System.arraycopy(result, 0, rotationMatrix, 0, 16)
 
         azimuth = orientation[0]
         inclination = orientation[1]
