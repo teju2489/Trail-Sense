@@ -1,29 +1,23 @@
 package com.kylecorry.trail_sense.shared.sensors
 
-import com.kylecorry.andromeda.sense.orientation.Gyroscope
 import com.kylecorry.andromeda.sense.orientation.IGyroscope
 import com.kylecorry.andromeda.sense.orientation.IOrientationSensor
 
 import android.content.Context
 import android.hardware.SensorManager
 import android.os.SystemClock
-import com.kylecorry.andromeda.core.math.*
 import com.kylecorry.andromeda.core.sensors.AbstractSensor
 import com.kylecorry.andromeda.sense.accelerometer.IAccelerometer
 import com.kylecorry.andromeda.sense.accelerometer.LowPassAccelerometer
 import com.kylecorry.andromeda.sense.magnetometer.IMagnetometer
 import com.kylecorry.andromeda.sense.magnetometer.LowPassMagnetometer
 import com.kylecorry.sol.math.*
-import com.kylecorry.sol.math.SolMath.toRadians
-import kotlin.math.absoluteValue
-import kotlin.math.cos
-import kotlin.math.sin
 import kotlin.math.sqrt
 
 // Adapted from https://github.com/xioTechnologies/Fusion
 class MadgwickAHRS2(
     private val context: Context,
-    gain: Float = 0.1f,
+    gain: Float = 0.2f,
     private val accelerometer: IAccelerometer? = null,
     private val gyro: IGyroscope? = null,
     private val magnetometer: IMagnetometer? = null,
@@ -124,12 +118,9 @@ class MadgwickAHRS2(
     private class Madgwick(private val gain: Float = 0f) {
 
         private val lock = Object()
-        private val halfGyro = FloatArray(3)
-        private val halfGravity = FloatArray(3)
-        private val halfWest = FloatArray(3)
-        private val gyroQ = FloatArray(4)
-        val halfFeedbackError = FloatArray(3)
+        private val refQuaternion = FloatArray(4)
         private val rotationMatrix = FloatArray(16)
+        private var isFirst = true
 
         var quaternion = Quaternion.zero.toFloatArray()
             get() = synchronized(lock) {
@@ -138,10 +129,6 @@ class MadgwickAHRS2(
 
         fun update(g: FloatArray, m: Vector3, a: Vector3, dt: Float) {
             synchronized(lock) {
-                val qx: Float = quaternion[0]
-                val qy: Float = quaternion[1]
-                val qz: Float = quaternion[2]
-                val qw: Float = quaternion[3]
 
                 // Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
                 SensorManager.getRotationMatrix(
@@ -159,24 +146,30 @@ class MadgwickAHRS2(
                 val y = (rotationMatrix[8] - rotationMatrix[2]) * s
                 val z = (rotationMatrix[1] - rotationMatrix[4]) * s
 
-                gyroQ[0] = x
-                gyroQ[1] = y
-                gyroQ[2] = z
-                gyroQ[3] = w
+                if (isFirst){
+                    quaternion[0] = x
+                    quaternion[1] = y
+                    quaternion[2] = z
+                    quaternion[3] = w
+                    QuaternionMath.normalize(quaternion, quaternion)
+                    isFirst = false
+                    return
+                }
+
+                refQuaternion[0] = x
+                refQuaternion[1] = y
+                refQuaternion[2] = z
+                refQuaternion[3] = w
 
                 // Rotate by the gyro rotation vector
-//                QuaternionMath.multiply(g, 1 - gain, g)
-//                g[0] *= 1 - gain
-//                g[1] *= 1 - gain
-//                g[2] *= 1 - gain
                 QuaternionMath.multiply(quaternion, g, quaternion)
 
                 // Nudge it back toward the reference quaternion
-                QuaternionMath.subtractRotation(gyroQ, quaternion, gyroQ)
-                gyroQ[0] *= gain
-                gyroQ[1] *= gain
-                gyroQ[2] *= gain
-                QuaternionMath.multiply(quaternion, gyroQ, quaternion)
+                QuaternionMath.subtractRotation(refQuaternion, quaternion, refQuaternion)
+                refQuaternion[0] *= gain * dt
+                refQuaternion[1] *= gain * dt
+                refQuaternion[2] *= gain * dt
+                QuaternionMath.multiply(quaternion, refQuaternion, quaternion)
 
                 QuaternionMath.normalize(quaternion, quaternion)
             }

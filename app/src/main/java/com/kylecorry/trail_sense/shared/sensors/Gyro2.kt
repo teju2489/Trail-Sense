@@ -15,7 +15,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class Gyroscope2(context: Context, sensorDelay: Int = SensorManager.SENSOR_DELAY_FASTEST, private val threshold: Float = 0.00001f) :
+class Gyroscope2(context: Context, sensorDelay: Int = SensorManager.SENSOR_DELAY_FASTEST, private val threshold: Float = 0.0000001f) :
     BaseSensor(context, Sensor.TYPE_GYROSCOPE, sensorDelay),
     IGyroscope {
 
