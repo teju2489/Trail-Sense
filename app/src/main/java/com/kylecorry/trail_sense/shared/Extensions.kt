@@ -16,6 +16,7 @@ import com.kylecorry.sol.units.DistanceUnits
 import com.kylecorry.sol.units.Speed
 import com.kylecorry.sol.units.TimeUnits
 import com.kylecorry.trail_sense.main.MainActivity
+import com.kylecorry.trail_sense.main.MyNavController
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.paths.domain.PathPoint
 import com.kylecorry.trail_sense.shared.database.Identifiable
@@ -23,6 +24,10 @@ import kotlin.collections.set
 
 fun Fragment.requireMainActivity(): MainActivity {
     return requireActivity() as MainActivity
+}
+
+fun Fragment.requireMyNavigation(): MyNavController {
+    return requireMainActivity().navigation
 }
 
 fun IGPS.getPathPoint(pathId: Long): PathPoint {

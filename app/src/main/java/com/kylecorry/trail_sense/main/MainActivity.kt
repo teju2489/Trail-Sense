@@ -46,12 +46,14 @@ import com.kylecorry.trail_sense.volumeactions.VolumeAction
 
 class MainActivity : AndromedaActivity() {
 
-    private lateinit var navController: NavController
+//    private lateinit var navController: NavController
     private lateinit var bottomNavigation: BottomNavigationView
     val errorBanner: ErrorBannerView by lazy { findViewById(R.id.error_banner) }
 
     private lateinit var userPrefs: UserPreferences
     private val cache by lazy { PreferencesSubsystem.getInstance(this).preferences }
+
+    val navigation = MyNavController(supportFragmentManager, R.id.fragment_holder)
 
     private val permissions = mutableListOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -88,9 +90,17 @@ class MainActivity : AndromedaActivity() {
             root.setColorFilter(PorterDuffColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY))
         }
 
-        navController = findNavController()
         bottomNavigation = findViewById(R.id.bottom_navigation)
-        bottomNavigation.setupWithNavController(navController, false)
+
+        Navigation.initialize(navigation)
+
+        bottomNavigation.setupWithMyNavController(navigation, mapOf(
+            Navigation.NAVIGATION to R.id.action_navigation,
+            Navigation.WEATHER to R.id.action_weather,
+            Navigation.ASTRONOMY to R.id.action_astronomy,
+            Navigation.TOOLS to R.id.action_experimental_tools,
+            Navigation.SETTINGS to R.id.action_settings
+        ), R.id.action_navigation)
 
         if (userPrefs.theme == UserPreferences.Theme.Black || userPrefs.theme == UserPreferences.Theme.Night) {
             window.decorView.rootView.setBackgroundColor(Color.BLACK)
@@ -123,9 +133,9 @@ class MainActivity : AndromedaActivity() {
 
         if (cache.getBoolean(BackupService.RECENTLY_BACKED_UP_KEY) == true){
             cache.remove(BackupService.RECENTLY_BACKED_UP_KEY)
-            navController.navigate(R.id.action_settings)
-        } else if (navController.currentDestination?.id == R.id.action_navigation) {
-            navController.navigate(R.id.action_navigation)
+            navigation.navigateTo(Navigation.SETTINGS)
+        } else if (navigation.currentRoute == null) {
+            navigation.navigateTo(Navigation.NAVIGATION)
         }
 
         ComposedCommand(
@@ -149,16 +159,16 @@ class MainActivity : AndromedaActivity() {
             bottomNavigation.selectedItemId = R.id.action_navigation
             if (geo != null) {
                 val bundle = bundleOf("initial_location" to geo)
-                navController.navigate(
-                    R.id.beacon_list,
-                    bundle
-                )
+//                navController.navigate(
+//                    R.id.beacon_list,
+//                    bundle
+//                )
             }
         } else if ((intent.type?.startsWith("image/") == true || intent.type?.startsWith("application/pdf") == true)) {
             bottomNavigation.selectedItemId = R.id.action_experimental_tools
             val intentUri = intent.clipData?.getItemAt(0)?.uri
             val bundle = bundleOf("map_intent_uri" to intentUri)
-            navController.navigate(R.id.action_tools_to_maps_list, bundle)
+//            navController.navigate(R.id.action_tools_to_maps_list, bundle)
         }
     }
 
@@ -171,27 +181,27 @@ class MainActivity : AndromedaActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        bottomNavigation.selectedItemId = savedInstanceState.getInt(
-            "page",
-            R.id.action_navigation
-        )
-        if (savedInstanceState.containsKey("navigation")) {
-            tryOrNothing {
-                val bundle = savedInstanceState.getBundle("navigation_arguments")
-                navController.navigate(savedInstanceState.getInt("navigation"), bundle)
-            }
-        }
+//        bottomNavigation.selectedItemId = savedInstanceState.getInt(
+//            "page",
+//            R.id.action_navigation
+//        )
+//        if (savedInstanceState.containsKey("navigation")) {
+//            tryOrNothing {
+//                val bundle = savedInstanceState.getBundle("navigation_arguments")
+//                navController.navigate(savedInstanceState.getInt("navigation"), bundle)
+//            }
+//        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("page", bottomNavigation.selectedItemId)
-        navController.currentBackStackEntry?.arguments?.let {
-            outState.putBundle("navigation_arguments", it)
-        }
-        navController.currentDestination?.id?.let {
-            outState.putInt("navigation", it)
-        }
+//        outState.putInt("page", bottomNavigation.selectedItemId)
+//        navController.currentBackStackEntry?.arguments?.let {
+//            outState.putBundle("navigation_arguments", it)
+//        }
+//        navController.currentDestination?.id?.let {
+//            outState.putInt("navigation", it)
+//        }
     }
 
     private fun sunriseSunsetTheme(): ColorTheme {
@@ -244,10 +254,10 @@ class MainActivity : AndromedaActivity() {
     }
 
     private fun shouldOverrideVolumePress(): Boolean {
-        val excluded = listOf(R.id.toolWhistleFragment, R.id.fragmentToolWhiteNoise)
-        if (excluded.contains(navController.currentDestination?.id)) {
-            return false
-        }
+//        val excluded = listOf(R.id.toolWhistleFragment, R.id.fragmentToolWhiteNoise)
+//        if (excluded.contains(navController.currentDestination?.id)) {
+//            return false
+//        }
 
         // If the white noise service is running, don't override the volume buttons so the user can adjust the volume
         if (WhiteNoiseService.isRunning){

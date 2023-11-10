@@ -21,6 +21,7 @@ import com.kylecorry.andromeda.gpx.GPXData
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentBeaconListBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.domain.BeaconGroup
 import com.kylecorry.trail_sense.navigation.beacons.domain.IBeacon
@@ -51,6 +52,7 @@ import com.kylecorry.trail_sense.shared.lists.GroupListManager
 import com.kylecorry.trail_sense.shared.lists.bind
 import com.kylecorry.trail_sense.shared.permissions.alertNoCameraPermission
 import com.kylecorry.trail_sense.shared.permissions.requestCamera
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.tools.qr.infrastructure.BeaconQREncoder
 import java.time.Instant
@@ -61,7 +63,6 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
     private val gps by lazy { sensorService.getGPS() }
     private val prefs by lazy { UserPreferences(requireContext()) }
 
-    private lateinit var navController: NavController
     private val sensorService by lazy { SensorService(requireContext()) }
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
     private val beaconService by lazy { BeaconService(requireContext()) }
@@ -95,8 +96,6 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        navController = findNavController()
 
         sort = prefs.navigation.beaconSort
 
@@ -190,7 +189,7 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
                 else -> {
                     if (!manager.up()) {
                         remove()
-                        navController.navigateUp()
+                        requireMyNavigation().back()
                     }
                 }
             }
@@ -387,10 +386,7 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
         initialLocation?.let { bundle.putParcelable("initial_location", it) }
         editingBeaconId?.let { bundle.putLong("edit_beacon", it) }
 
-        navController.navigate(
-            R.id.action_beaconListFragment_to_placeBeaconFragment,
-            bundle
-        )
+        requireMyNavigation().navigateTo(Navigation.CREATE_BEACON, bundle)
     }
 
     private fun refresh() {
@@ -399,17 +395,13 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
 
     private fun viewBeacon(id: Long) {
         val bundle = bundleOf("beacon_id" to id)
-        navController.navigate(
-            R.id.action_beacon_list_to_beaconDetailsFragment,
-            bundle
-        )
+        requireMyNavigation().navigateTo(Navigation.BEACON_DETAIL, bundle)
     }
 
     private fun navigate(beacon: Beacon) {
         val navigator = Navigator.getInstance(requireContext())
         navigator.navigateTo(beacon)
-        // TODO: Confirm it is always navigate up that gets there
-        navController.navigateUp()
+        requireMyNavigation().back()
     }
 
     private fun delete(beacon: Beacon) {

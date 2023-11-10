@@ -44,6 +44,7 @@ import com.kylecorry.trail_sense.diagnostics.MagnetometerDiagnostic
 import com.kylecorry.trail_sense.diagnostics.status.GpsStatusBadgeProvider
 import com.kylecorry.trail_sense.diagnostics.status.SensorStatusBadgeProvider
 import com.kylecorry.trail_sense.diagnostics.status.StatusBadge
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconRepo
 import com.kylecorry.trail_sense.navigation.domain.CompassStyle
@@ -101,8 +102,6 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
     private var declination = 0f
 
     private val userPrefs by lazy { UserPreferences(requireContext()) }
-
-    private lateinit var navController: NavController
 
     private val beaconRepo by lazy { BeaconRepo.getInstance(requireContext()) }
 
@@ -286,8 +285,6 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
             updateNearbyBeacons()
         }
 
-        navController = findNavController()
-
         observe(compass) {}
         observe(orientation) { onOrientationUpdate() }
         observe(altimeter) { }
@@ -330,7 +327,7 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
 
         binding.beaconBtn.setOnClickListener {
             if (destination == null) {
-                navController.navigate(R.id.action_navigatorFragment_to_beaconListFragment)
+                requireMyNavigation().navigateTo(Navigation.BEACON_LIST)
             } else {
                 destination = null
                 navigator.cancelNavigation()
@@ -346,10 +343,9 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
                         if (altimeter.hasValidReading) altimeter.altitude else gps.altitude
                     )
                 )
-                navController.navigate(R.id.action_navigatorFragment_to_beaconListFragment, bundle)
+                requireMyNavigation().navigateTo(Navigation.BEACON_LIST, bundle)
             } else {
-                navController.navigate(R.id.action_navigatorFragment_to_beaconListFragment)
-
+                requireMyNavigation().navigateTo(Navigation.BEACON_LIST)
             }
             true
         }
