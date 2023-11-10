@@ -4,6 +4,7 @@ import android.content.Context
 import com.kylecorry.andromeda.notify.Notify
 import com.kylecorry.trail_sense.NotificationChannels
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.UserPreferences
@@ -43,7 +44,7 @@ class DailyWeatherAlerter(
             condition
         }
 
-        val openIntent = NavigationUtils.pendingIntent(context, R.id.action_weather)
+        val openIntent = NavigationUtils.pendingIntent(context, Navigation.WEATHER)
 
         val notification = Notify.status(
             context,

@@ -5,6 +5,7 @@ import android.content.Context
 import com.kylecorry.andromeda.notify.Notify
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.paths.infrastructure.receivers.StopBacktrackReceiver
 import com.kylecorry.trail_sense.navigation.paths.infrastructure.services.BacktrackService
 import com.kylecorry.trail_sense.shared.FormatService
@@ -29,7 +30,7 @@ class BacktrackAlerter(private val context: Context) : IValueAlerter<Distance> {
 
         fun getNotification(context: Context, distance: Distance): Notification {
             val formatter = FormatService.getInstance(context)
-            val openAction = NavigationUtils.pendingIntent(context, R.id.fragmentBacktrack)
+            val openAction = NavigationUtils.pendingIntent(context, Navigation.PATH_LIST)
 
             val stopAction = Notify.action(
                 context.getString(R.string.stop),

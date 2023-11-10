@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -17,6 +16,8 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.haptics.HapticSubsystem
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.andromeda.core.ui.setOnProgressChangeListener
+import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.flashlight.domain.FlashlightMode
 import com.kylecorry.trail_sense.tools.flashlight.infrastructure.FlashlightSubsystem
 import java.time.Duration
@@ -71,7 +72,7 @@ class FragmentToolFlashlight : BoundFragment<FragmentToolFlashlightBinding>() {
         }
 
         binding.screenFlashlightBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_flashlight_to_screen_flashlight)
+            requireMyNavigation().navigate(Navigation.SCREEN_FLASHLIGHT)
         }
 
         binding.flashlightDial.options = listOf(

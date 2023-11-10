@@ -33,7 +33,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
     var currentRoute: String? = null
         private set
 
-    fun navigateTo(route: String, data: Bundle? = null, addToBackStack: Boolean = true, resetBackStack: Boolean = false) {
+    fun navigate(route: String, data: Bundle? = null, addToBackStack: Boolean = true, resetBackStack: Boolean = false) {
         val fragmentLoader = routes[route] ?: return
         val fragment = fragmentLoader()
         fragment.arguments = data ?: Bundle()
@@ -75,7 +75,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
     }
 
     fun reload(){
-        navigateTo(currentRoute ?: return, addToBackStack = false)
+        navigate(currentRoute ?: return, addToBackStack = false)
     }
 
     fun setOnNavigationChangeListener(listener: (String?) -> Unit){
@@ -87,7 +87,7 @@ fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings
     setOnItemSelectedListener { item ->
         val route = mappings.entries.firstOrNull { it.value == item.itemId }?.key
         if (route != null){
-            nav.navigateTo(route, resetBackStack = true)
+            nav.navigate(route, resetBackStack = true)
         }
         true
     }

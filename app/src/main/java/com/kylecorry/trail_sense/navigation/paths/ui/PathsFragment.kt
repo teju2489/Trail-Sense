@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.topics.generic.asLiveData
 import com.kylecorry.andromeda.core.topics.generic.replay
@@ -50,6 +49,7 @@ import com.kylecorry.trail_sense.shared.lists.GroupListManager
 import com.kylecorry.trail_sense.shared.lists.bind
 import com.kylecorry.trail_sense.shared.permissions.RequestRemoveBatteryRestrictionCommand
 import com.kylecorry.trail_sense.shared.permissions.requestLocationForegroundServicePermission
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 
 class PathsFragment : BoundFragment<FragmentPathsBinding>() {
@@ -109,7 +109,7 @@ class PathsFragment : BoundFragment<FragmentPathsBinding>() {
         onBackPressed {
             if (!manager.up()) {
                 remove()
-                findNavController().navigateUp()
+                requireMyNavigation().back()
             }
         }
 
@@ -280,12 +280,12 @@ class PathsFragment : BoundFragment<FragmentPathsBinding>() {
     }
 
     private fun showPath(path: Path) {
-        val command = ViewPathCommand(findNavController())
+        val command = ViewPathCommand(requireMyNavigation())
         command.execute(path)
     }
 
     private fun showPath(id: Long) {
-        val command = ViewPathCommand(findNavController())
+        val command = ViewPathCommand(requireMyNavigation())
         command.execute(id)
     }
 

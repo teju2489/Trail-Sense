@@ -7,19 +7,19 @@ import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.fragments.AndromedaPreferenceFragment
 import com.kylecorry.andromeda.sense.Sensors
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 
 class SensorSettingsFragment : AndromedaPreferenceFragment() {
 
     private val navigationMap = mapOf(
-        R.string.pref_sensor_details to R.id.action_settings_to_sensor_details,
-        R.string.pref_cell_signal_settings to R.id.action_action_settings_to_cellSignalSettingsFragment,
-        R.string.pref_compass_sensor to R.id.action_action_settings_to_calibrateCompassFragment,
-        R.string.pref_altimeter_calibration to R.id.action_action_settings_to_calibrateAltimeterFragment,
-        R.string.pref_gps_calibration to R.id.action_action_settings_to_calibrateGPSFragment,
-        R.string.pref_barometer_calibration to R.id.action_action_settings_to_calibrateBarometerFragment,
-        R.string.pref_temperature_settings to R.id.action_action_settings_to_thermometerSettingsFragment,
-        R.string.pref_odometer_calibration to R.id.action_action_settings_to_calibrateOdometerFragment,
-        R.string.pref_cell_signal_settings to R.id.action_action_settings_to_cellSignalSettingsFragment
+        R.string.pref_sensor_details to Navigation.SENSOR_DETAILS,
+        R.string.pref_cell_signal_settings to Navigation.CELL_SIGNAL_SETTINGS,
+        R.string.pref_compass_sensor to Navigation.CALIBRATE_COMPASS,
+        R.string.pref_altimeter_calibration to Navigation.CALIBRATE_ALTIMETER,
+        R.string.pref_gps_calibration to Navigation.CALIBRATE_GPS,
+        R.string.pref_barometer_calibration to Navigation.CALIBRATE_BAROMETER,
+        R.string.pref_temperature_settings to Navigation.CALIBRATE_THERMOMETER,
+        R.string.pref_odometer_calibration to Navigation.CALIBRATE_PEDOMETER,
     )
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

@@ -2,6 +2,7 @@ package com.kylecorry.trail_sense.navigation.beacons.infrastructure
 
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.IBeaconService
 import com.kylecorry.trail_sense.shared.navigation.IAppNavigation
@@ -31,7 +32,7 @@ internal class BeaconNavigatorTest {
         navigator.navigateTo(beacon)
 
         verify(navigation).navigate(
-            eq(R.id.action_navigation),
+            eq(Navigation.NAVIGATION),
             argThat { size == 1 && first().first == "destination" && first().second == 2L }
         )
     }
@@ -47,7 +48,7 @@ internal class BeaconNavigatorTest {
 
         verify(service).add(beacon)
         verify(navigation).navigate(
-            eq(R.id.action_navigation),
+            eq(Navigation.NAVIGATION),
             argThat { size == 1 && first().first == "destination" && first().second == 1L }
         )
 

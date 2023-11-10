@@ -3,6 +3,7 @@ package com.kylecorry.trail_sense.tools.pedometer.infrastructure
 import android.content.Context
 import com.kylecorry.andromeda.notify.Notify
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.*
 import com.kylecorry.trail_sense.shared.alerts.IAlerter
 
@@ -12,7 +13,7 @@ class DistanceAlerter(private val context: Context) : IAlerter {
     private val formatter = FormatService.getInstance(context)
 
     override fun alert() {
-        val openIntent = NavigationUtils.pendingIntent(context, R.id.fragmentToolPedometer)
+        val openIntent = NavigationUtils.pendingIntent(context, Navigation.PEDOMETER)
 
         val distance =
             prefs.pedometer.alertDistance?.convertTo(prefs.baseDistanceUnits)?.toRelativeDistance()

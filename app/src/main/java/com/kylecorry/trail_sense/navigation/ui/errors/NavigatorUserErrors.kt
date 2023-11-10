@@ -1,14 +1,15 @@
 package com.kylecorry.trail_sense.navigation.ui.errors
 
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.dialog
 import com.kylecorry.andromeda.core.sensors.Quality
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.diagnostics.DiagnosticCode
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.ui.NavigatorFragment
 import com.kylecorry.trail_sense.shared.ErrorBannerReason
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.requireMainActivity
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.views.UserError
 import java.util.Locale
 
@@ -37,9 +38,9 @@ class NavigatorUserErrors(private val fragment: NavigatorFragment) {
             R.drawable.satellite,
             fragment.getString(R.string.set)
         ) {
-            val navController = fragment.findNavController()
+            val navController = fragment.requireMyNavigation()
             banner.dismiss(ErrorBannerReason.LocationNotSet)
-            navController.navigate(R.id.calibrateGPSFragment)
+            navController.navigate(Navigation.CALIBRATE_GPS)
         },
         DiagnosticCode.GPSTimedOut to UserError(
             ErrorBannerReason.GPSTimeout,

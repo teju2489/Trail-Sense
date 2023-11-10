@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.system.GeoUri
 import com.kylecorry.andromeda.core.time.Throttle
@@ -19,6 +18,7 @@ import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentMapsViewBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.domain.BeaconOwner
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconService
@@ -38,6 +38,7 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sharing.ActionItem
 import com.kylecorry.trail_sense.shared.sharing.Share
@@ -334,7 +335,7 @@ class ViewMapFragment : BoundFragment<FragmentMapsViewBinding>() {
         val bundle = bundleOf(
             "initial_location" to GeoUri(location)
         )
-        findNavController().navigate(R.id.place_beacon, bundle)
+        requireMyNavigation().navigate(Navigation.CREATE_BEACON, bundle)
     }
 
     private fun showDistance(distance: Distance) {
@@ -368,8 +369,8 @@ class ViewMapFragment : BoundFragment<FragmentMapsViewBinding>() {
                     ).execute(distanceLayer.getPoints())
 
                     onMain {
-                        findNavController().navigate(
-                            R.id.action_maps_to_path,
+                        requireMyNavigation().navigate(
+                            Navigation.PATH,
                             bundleOf("path_id" to id)
                         )
                     }

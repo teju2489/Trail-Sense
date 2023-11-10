@@ -2,13 +2,14 @@ package com.kylecorry.trail_sense.tools.guide.ui
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.tools.guide.infrastructure.Guides
 import com.kylecorry.andromeda.core.tryOrNothing
+import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 class GuideListFragment : PreferenceFragmentCompat() {
 
@@ -39,8 +40,8 @@ class GuideListFragment : PreferenceFragmentCompat() {
                 guidePref.isIconSpaceReserved = false
                 onClick(guidePref){
                     tryOrNothing {
-                        findNavController().navigate(
-                            R.id.action_guideListFragment_to_guideFragment, bundleOf(
+                        requireMyNavigation().navigate(
+                            Navigation.GUIDE, bundleOf(
                                 "guide_name" to guide.name,
                                 "guide_contents" to guide.contents
                             )

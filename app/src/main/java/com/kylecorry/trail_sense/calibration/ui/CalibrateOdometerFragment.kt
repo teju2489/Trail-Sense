@@ -1,7 +1,6 @@
 package com.kylecorry.trail_sense.calibration.ui
 
 import android.os.Bundle
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
 import com.kylecorry.andromeda.alerts.Alerts
@@ -11,6 +10,7 @@ import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.AndromedaPreferenceFragment
 import com.kylecorry.andromeda.permissions.Permissions
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.DistanceUtils
 import com.kylecorry.trail_sense.shared.FormatService
@@ -19,6 +19,7 @@ import com.kylecorry.trail_sense.shared.permissions.alertNoActivityRecognitionPe
 import com.kylecorry.trail_sense.shared.permissions.requestActivityRecognition
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.trail_sense.shared.preferences.setupNotificationSetting
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.pedometer.infrastructure.StepCounterService
 
 
@@ -89,7 +90,7 @@ class CalibrateOdometerFragment : AndromedaPreferenceFragment() {
         }
 
         onClick(preference(R.string.pref_estimate_stride_length_holder)) {
-            findNavController().navigate(R.id.action_calibrate_pedometer_to_estimate_stride_length)
+            requireMyNavigation().navigate(Navigation.STRIDE_LENGTH_ESTIMATION)
         }
 
         setupNotificationSetting(

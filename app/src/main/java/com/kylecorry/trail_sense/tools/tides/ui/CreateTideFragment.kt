@@ -9,7 +9,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.core.ui.flatten
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -26,6 +25,7 @@ import com.kylecorry.trail_sense.shared.DistanceUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.promptIfUnsavedChanges
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.guide.infrastructure.UserGuideUtils
 import com.kylecorry.trail_sense.tools.tides.domain.TideTable
 import com.kylecorry.trail_sense.tools.tides.domain.TideTableIsDirtySpecification
@@ -225,7 +225,7 @@ class CreateTideFragment : BoundFragment<FragmentCreateTideBinding>() {
 
                     withContext(Dispatchers.Main) {
                         backCallback?.remove()
-                        findNavController().navigateUp()
+                        requireMyNavigation().back()
                     }
                 }
             }

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.camera.Camera
 import com.kylecorry.andromeda.clipboard.Clipboard
 import com.kylecorry.andromeda.core.system.GeoUri
@@ -25,9 +24,11 @@ import com.kylecorry.trail_sense.databinding.ListItemQrResultBinding
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconService
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.haptics.HapticSubsystem
 import com.kylecorry.trail_sense.shared.permissions.alertNoCameraPermission
 import com.kylecorry.trail_sense.shared.permissions.requestCamera
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.notes.infrastructure.NoteRepo
 import com.kylecorry.trail_sense.tools.qr.infrastructure.BeaconQREncoder
 import com.kylecorry.trail_sense.tools.qr.infrastructure.NoteQREncoder
@@ -120,8 +121,8 @@ class ScanQRFragment : BoundFragment<FragmentScanTextBinding>() {
                     getString(R.string.saved_to_note),
                     action = getString(R.string.view)
                 ) {
-                    findNavController().navigate(
-                        R.id.fragmentToolNotesCreate,
+                    requireMyNavigation().navigate(
+                        Navigation.CREATE_NOTE,
                         bundleOf("edit_note_id" to id)
                     )
                 }
@@ -155,8 +156,8 @@ class ScanQRFragment : BoundFragment<FragmentScanTextBinding>() {
                 getString(R.string.beacon_created),
                 action = getString(R.string.view)
             ) {
-                findNavController().navigate(
-                    R.id.beaconDetailsFragment,
+                requireMyNavigation().navigate(
+                    Navigation.BEACON_DETAIL,
                     bundleOf("beacon_id" to id)
                 )
             }

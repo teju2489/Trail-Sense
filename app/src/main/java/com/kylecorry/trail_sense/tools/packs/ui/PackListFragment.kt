@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -15,6 +14,8 @@ import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentPackListBinding
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.observe
+import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.packs.domain.Pack
 import com.kylecorry.trail_sense.tools.packs.infrastructure.PackRepo
 import com.kylecorry.trail_sense.tools.packs.ui.mappers.PackAction
@@ -97,7 +98,7 @@ class PackListFragment : BoundFragment<FragmentPackListBinding>() {
     private fun openPack(packId: Long) {
         tryOrNothing {
             val bundle = bundleOf("pack_id" to packId)
-            findNavController().navigate(R.id.action_pack_to_pack_items, bundle)
+            requireMyNavigation().navigate(Navigation.PACK, bundle)
         }
     }
 

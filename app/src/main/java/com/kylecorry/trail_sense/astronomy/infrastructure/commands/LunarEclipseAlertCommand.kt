@@ -9,6 +9,7 @@ import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.astronomy.domain.Eclipse
 import com.kylecorry.trail_sense.astronomy.ui.format.EclipseFormatter
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.UserPreferences
@@ -49,7 +50,7 @@ class LunarEclipseAlertCommand(private val context: Context) : Command<Coordinat
             getEclipseDescription(context, eclipse),
             R.drawable.ic_astronomy,
             group = NotificationChannels.GROUP_ASTRONOMY_ALERTS,
-            intent = NavigationUtils.pendingIntent(context, R.id.action_astronomy),
+            intent = NavigationUtils.pendingIntent(context, Navigation.ASTRONOMY),
             autoCancel = true
         )
 

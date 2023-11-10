@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.loading.AlertLoadingIndicator
 import com.kylecorry.andromeda.alerts.toast
@@ -36,6 +35,7 @@ import com.kylecorry.trail_sense.astronomy.ui.items.SolarEclipseListItemProducer
 import com.kylecorry.trail_sense.astronomy.ui.items.SunListItemProducer
 import com.kylecorry.trail_sense.databinding.ActivityAstronomyBinding
 import com.kylecorry.trail_sense.main.MainActivity
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.quickactions.AstronomyQuickActionBinder
 import com.kylecorry.trail_sense.shared.ErrorBannerReason
 import com.kylecorry.trail_sense.shared.FormatService
@@ -44,6 +44,7 @@ import com.kylecorry.trail_sense.shared.declination.DeclinationFactory
 import com.kylecorry.trail_sense.shared.extensions.onDefault
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sensors.overrides.CachedGPS
 import com.kylecorry.trail_sense.shared.sensors.overrides.OverrideGPS
@@ -464,7 +465,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
 
         if (gps is OverrideGPS && gps.location == Coordinate.zero) {
             val activity = requireActivity() as MainActivity
-            val navController = findNavController()
+            val navController = requireMyNavigation()
             val error = UserError(
                 ErrorBannerReason.LocationNotSet,
                 getString(R.string.location_not_set),
@@ -472,7 +473,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
                 getString(R.string.set)
             ) {
                 activity.errorBanner.dismiss(ErrorBannerReason.LocationNotSet)
-                navController.navigate(R.id.calibrateGPSFragment)
+                navController.navigate(Navigation.CALIBRATE_GPS)
             }
             activity.errorBanner.report(error)
             gpsErrorShown = true

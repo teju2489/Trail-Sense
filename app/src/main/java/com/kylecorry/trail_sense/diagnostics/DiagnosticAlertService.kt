@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.system.Intents
@@ -13,9 +12,9 @@ import com.kylecorry.andromeda.permissions.Permissions
 import com.kylecorry.andromeda.permissions.SpecialPermission
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.infrastructure.commands.SunsetAlarmCommand
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.commands.Command
 import com.kylecorry.trail_sense.shared.navigation.IAppNavigation
-import com.kylecorry.trail_sense.shared.notificationSettings
 import com.kylecorry.trail_sense.shared.permissions.RemoveBatteryRestrictionsCommand
 import com.kylecorry.trail_sense.tools.flashlight.infrastructure.FlashlightService
 import com.kylecorry.trail_sense.tools.pedometer.infrastructure.StepCounterService
@@ -220,10 +219,10 @@ class DiagnosticAlertService(private val context: Context, private val navigatio
 
     private fun getAction(code: DiagnosticCode): Action? {
         return when (code) {
-            DiagnosticCode.AltitudeOverridden -> navigateAction(R.id.calibrateAltimeterFragment)
-            DiagnosticCode.LocationOverridden -> navigateAction(R.id.calibrateGPSFragment)
-            DiagnosticCode.LocationUnset -> navigateAction(R.id.calibrateGPSFragment)
-            DiagnosticCode.PowerSavingMode -> navigateAction(R.id.powerSettingsFragment)
+            DiagnosticCode.AltitudeOverridden -> navigateAction(Navigation.CALIBRATE_ALTIMETER)
+            DiagnosticCode.LocationOverridden -> navigateAction(Navigation.CALIBRATE_GPS)
+            DiagnosticCode.LocationUnset -> navigateAction(Navigation.CALIBRATE_GPS)
+            DiagnosticCode.PowerSavingMode -> navigateAction(Navigation.POWER_SETTINGS)
             DiagnosticCode.BatteryHealthPoor -> null
             DiagnosticCode.BatteryUsageRestricted -> commandAction(RemoveBatteryRestrictionsCommand(context))
             DiagnosticCode.CameraUnavailable -> null
@@ -249,7 +248,7 @@ class DiagnosticAlertService(private val context: Context, private val navigatio
             DiagnosticCode.PedometerNotificationsBlocked -> notificationAction(StepCounterService.CHANNEL_ID)
             DiagnosticCode.WeatherNotificationsBlocked -> notificationAction(CurrentWeatherAlerter.WEATHER_CHANNEL_ID)
             DiagnosticCode.LightSensorUnavailable -> null
-            DiagnosticCode.WeatherMonitorDisabled -> navigateAction(R.id.weatherSettingsFragment)
+            DiagnosticCode.WeatherMonitorDisabled -> navigateAction(Navigation.WEATHER_SETTINGS)
             DiagnosticCode.ExactAlarmNoPermission -> alarmAndReminderAction()
         }
     }
@@ -295,7 +294,7 @@ class DiagnosticAlertService(private val context: Context, private val navigatio
     }
 
     private fun navigateAction(
-        @IdRes to: Int,
+        to: String,
         title: String = getString(R.string.settings)
     ): Action {
         return Action(title) {

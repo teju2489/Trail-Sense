@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.CoroutineAlerts
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Timer
@@ -18,10 +17,12 @@ import com.kylecorry.sol.science.oceanography.TideType
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentTideBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.onMain
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.tides.domain.TideService
 import com.kylecorry.trail_sense.tools.tides.domain.TideTable
 import com.kylecorry.trail_sense.tools.tides.domain.commands.CurrentTideCommand
@@ -65,7 +66,7 @@ class TidesFragment : BoundFragment<FragmentTideBinding>() {
         chart = TideChart(binding.chart)
 
         binding.tideTitle.rightButton.setOnClickListener {
-            findNavController().navigate(R.id.action_tides_to_tideList)
+            requireMyNavigation().navigate(Navigation.TIDE_LIST)
         }
 
         binding.loading.isVisible = true
@@ -167,7 +168,7 @@ class TidesFragment : BoundFragment<FragmentTideBinding>() {
                         getString(R.string.calibrate_new_tide)
                     )
                     if (!cancelled) {
-                        findNavController().navigate(R.id.action_tides_to_tideList)
+                        requireMyNavigation().navigate(Navigation.TIDE_LIST)
                     }
                 } else {
                     onTideLoaded()

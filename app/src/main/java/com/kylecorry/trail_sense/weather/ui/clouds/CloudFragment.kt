@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.CoroutineAlerts
 import com.kylecorry.andromeda.core.coroutines.BackgroundMinimumState
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -16,6 +15,7 @@ import com.kylecorry.andromeda.fragments.observe
 import com.kylecorry.sol.units.Reading
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentCloudsBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.extensions.onIO
@@ -24,6 +24,7 @@ import com.kylecorry.trail_sense.shared.io.FileSubsystem
 import com.kylecorry.trail_sense.shared.io.FragmentUriPicker
 import com.kylecorry.trail_sense.shared.permissions.alertNoCameraPermission
 import com.kylecorry.trail_sense.shared.permissions.requestCamera
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.guide.infrastructure.UserGuideUtils
 import com.kylecorry.trail_sense.weather.domain.clouds.classification.SoftmaxCloudClassifier
 import com.kylecorry.trail_sense.weather.infrastructure.clouds.CloudDetailsService
@@ -87,8 +88,8 @@ class CloudFragment : BoundFragment<FragmentCloudsBinding>() {
                         Size(SoftmaxCloudClassifier.IMAGE_SIZE, SoftmaxCloudClassifier.IMAGE_SIZE)
                     )
                     uri?.let {
-                        findNavController().navigate(
-                            R.id.action_cloud_to_cloud_picker,
+                        requireMyNavigation().navigate(
+                            Navigation.CLOUD_PICKER,
                             bundleOf("image" to uri)
                         )
                     }
@@ -105,8 +106,8 @@ class CloudFragment : BoundFragment<FragmentCloudsBinding>() {
                 FragmentUriPicker(this@CloudFragment).open(listOf("image/*"))
             val temp = uri?.let { onIO { files.copyToTemp(it) }?.toUri() }
             temp?.let {
-                findNavController().navigate(
-                    R.id.action_cloud_to_cloud_picker,
+                requireMyNavigation().navigate(
+                    Navigation.CLOUD_PICKER,
                     bundleOf("image" to it)
                 )
             }
@@ -114,7 +115,7 @@ class CloudFragment : BoundFragment<FragmentCloudsBinding>() {
     }
 
     private fun addManual() {
-        findNavController().navigate(R.id.action_cloud_to_cloud_picker)
+        requireMyNavigation().navigate(Navigation.CLOUD_PICKER)
     }
 
     override fun generateBinding(

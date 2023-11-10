@@ -5,20 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.capitalizeWords
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.tryOrLog
-import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.core.ui.Colors
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.list.ListView
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolsBinding
 import com.kylecorry.trail_sense.databinding.ListItemToolBinding
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 
 class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
@@ -37,7 +35,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
         toolsList = ListView(binding.toolRecycler, R.layout.list_item_tool) { itemView, tool ->
             val toolBinding = ListItemToolBinding.bind(itemView)
 
-            if (tool.action != null && tool.icon != null) {
+            if (tool.route != null && tool.icon != null) {
                 // Tool
                 toolBinding.root.setBackgroundResource(selectableBackground)
                 toolBinding.title.text = tool.name.capitalizeWords()
@@ -49,7 +47,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
                 Colors.setImageColor(toolBinding.icon, Resources.androidTextColorSecondary(requireContext()))
                 toolBinding.root.setOnClickListener {
                     tryOrLog {
-                        findNavController().navigate(tool.action)
+                        requireMyNavigation().navigate(tool.route)
                     }
                 }
             } else {
@@ -94,7 +92,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
                             tool.name,
                             tool.description,
                             tool.icon,
-                            tool.navAction
+                            tool.route
                         )
                     )
                 }
@@ -112,7 +110,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
                                 tool.name,
                                 tool.description,
                                 tool.icon,
-                                tool.navAction
+                                tool.route
                             )
                         )
                     }
@@ -134,7 +132,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
         val name: String,
         val description: String?,
         @DrawableRes val icon: Int?,
-        @IdRes val action: Int?
+        val route: String?
     )
 
 }

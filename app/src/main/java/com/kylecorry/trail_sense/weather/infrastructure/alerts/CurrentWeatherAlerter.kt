@@ -11,6 +11,7 @@ import com.kylecorry.sol.units.PressureUnits
 import com.kylecorry.sol.units.TemperatureUnits
 import com.kylecorry.trail_sense.NotificationChannels
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.Units
@@ -66,7 +67,7 @@ class CurrentWeatherAlerter(
 
     private fun getNotification(text: String, icon: Int): Notification {
         val stopIntent = Intent(context, WeatherStopMonitoringReceiver::class.java)
-        val openIntent = NavigationUtils.pendingIntent(context, R.id.action_weather)
+        val openIntent = NavigationUtils.pendingIntent(context, Navigation.WEATHER)
 
         val stopPendingIntent: PendingIntent =
             PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -113,7 +114,7 @@ class CurrentWeatherAlerter(
 
         fun getDefaultNotification(context: Context): Notification {
             val stopIntent = Intent(context, WeatherStopMonitoringReceiver::class.java)
-            val openIntent = NavigationUtils.pendingIntent(context, R.id.action_weather)
+            val openIntent = NavigationUtils.pendingIntent(context, Navigation.WEATHER)
 
             val stopPendingIntent: PendingIntent =
                 PendingIntent.getBroadcast(context, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE)

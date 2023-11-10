@@ -1,6 +1,7 @@
 package com.kylecorry.trail_sense.navigation.beacons.infrastructure
 
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.IBeaconService
 import com.kylecorry.trail_sense.shared.navigation.IAppNavigation
@@ -26,7 +27,7 @@ class BeaconNavigator(
 
         withContext(mainDispatcher) {
             navigation.navigate(
-                R.id.action_navigation,
+                Navigation.NAVIGATION,
                 listOf("destination" to id)
             )
         }

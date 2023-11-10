@@ -1,10 +1,10 @@
 package com.kylecorry.trail_sense.shared.navigation
 
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
+import com.kylecorry.trail_sense.main.MyNavController
 
-class NavControllerAppNavigation(private val controller: NavController) : IAppNavigation {
-    override fun navigate(actionId: Int, params: List<Pair<String, Any?>>) {
-        controller.navigate(actionId, bundleOf(pairs = params.toTypedArray()))
+class NavControllerAppNavigation(private val controller: MyNavController) : IAppNavigation {
+    override fun navigate(route: String, params: List<Pair<String, Any?>>) {
+        controller.navigate(route, bundleOf(pairs = params.toTypedArray()))
     }
 }

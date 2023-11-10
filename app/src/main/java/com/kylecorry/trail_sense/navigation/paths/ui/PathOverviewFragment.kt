@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Throttle
@@ -75,6 +74,7 @@ import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.extensions.range
 import com.kylecorry.trail_sense.shared.io.IOFactory
 import com.kylecorry.trail_sense.shared.navigation.NavControllerAppNavigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.toRelativeDistance
 import com.kylecorry.trail_sense.tools.maps.infrastructure.layers.ILayerManager
@@ -148,7 +148,7 @@ class PathOverviewFragment : BoundFragment<FragmentPathOverviewBinding>() {
     private val beaconNavigator: IBeaconNavigator by lazy {
         BeaconNavigator(
             BeaconService(requireContext()),
-            NavControllerAppNavigation(findNavController())
+            NavControllerAppNavigation(requireMyNavigation())
         )
     }
 

@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.ui.Colors
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.list.ListView
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentDiagnosticsBinding
 import com.kylecorry.trail_sense.databinding.ListItemPlainIconBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.navigation.NavControllerAppNavigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 class DiagnosticsFragment : BoundFragment<FragmentDiagnosticsBinding>() {
 
@@ -34,7 +35,7 @@ class DiagnosticsFragment : BoundFragment<FragmentDiagnosticsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.diagnosticsTitle.rightButton.setOnClickListener {
-            findNavController().navigate(R.id.action_diagnostics_to_sensor_details)
+            requireMyNavigation().navigate(Navigation.SENSOR_DETAILS)
         }
         diagnosticListView =
             ListView(binding.diagnosticsList, R.layout.list_item_plain_icon) { itemView, code ->
@@ -46,7 +47,7 @@ class DiagnosticsFragment : BoundFragment<FragmentDiagnosticsBinding>() {
                 itemBinding.root.setOnClickListener {
                     val alerter = DiagnosticAlertService(
                         requireContext(),
-                        NavControllerAppNavigation(findNavController())
+                        NavControllerAppNavigation(requireMyNavigation())
                     )
                     alerter.alert(code)
                 }

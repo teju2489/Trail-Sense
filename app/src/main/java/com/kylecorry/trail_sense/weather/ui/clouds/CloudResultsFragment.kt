@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.exifinterface.media.ExifInterface
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.bitmap.BitmapUtils
 import com.kylecorry.andromeda.core.bitmap.BitmapUtils.resizeExact
 import com.kylecorry.andromeda.core.bitmap.BitmapUtils.rotate
@@ -30,6 +29,7 @@ import com.kylecorry.trail_sense.shared.extensions.onDefault
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.io.DeleteTempFilesCommand
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.weather.domain.clouds.classification.ICloudClassifier
 import com.kylecorry.trail_sense.weather.domain.clouds.classification.SoftmaxCloudClassifier
 import com.kylecorry.trail_sense.weather.infrastructure.persistence.CloudObservation
@@ -138,7 +138,7 @@ class CloudResultsFragment : BoundFragment<FragmentCloudResultsBinding>() {
                 repo.add(it)
             }
             onMain {
-                findNavController().navigateUp()
+                requireMyNavigation().back()
             }
         }
     }

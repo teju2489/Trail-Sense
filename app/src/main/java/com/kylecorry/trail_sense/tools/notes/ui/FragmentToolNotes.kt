@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.trail_sense.R
@@ -14,6 +13,8 @@ import com.kylecorry.trail_sense.databinding.FragmentToolNotesBinding
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.observe
+import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.notes.domain.Note
 import com.kylecorry.trail_sense.tools.notes.infrastructure.NoteRepo
 import com.kylecorry.trail_sense.tools.qr.infrastructure.NoteQREncoder
@@ -36,7 +37,7 @@ class FragmentToolNotes : BoundFragment<FragmentToolNotesBinding>() {
         }
 
         binding.addBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_fragmentToolNotes_to_fragmentToolNotesCreate)
+            requireMyNavigation().navigate(Navigation.CREATE_NOTE)
         }
     }
 
@@ -78,10 +79,7 @@ class FragmentToolNotes : BoundFragment<FragmentToolNotesBinding>() {
 
     private fun editNote(note: Note) {
         val bundle = bundleOf("edit_note_id" to note.id)
-        findNavController().navigate(
-            R.id.action_fragmentToolNotes_to_fragmentToolNotesCreate,
-            bundle
-        )
+        requireMyNavigation().navigate(Navigation.CREATE_NOTE, bundle)
     }
 
     override fun generateBinding(

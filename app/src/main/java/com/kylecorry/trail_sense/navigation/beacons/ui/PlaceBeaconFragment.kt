@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isInvisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.capitalizeWords
 import com.kylecorry.andromeda.core.system.GeoUri
 import com.kylecorry.andromeda.core.system.Resources
@@ -29,6 +28,7 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.extensions.promptIfUnsavedChanges
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 class PlaceBeaconFragment : BoundFragment<FragmentCreateBeaconBinding>() {
 
@@ -261,7 +261,7 @@ class PlaceBeaconFragment : BoundFragment<FragmentCreateBeaconBinding>() {
 
             onMain {
                 backCallback.remove()
-                findNavController().navigateUp()
+                requireMyNavigation().back()
             }
         }
     }

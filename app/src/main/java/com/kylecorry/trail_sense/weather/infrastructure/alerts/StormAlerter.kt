@@ -4,6 +4,7 @@ import android.content.Context
 import com.kylecorry.andromeda.notify.Notify
 import com.kylecorry.trail_sense.NotificationChannels
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.alerts.IDismissibleAlerter
 
@@ -17,7 +18,7 @@ class StormAlerter(private val context: Context) : IDismissibleAlerter {
             context.getString(R.string.notification_storm_alert_text),
             R.drawable.ic_alert,
             group = NotificationChannels.GROUP_STORM,
-            intent = NavigationUtils.pendingIntent(context, R.id.action_weather),
+            intent = NavigationUtils.pendingIntent(context, Navigation.WEATHER),
             autoCancel = true
         )
         Notify.send(context, STORM_ALERT_NOTIFICATION_ID, notification)

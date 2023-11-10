@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.coroutines.BackgroundMinimumState
@@ -386,7 +384,7 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
         initialLocation?.let { bundle.putParcelable("initial_location", it) }
         editingBeaconId?.let { bundle.putLong("edit_beacon", it) }
 
-        requireMyNavigation().navigateTo(Navigation.CREATE_BEACON, bundle)
+        requireMyNavigation().navigate(Navigation.CREATE_BEACON, bundle)
     }
 
     private fun refresh() {
@@ -395,7 +393,7 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
 
     private fun viewBeacon(id: Long) {
         val bundle = bundleOf("beacon_id" to id)
-        requireMyNavigation().navigateTo(Navigation.BEACON_DETAIL, bundle)
+        requireMyNavigation().navigate(Navigation.BEACON_DETAIL, bundle)
     }
 
     private fun navigate(beacon: Beacon) {

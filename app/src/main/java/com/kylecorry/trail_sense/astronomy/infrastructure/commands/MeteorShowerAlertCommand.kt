@@ -8,6 +8,7 @@ import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.NotificationChannels
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.UserPreferences
@@ -47,7 +48,7 @@ class MeteorShowerAlertCommand(private val context: Context) : Command<Coordinat
             getShowerDescription(context, shower),
             R.drawable.ic_astronomy,
             group = NotificationChannels.GROUP_ASTRONOMY_ALERTS,
-            intent = NavigationUtils.pendingIntent(context, R.id.action_astronomy),
+            intent = NavigationUtils.pendingIntent(context, Navigation.ASTRONOMY),
             autoCancel = true
         )
 

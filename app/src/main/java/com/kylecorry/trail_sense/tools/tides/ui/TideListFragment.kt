@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.trail_sense.R
@@ -13,8 +12,10 @@ import com.kylecorry.trail_sense.databinding.FragmentTideListBinding
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.tools.tides.domain.TideService
 import com.kylecorry.trail_sense.tools.tides.domain.TideTable
@@ -89,19 +90,16 @@ class TideListFragment : BoundFragment<FragmentTideListBinding>() {
     }
 
     private fun editTide(tide: TideTable) {
-        findNavController().navigate(
-            R.id.action_tideList_to_createTide,
-            bundleOf("edit_tide_id" to tide.id)
-        )
+        requireMyNavigation().navigate(Navigation.CREATE_TIDE, bundleOf("edit_tide_id" to tide.id))
     }
 
     private fun createTide() {
-        findNavController().navigate(R.id.action_tideList_to_createTide)
+        requireMyNavigation().navigate(Navigation.CREATE_TIDE)
     }
 
     private fun selectTide(tide: TideTable) {
         prefs.tides.lastTide = tide.id
-        findNavController().navigateUp()
+        requireMyNavigation().back()
     }
 
     private fun getTideTitle(tide: TideTable): String {

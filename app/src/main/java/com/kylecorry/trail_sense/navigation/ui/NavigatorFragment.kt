@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.coroutines.onIO
 import com.kylecorry.andromeda.core.system.GeoUri
@@ -17,15 +15,12 @@ import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.system.Screen
 import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.tryOrNothing
-import com.kylecorry.andromeda.core.ui.Colors.withAlpha
-import com.kylecorry.andromeda.core.ui.setCompoundDrawables
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.interval
 import com.kylecorry.andromeda.fragments.observe
 import com.kylecorry.andromeda.fragments.observeFlow
 import com.kylecorry.andromeda.fragments.show
-import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.andromeda.sense.orientation.DeviceOrientation
 import com.kylecorry.luna.coroutines.CoroutineQueueRunner
 import com.kylecorry.sol.science.geology.CoordinateBounds
@@ -51,9 +46,6 @@ import com.kylecorry.trail_sense.navigation.domain.CompassStyle
 import com.kylecorry.trail_sense.navigation.domain.CompassStyleChooser
 import com.kylecorry.trail_sense.navigation.domain.NavigationService
 import com.kylecorry.trail_sense.navigation.infrastructure.Navigator
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationCopy
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationGeoSender
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationSharesheet
 import com.kylecorry.trail_sense.navigation.ui.data.UpdateAstronomyLayerCommand
 import com.kylecorry.trail_sense.navigation.ui.errors.NavigatorUserErrors
 import com.kylecorry.trail_sense.navigation.ui.layers.*
@@ -327,7 +319,7 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
 
         binding.beaconBtn.setOnClickListener {
             if (destination == null) {
-                requireMyNavigation().navigateTo(Navigation.BEACON_LIST)
+                requireMyNavigation().navigate(Navigation.BEACON_LIST)
             } else {
                 destination = null
                 navigator.cancelNavigation()
@@ -343,9 +335,9 @@ class NavigatorFragment : BoundFragment<ActivityNavigatorBinding>() {
                         if (altimeter.hasValidReading) altimeter.altitude else gps.altitude
                     )
                 )
-                requireMyNavigation().navigateTo(Navigation.BEACON_LIST, bundle)
+                requireMyNavigation().navigate(Navigation.BEACON_LIST, bundle)
             } else {
-                requireMyNavigation().navigateTo(Navigation.BEACON_LIST)
+                requireMyNavigation().navigate(Navigation.BEACON_LIST)
             }
             true
         }

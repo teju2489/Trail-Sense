@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.ui.flatten
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -17,6 +16,7 @@ import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.databinding.FragmentBeaconDetailsBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconEntity
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconRepo
@@ -27,6 +27,7 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.onDefault
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.toRelativeDistance
 import com.kylecorry.trail_sense.weather.infrastructure.subsystem.WeatherSubsystem
@@ -81,8 +82,8 @@ class BeaconDetailsFragment : BoundFragment<FragmentBeaconDetailsBinding>() {
 
                     binding.navigateBtn.setOnClickListener {
                         val bundle = bundleOf("destination" to id)
-                        findNavController().navigate(
-                            R.id.action_beaconDetailsFragment_to_action_navigation,
+                        requireMyNavigation().navigate(
+                            Navigation.NAVIGATION,
                             bundle
                         )
                     }
@@ -91,8 +92,8 @@ class BeaconDetailsFragment : BoundFragment<FragmentBeaconDetailsBinding>() {
 
                     binding.editBtn.setOnClickListener {
                         val bundle = bundleOf("edit_beacon" to id)
-                        findNavController().navigate(
-                            R.id.action_beacon_details_to_beacon_edit,
+                        requireMyNavigation().navigate(
+                            Navigation.CREATE_BEACON,
                             bundle
                         )
                     }
@@ -119,7 +120,7 @@ class BeaconDetailsFragment : BoundFragment<FragmentBeaconDetailsBinding>() {
                                                 }
 
                                                 withContext(Dispatchers.Main) {
-                                                    findNavController().navigateUp()
+                                                    requireMyNavigation().back()
                                                 }
                                             }
                                         }

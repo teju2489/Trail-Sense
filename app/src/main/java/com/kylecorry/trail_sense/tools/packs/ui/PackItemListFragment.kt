@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.pickers.Pickers
@@ -17,6 +16,8 @@ import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.observe
+import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.packs.domain.Pack
 import com.kylecorry.trail_sense.tools.packs.domain.PackItem
 import com.kylecorry.trail_sense.tools.packs.domain.PackService
@@ -89,10 +90,7 @@ class PackItemListFragment : BoundFragment<FragmentItemListBinding>() {
         }
 
         binding.addBtn.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_action_inventory_to_createItemFragment,
-                bundleOf("pack_id" to packId)
-            )
+            requireMyNavigation().navigate(Navigation.CREATE_PACK_ITEM, bundleOf("pack_id" to packId))
         }
 
         binding.inventoryListTitle.rightButton.setOnClickListener {
@@ -170,7 +168,7 @@ class PackItemListFragment : BoundFragment<FragmentItemListBinding>() {
                         itemRepo.deletePack(pack)
                     }
                     withContext(Dispatchers.Main) {
-                        findNavController().popBackStack()
+                        requireMyNavigation().back()
                     }
                 }
             }
@@ -199,7 +197,7 @@ class PackItemListFragment : BoundFragment<FragmentItemListBinding>() {
 
     private fun editItem(item: PackItem) {
         val bundle = bundleOf("edit_item_id" to item.id, "pack_id" to packId)
-        findNavController().navigate(R.id.action_action_inventory_to_createItemFragment, bundle)
+        requireMyNavigation().navigate(Navigation.CREATE_PACK_ITEM, bundle)
     }
 
     private fun handleAction(item: PackItem, action: PackItemAction) {

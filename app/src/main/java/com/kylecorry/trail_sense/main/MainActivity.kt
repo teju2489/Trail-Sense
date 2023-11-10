@@ -12,12 +12,9 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kylecorry.andromeda.core.system.GeoUri
 import com.kylecorry.andromeda.core.system.Screen
-import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.fragments.AndromedaActivity
 import com.kylecorry.andromeda.fragments.ColorTheme
 import com.kylecorry.andromeda.sense.Sensors
@@ -28,7 +25,6 @@ import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.backup.BackupService
 import com.kylecorry.trail_sense.onboarding.OnboardingActivity
 import com.kylecorry.trail_sense.receivers.RestartServicesCommand
-import com.kylecorry.trail_sense.shared.NavigationUtils.setupWithNavController
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.commands.ComposedCommand
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
@@ -133,9 +129,9 @@ class MainActivity : AndromedaActivity() {
 
         if (cache.getBoolean(BackupService.RECENTLY_BACKED_UP_KEY) == true){
             cache.remove(BackupService.RECENTLY_BACKED_UP_KEY)
-            navigation.navigateTo(Navigation.SETTINGS)
+            navigation.navigate(Navigation.SETTINGS)
         } else if (navigation.currentRoute == null) {
-            navigation.navigateTo(Navigation.NAVIGATION)
+            navigation.navigate(Navigation.NAVIGATION)
         }
 
         ComposedCommand(
@@ -300,10 +296,6 @@ class MainActivity : AndromedaActivity() {
         }
 
         return null
-    }
-
-    private fun findNavController(): NavController {
-        return (supportFragmentManager.findFragmentById(R.id.fragment_holder) as NavHostFragment).navController
     }
 
     companion object {

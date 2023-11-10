@@ -8,6 +8,7 @@ import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.astronomy.infrastructure.receivers.SunsetAlarmReceiver
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.UserPreferences
@@ -98,7 +99,7 @@ class SunsetAlarmCommand(private val context: Context) : CoroutineCommand {
         val formatService = FormatService.getInstance(context)
         val formattedTime = formatService.formatTime(sunset.toLocalTime(), false)
 
-        val openIntent = NavigationUtils.pendingIntent(context, R.id.action_astronomy)
+        val openIntent = NavigationUtils.pendingIntent(context, Navigation.ASTRONOMY)
 
         val notification = Notify.alert(
             context,

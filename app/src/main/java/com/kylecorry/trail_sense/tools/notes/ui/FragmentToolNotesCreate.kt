@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.trail_sense.databinding.FragmentToolNotesCreateBinding
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.extensions.promptIfUnsavedChanges
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.notes.domain.Note
 import com.kylecorry.trail_sense.tools.notes.infrastructure.NoteRepo
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ class FragmentToolNotesCreate : BoundFragment<FragmentToolNotesCreateBinding>() 
                 }
 
                 onMain {
-                    findNavController().navigateUp()
+                    requireMyNavigation().back()
                 }
             }
         }

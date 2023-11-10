@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.kylecorry.andromeda.core.system.Screen
 import com.kylecorry.andromeda.fragments.AndromedaPreferenceFragment
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 
@@ -22,7 +23,7 @@ class PrivacySettingsFragment : AndromedaPreferenceFragment() {
         }
         navigateOnClick(
             preference(R.string.pref_gps_calibration),
-            R.id.action_privacy_settings_to_gps_calibration
+            Navigation.CALIBRATE_GPS
         )
     }
 

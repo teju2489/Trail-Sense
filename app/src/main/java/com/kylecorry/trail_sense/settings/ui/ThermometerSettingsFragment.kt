@@ -2,7 +2,6 @@ package com.kylecorry.trail_sense.settings.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
@@ -22,6 +21,7 @@ import com.kylecorry.sol.units.TemperatureUnits
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.diagnostics.DiagnosticCode
 import com.kylecorry.trail_sense.diagnostics.GPSDiagnostic
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.ErrorBannerReason
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
@@ -29,6 +29,7 @@ import com.kylecorry.trail_sense.shared.alerts.AlertLoadingIndicator
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.trail_sense.shared.requireMainActivity
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sensors.thermometer.ThermometerSource
 import com.kylecorry.trail_sense.shared.views.UserError
@@ -329,7 +330,7 @@ class ThermometerSettingsFragment : AndromedaPreferenceFragment() {
 
     private fun showLocationUnsetError() {
         val activity = requireMainActivity()
-        val navController = findNavController()
+        val navController = requireMyNavigation()
         val error = UserError(
             ErrorBannerReason.LocationNotSet,
             getString(R.string.location_not_set) + "\n" + getString(R.string.for_historic_temperatures),
@@ -337,7 +338,7 @@ class ThermometerSettingsFragment : AndromedaPreferenceFragment() {
             getString(R.string.set)
         ) {
             activity.errorBanner.dismiss(ErrorBannerReason.LocationNotSet)
-            navController.navigate(R.id.calibrateGPSFragment)
+            navController.navigate(Navigation.CALIBRATE_GPS)
         }
         activity.errorBanner.report(error)
     }

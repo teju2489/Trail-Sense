@@ -14,6 +14,7 @@ import com.kylecorry.sol.units.Distance
 import com.kylecorry.sol.units.DistanceUnits
 import com.kylecorry.trail_sense.NotificationChannels
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.DistanceUtils.toRelativeDistance
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.NavigationUtils
@@ -76,7 +77,7 @@ class StepCounterService : AndromedaService() {
             .convertTo(prefs.baseDistanceUnits)
             .toRelativeDistance()
 
-        val openIntent = NavigationUtils.pendingIntent(this, R.id.fragmentToolPedometer)
+        val openIntent = NavigationUtils.pendingIntent(this, Navigation.PEDOMETER)
         val stopIntent = Intent(this, StopPedometerReceiver::class.java)
         val stopPendingIntent = PendingIntent.getBroadcast(this, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE)
         val stopAction = Notify.action(

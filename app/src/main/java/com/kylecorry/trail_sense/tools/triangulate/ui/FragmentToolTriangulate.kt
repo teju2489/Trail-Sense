@@ -7,16 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.buildSpannedString
 import androidx.core.text.scale
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.system.GeoUri
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.ui.setCompoundDrawables
 import com.kylecorry.andromeda.fragments.BoundFragment
-import com.kylecorry.andromeda.fragments.inBackground
-import com.kylecorry.andromeda.preferences.IPreferences
 import com.kylecorry.sol.science.geology.CoordinateBounds
 import com.kylecorry.sol.science.geology.Geofence
 import com.kylecorry.sol.science.geology.Geology
@@ -25,11 +21,10 @@ import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolTriangulateBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.domain.BeaconOwner
-import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconService
 import com.kylecorry.trail_sense.navigation.infrastructure.Navigator
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationCopy
 import com.kylecorry.trail_sense.navigation.paths.domain.LineStyle
 import com.kylecorry.trail_sense.navigation.ui.IMappablePath
 import com.kylecorry.trail_sense.navigation.ui.MappableLocation
@@ -40,23 +35,22 @@ import com.kylecorry.trail_sense.shared.AppUtils
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.DistanceUtils.toRelativeDistance
 import com.kylecorry.trail_sense.shared.FormatService
-import com.kylecorry.trail_sense.shared.NavigationUtils
 import com.kylecorry.trail_sense.shared.Units
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.extensions.from
-import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.putOrRemoveCoordinate
 import com.kylecorry.trail_sense.shared.extensions.putOrRemoveFloat
 import com.kylecorry.trail_sense.shared.navigation.NavControllerAppNavigation
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sharing.Share
 
 class FragmentToolTriangulate : BoundFragment<FragmentToolTriangulateBinding>() {
 
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
     private val prefs by lazy { UserPreferences(requireContext()) }
-    private val appNavigation by lazy { NavControllerAppNavigation(findNavController()) }
+    private val appNavigation by lazy { NavControllerAppNavigation(requireMyNavigation()) }
     private val navigator by lazy { Navigator.getInstance(requireContext()) }
 
     private var location: Coordinate? = null
@@ -104,7 +98,7 @@ class FragmentToolTriangulate : BoundFragment<FragmentToolTriangulateBinding>() 
         binding.navigate.setOnClickListener {
             location?.let {
                 navigator.navigateTo(it, getString(R.string.location), BeaconOwner.Triangulate)
-                appNavigation.navigate(R.id.action_navigation)
+                appNavigation.navigate(Navigation.NAVIGATION)
             }
         }
 

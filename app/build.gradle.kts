@@ -106,9 +106,6 @@ dependencies {
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
-    val navVersion = "2.5.3"
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     val roomVersion = "2.5.2"
     kapt("androidx.room:room-compiler:$roomVersion")

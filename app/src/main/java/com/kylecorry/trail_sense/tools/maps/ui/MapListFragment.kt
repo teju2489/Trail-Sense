@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.alerts.loading.AlertLoadingIndicator
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.coroutines.BackgroundMinimumState
@@ -17,6 +16,7 @@ import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentMapListBinding
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.onBackPressed
 import com.kylecorry.trail_sense.shared.extensions.onDefault
@@ -24,6 +24,7 @@ import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.io.FragmentUriPicker
 import com.kylecorry.trail_sense.shared.lists.GroupListManager
 import com.kylecorry.trail_sense.shared.lists.bind
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.tools.guide.infrastructure.UserGuideUtils
 import com.kylecorry.trail_sense.tools.maps.domain.IMap
@@ -146,7 +147,7 @@ class MapListFragment : BoundFragment<FragmentMapListBinding>() {
         onBackPressed {
             if (!manager.up()) {
                 remove()
-                findNavController().navigateUp()
+                requireMyNavigation().back()
             }
         }
 
@@ -254,10 +255,7 @@ class MapListFragment : BoundFragment<FragmentMapListBinding>() {
         if (map is MapGroup) {
             manager.open(map.id)
         } else {
-            findNavController().navigate(
-                R.id.action_mapList_to_maps,
-                bundleOf("mapId" to map.id)
-            )
+            requireMyNavigation().navigate(Navigation.MAP, bundleOf("mapId" to map.id))
         }
     }
 
@@ -358,11 +356,7 @@ class MapListFragment : BoundFragment<FragmentMapListBinding>() {
 
             binding.addBtn.isEnabled = true
             manager.refresh(true)
-            findNavController().navigate(
-                R.id.action_mapList_to_maps,
-                bundleOf("mapId" to map.id)
-            )
-
+            requireMyNavigation().navigate(Navigation.MAP, bundleOf("mapId" to map.id))
         }
     }
 
