@@ -55,7 +55,30 @@ class MyNavController(private val manager: FragmentManager, private val containe
             currentRoute = route
             onRouteChangeListener(route)
         }
+    }
 
+    fun up(){
+        val components = currentRoute?.split("/")
+
+        if (components == null || components.size <= 1){
+            back()
+            return
+        }
+
+        val remaining = components.dropLast(1).toMutableList()
+
+        while (remaining.isNotEmpty()){
+            val parent = remaining.joinToString("/")
+            if (routes.containsKey(parent)){
+                // TODO: Remove this from the back stack
+                navigate(parent, addToBackStack = false)
+                return
+            }
+            remaining.removeLast()
+        }
+
+        // No parent found, just go back
+        back()
     }
 
     fun back() {
@@ -94,8 +117,9 @@ fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings
 
     // TODO: Allow multiple listeners
     nav.setOnNavigationChangeListener { route ->
+        val baseRoute = route?.split("/")?.firstOrNull()
         menu.forEach { item ->
-            if (mappings[route] == item.itemId || (route == null && default == item.itemId)){
+            if (mappings[baseRoute] == item.itemId || (route == null && default == item.itemId)){
                 item.isChecked = true
             }
         }

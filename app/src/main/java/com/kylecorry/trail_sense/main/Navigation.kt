@@ -77,7 +77,6 @@ import com.kylecorry.trail_sense.weather.ui.clouds.CloudResultsFragment
 
 object Navigation {
 
-    // TODO: Use base routes to select bottom nav item
     // TODO: Add animations from parent route to children routes
 
     const val NAVIGATION = "navigation"
