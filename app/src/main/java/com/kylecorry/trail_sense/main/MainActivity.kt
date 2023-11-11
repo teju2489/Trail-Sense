@@ -164,12 +164,8 @@ class MainActivity : AndromedaActivity() {
             val intentUri = intent.clipData?.getItemAt(0)?.uri
             val bundle = bundleOf("map_intent_uri" to intentUri)
             navigation.navigate(Navigation.MAP_LIST, bundle)
-        } else if (intent.hasExtra("route")) {
-            val route = intent.getStringExtra("route")
-            val args = intent.getBundleExtra("route_args")
-            if (route != null) {
-                navigation.navigate(route, args, resetBackStack = true)
-            }
+        } else if (MyNavController.hasDeepLink(intent)) {
+            navigation.navigateDeepLink(intent)
         }
     }
 

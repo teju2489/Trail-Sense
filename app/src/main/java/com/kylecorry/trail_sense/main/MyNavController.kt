@@ -1,5 +1,6 @@
 package com.kylecorry.trail_sense.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
@@ -104,6 +105,25 @@ class MyNavController(private val manager: FragmentManager, private val containe
     fun setOnNavigationChangeListener(listener: (String?) -> Unit){
         onRouteChangeListener = listener
     }
+
+    fun navigateDeepLink(intent: Intent) {
+        val route = intent.getStringExtra("route") ?: return
+        val args = intent.getBundleExtra("route_args")
+        // TODO: Simulate back stack
+        navigate(route, args, resetBackStack = true)
+    }
+
+    companion object {
+        fun populateDeepLink(intent: Intent, route: String, args: Bundle? = null){
+            intent.putExtra("route", route)
+            intent.putExtra("route_args", args)
+        }
+
+        fun hasDeepLink(intent: Intent): Boolean {
+            return intent.hasExtra("route")
+        }
+    }
+
 }
 
 fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings: Map<String, Int>, default: Int? = null){
