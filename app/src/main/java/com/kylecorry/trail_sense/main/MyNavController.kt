@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -12,21 +13,32 @@ class MyNavController(private val manager: FragmentManager, private val containe
 
     private val routes = mutableMapOf<String, () -> Fragment>()
     private val fragmentNameMapping = mutableMapOf<String, String>()
-    private var onRouteChangeListener: (String?) -> Unit = {}
+
+    private val routeChangeListeners = mutableListOf<(String?) -> Unit>()
+    private val listenerLock = Any()
+
+    private fun onRouteChange(route: String?){
+        val listeners = synchronized(listenerLock) {
+            routeChangeListeners.toList()
+        }
+        listeners.forEach { listener ->
+            listener(route)
+        }
+    }
 
     init {
         manager.addOnBackStackChangedListener {
             val lastEntryIdx = manager.backStackEntryCount - 1
             if (lastEntryIdx < 0) {
                 currentRoute = null
-                onRouteChangeListener(null)
+                onRouteChange(null)
                 return@addOnBackStackChangedListener
             }
             val lastEntry = manager.getBackStackEntryAt(lastEntryIdx)
             val route = lastEntry.name
             if (route != currentRoute) {
                 currentRoute = route
-                onRouteChangeListener(route)
+                onRouteChange(route)
             }
         }
     }
@@ -47,6 +59,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
 
         manager.commit {
             replace(containerId, fragment)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             if (addToBackStack) {
                 addToBackStack(route)
             }
@@ -54,7 +67,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
 
         if (currentRoute != route) {
             currentRoute = route
-            onRouteChangeListener(route)
+            onRouteChange(route)
         }
     }
 
@@ -102,8 +115,16 @@ class MyNavController(private val manager: FragmentManager, private val containe
         navigate(currentRoute ?: return, addToBackStack = false)
     }
 
-    fun setOnNavigationChangeListener(listener: (String?) -> Unit){
-        onRouteChangeListener = listener
+    fun addOnNavigationChangeListener(listener: (String?) -> Unit){
+        synchronized(listenerLock) {
+            routeChangeListeners.add(listener)
+        }
+    }
+
+    fun removeOnNavigationChangeListener(listener: (String?) -> Unit){
+        synchronized(listenerLock) {
+            routeChangeListeners.remove(listener)
+        }
     }
 
     fun navigateDeepLink(intent: Intent) {
@@ -135,8 +156,7 @@ fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings
         true
     }
 
-    // TODO: Allow multiple listeners
-    nav.setOnNavigationChangeListener { route ->
+    nav.addOnNavigationChangeListener { route ->
         val baseRoute = route?.split("/")?.firstOrNull()
         menu.forEach { item ->
             if (mappings[baseRoute] == item.itemId || (route == null && default == item.itemId)){

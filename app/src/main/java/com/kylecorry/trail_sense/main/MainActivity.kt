@@ -97,8 +97,14 @@ class MainActivity : AndromedaActivity() {
                 Navigation.ASTRONOMY to R.id.action_astronomy,
                 Navigation.TOOLS to R.id.action_experimental_tools,
                 Navigation.SETTINGS to R.id.action_settings
-            ), R.id.action_navigation
+            )
         )
+
+        navigation.addOnNavigationChangeListener {
+            if (it == null){
+                finish()
+            }
+        }
 
         if (userPrefs.theme == UserPreferences.Theme.Black || userPrefs.theme == UserPreferences.Theme.Night) {
             window.decorView.rootView.setBackgroundColor(Color.BLACK)
