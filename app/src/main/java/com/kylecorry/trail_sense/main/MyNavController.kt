@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MyNavController(private val manager: FragmentManager, private val containerId: Int){
+class MyNavController(private val manager: FragmentManager, private val containerId: Int) {
 
     private val routes = mutableMapOf<String, () -> Fragment>()
     private val fragmentNameMapping = mutableMapOf<String, String>()
@@ -17,7 +17,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
     private val routeChangeListeners = mutableListOf<(String?) -> Unit>()
     private val listenerLock = Any()
 
-    private fun onRouteChange(route: String?){
+    private fun onRouteChange(route: String?) {
         val listeners = synchronized(listenerLock) {
             routeChangeListeners.toList()
         }
@@ -46,12 +46,18 @@ class MyNavController(private val manager: FragmentManager, private val containe
     var currentRoute: String? = null
         private set
 
-    fun navigate(route: String, data: Bundle? = null, addToBackStack: Boolean = true, resetBackStack: Boolean = false) {
+    fun navigate(
+        route: String,
+        data: Bundle? = null,
+        addToBackStack: Boolean = true,
+        resetBackStack: Boolean = false,
+        transition: Int? = null
+    ) {
         val fragmentLoader = routes[route] ?: return
         val fragment = fragmentLoader()
         fragment.arguments = data ?: Bundle()
         // TODO: Support transitions
-        if (resetBackStack){
+        if (resetBackStack) {
             manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
@@ -59,7 +65,9 @@ class MyNavController(private val manager: FragmentManager, private val containe
 
         manager.commit {
             replace(containerId, fragment)
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            if (transition != null) {
+                setTransition(transition)
+            }
             if (addToBackStack) {
                 addToBackStack(route)
             }
@@ -71,19 +79,19 @@ class MyNavController(private val manager: FragmentManager, private val containe
         }
     }
 
-    fun up(){
+    fun up() {
         val components = currentRoute?.split("/")
 
-        if (components == null || components.size <= 1){
+        if (components == null || components.size <= 1) {
             back()
             return
         }
 
         val remaining = components.dropLast(1).toMutableList()
 
-        while (remaining.isNotEmpty()){
+        while (remaining.isNotEmpty()) {
             val parent = remaining.joinToString("/")
-            if (routes.containsKey(parent)){
+            if (routes.containsKey(parent)) {
                 // TODO: Remove this from the back stack
                 navigate(parent, addToBackStack = false)
                 return
@@ -103,25 +111,25 @@ class MyNavController(private val manager: FragmentManager, private val containe
         routes[route] = action
     }
 
-    fun <T: Fragment> addRoute(route: String, fragmentClass: Class<T>){
+    fun <T : Fragment> addRoute(route: String, fragmentClass: Class<T>) {
         routes[route] = { fragmentClass.getDeclaredConstructor().newInstance() }
     }
 
-    inline fun <reified T: Fragment> addRoute(route: String){
+    inline fun <reified T : Fragment> addRoute(route: String) {
         addRoute(route, T::class.java)
     }
 
-    fun reload(){
+    fun reload() {
         navigate(currentRoute ?: return, addToBackStack = false)
     }
 
-    fun addOnNavigationChangeListener(listener: (String?) -> Unit){
+    fun addOnNavigationChangeListener(listener: (String?) -> Unit) {
         synchronized(listenerLock) {
             routeChangeListeners.add(listener)
         }
     }
 
-    fun removeOnNavigationChangeListener(listener: (String?) -> Unit){
+    fun removeOnNavigationChangeListener(listener: (String?) -> Unit) {
         synchronized(listenerLock) {
             routeChangeListeners.remove(listener)
         }
@@ -135,7 +143,7 @@ class MyNavController(private val manager: FragmentManager, private val containe
     }
 
     companion object {
-        fun populateDeepLink(intent: Intent, route: String, args: Bundle? = null){
+        fun populateDeepLink(intent: Intent, route: String, args: Bundle? = null) {
             intent.putExtra("route", route)
             intent.putExtra("route_args", args)
         }
@@ -147,10 +155,14 @@ class MyNavController(private val manager: FragmentManager, private val containe
 
 }
 
-fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings: Map<String, Int>, default: Int? = null){
+fun BottomNavigationView.setupWithMyNavController(
+    nav: MyNavController,
+    mappings: Map<String, Int>,
+    default: Int? = null
+) {
     setOnItemSelectedListener { item ->
         val route = mappings.entries.firstOrNull { it.value == item.itemId }?.key
-        if (route != null){
+        if (route != null) {
             nav.navigate(route, resetBackStack = true)
         }
         true
@@ -159,8 +171,9 @@ fun BottomNavigationView.setupWithMyNavController(nav: MyNavController, mappings
     nav.addOnNavigationChangeListener { route ->
         val baseRoute = route?.split("/")?.firstOrNull()
         menu.forEach { item ->
-            if (mappings[baseRoute] == item.itemId || (route == null && default == item.itemId)){
+            if (mappings[baseRoute] == item.itemId || (route == null && default == item.itemId)) {
                 item.isChecked = true
             }
         }
-    }}
+    }
+}

@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kylecorry.andromeda.core.system.GeoUri
 import com.kylecorry.andromeda.core.system.Screen
