@@ -45,13 +45,20 @@ android {
     buildFeatures {
         // Support for view binding
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     buildTypes {
         // Release build (Google Play / F-Droid)
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         // Debug build (GitHub)
         create("dev") {
@@ -167,6 +174,14 @@ dependencies {
     implementation("com.github.kylecorry31.ceres:badge:$ceresVersion")
     implementation("com.github.kylecorry31.ceres:chart:$ceresVersion")
     implementation("com.github.kylecorry31.ceres:image:$ceresVersion")
+
+    // Compose
+    val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Misc
     implementation("com.github.kylecorry31:subsampling-scale-image-view:3.11.9")
