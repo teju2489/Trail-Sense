@@ -210,49 +210,19 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
         service.getTemperatureRanges(year)
     }
 
-    suspend fun getHumidity(
+    override suspend fun getRelativeHumidity(
         date: LocalDate, location: Coordinate?
     ): Float = onDefault {
         val repo = HistoricHumidityRepo(context)
         repo.getHumidity(location ?: this@WeatherSubsystem.location.location, date)
     }
 
-    suspend fun getHumidity(
+    override suspend fun getRelativeHumidity(
         year: Int,
         location: Coordinate?,
     ): List<Pair<LocalDate, Float>> = onDefault {
         val repo = HistoricHumidityRepo(context)
         repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
-    }
-
-    suspend fun getDewPointRange(
-        date: LocalDate, location: Coordinate?, elevation: Distance?, calibrated: Boolean
-    ): Range<Temperature> = onDefault {
-        val temperatures = getTemperatureRange(date, location, elevation, calibrated)
-        val humidity = getHumidity(date, location)
-        val dewPointLow = Meteorology.getDewPoint(temperatures.start.temperature, humidity)
-        val dewPointHigh = Meteorology.getDewPoint(temperatures.end.temperature, humidity)
-        Range(
-            Temperature.celsius(dewPointLow),
-            Temperature.celsius(dewPointHigh)
-        )
-    }
-
-    suspend fun getDewPointRanges(
-        year: Int, location: Coordinate?, elevation: Distance?, calibrated: Boolean
-    ): List<Pair<LocalDate, Range<Temperature>>> = onDefault {
-        val humidity = getHumidity(year, location)
-        val temperatures = getTemperatureRanges(year, location, elevation, calibrated)
-        humidity.mapIndexed { index, (date, humidity) ->
-            val dewPointLow =
-                Meteorology.getDewPoint(temperatures[index].second.start.temperature, humidity)
-            val dewPointHigh =
-                Meteorology.getDewPoint(temperatures[index].second.end.temperature, humidity)
-            date to Range(
-                Temperature.celsius(dewPointLow),
-                Temperature.celsius(dewPointHigh)
-            )
-        }
     }
 
     private suspend fun resolveLocation(

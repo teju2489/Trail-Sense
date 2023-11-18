@@ -27,6 +27,8 @@ interface IWeatherSubsystem {
 
     suspend fun getWeather(): CurrentWeather
     suspend fun getHistory(): List<WeatherObservation>
+
+    // Temperature
     suspend fun getTemperature(
         time: ZonedDateTime,
         location: Coordinate? = null,
@@ -55,6 +57,17 @@ interface IWeatherSubsystem {
         elevation: Distance? = null,
         calibrated: Boolean = true
     ): List<Pair<LocalDate, Range<Temperature>>>
+
+    // Humidity
+    suspend fun getRelativeHumidity(
+        date: LocalDate,
+        location: Coordinate? = null
+    ): Float
+
+    suspend fun getRelativeHumidity(
+        year: Int,
+        location: Coordinate? = null
+    ): List<Pair<LocalDate, Float>>
 
     suspend fun getCloudHistory(): List<Reading<CloudGenus?>>
     suspend fun getRawHistory(): List<Reading<RawWeatherObservation>>

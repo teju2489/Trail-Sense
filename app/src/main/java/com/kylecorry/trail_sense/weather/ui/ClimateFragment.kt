@@ -9,6 +9,7 @@ import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.luna.coroutines.CoroutineQueueRunner
 import com.kylecorry.sol.math.Range
 import com.kylecorry.sol.math.SolMath.roundPlaces
+import com.kylecorry.sol.science.meteorology.Meteorology
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.sol.units.Temperature
@@ -121,9 +122,11 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
             runner.replace {
                 if (recalculate) {
                     temperatures = weather.getTemperatureRanges(date.year, location, elevation)
-                    humidities = weather.getHumidity(date.year, location)
-                    dewPoints = weather.getDewPointRanges(date.year, location, elevation, true).map {
-                        it.first to it.second.end
+                    humidities = weather.getRelativeHumidity(date.year, location)
+                    dewPoints = humidities.mapIndexed { index, (date, humidity) ->
+                        val temperature = temperatures[index].second.end.celsius().temperature
+                        val dewPoint = Meteorology.getDewPoint(temperature, humidity)
+                        date to Temperature.celsius(dewPoint)
                     }
                     currentYear = date.year
                 }
