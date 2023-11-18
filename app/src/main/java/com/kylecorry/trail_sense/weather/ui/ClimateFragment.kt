@@ -119,8 +119,8 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
         inBackground {
             runner.replace {
                 if (recalculate) {
-                    temperatures = weather.getTemperatureRanges(date.year, location, elevation)
-                    humidities = weather.getHumidity(date.year, location)
+                    temperatures = weather.getTemperatureRanges(date.year, location, elevation, false)
+                    humidities = weather.getHumidity(date.year, location, elevation, false)
                     currentYear = date.year
                 }
 

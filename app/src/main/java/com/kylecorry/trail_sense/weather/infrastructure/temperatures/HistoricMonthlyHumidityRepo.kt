@@ -16,8 +16,8 @@ internal object HistoricMonthlyHumidityRepo {
     private val cache = LRUCache<PixelCoordinate, Map<Month, Float>>(size = 5)
 
     // Image data source
-    private const val a = 0.95149255f
-    private const val b = -24f
+    private const val a = 10641.106f
+    private const val b = -1.3324246E-5f
     private const val latitudePixelsPerDegree = 2.0
     private const val longitudePixelsPerDegree = 1.6
     private val size = Size(576, 361)
@@ -44,7 +44,7 @@ internal object HistoricMonthlyHumidityRepo {
         cache.getOrPut(pixel) {
             val values = load(context, location)
             Month.values().associateWith {
-                SolMath.map(values[it] ?: 0f, 0f, 255f, 0f, 100f)
+                values[it] ?: 0f
             }
         }
     }
