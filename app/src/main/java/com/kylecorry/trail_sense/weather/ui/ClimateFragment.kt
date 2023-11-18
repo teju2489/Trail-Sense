@@ -33,6 +33,7 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
     private val formatter by lazy { FormatService.getInstance(requireContext()) }
 
     private var temperatures: List<Pair<LocalDate, Range<Temperature>>> = emptyList()
+    private var humidities: List<Pair<LocalDate, Float>> = emptyList()
     private var currentYear = 0
 
     private val chart by lazy {
@@ -119,22 +120,24 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
             runner.replace {
                 if (recalculate) {
                     temperatures = weather.getTemperatureRanges(date.year, location, elevation)
+                    humidities = weather.getHumidity(date.year, location)
                     currentYear = date.year
                 }
 
                 val range = temperatures.first { it.first == date }.second
+                val humidity = humidities.first { it.first == date }.second
 
                 onMain {
                     if (isBound) {
                         plotTemperatures(temperatures)
-                        updateTitle(range)
+                        updateTitle(range, humidity)
                     }
                 }
             }
         }
     }
 
-    private fun updateTitle(range: Range<Temperature>) {
+    private fun updateTitle(range: Range<Temperature>, humidity: Float) {
         val lowValue = formatter.formatTemperature(
             range.start.convertTo(temperatureUnits)
         )
@@ -143,10 +146,14 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
         )
         binding.climateTitle.title.text =
             getString(R.string.slash_separated_pair, highValue, lowValue)
+
+        binding.climateTitle.subtitle.text = formatter.formatPercentage(humidity)
     }
 
     private fun plotTemperatures(data: List<Pair<LocalDate, Range<Temperature>>>) {
         chart.plot(data, temperatureUnits)
+        // TODO: This isn't working properly
+        chart.plotHumidity(humidities)
         chart.highlight(binding.displayDate.date)
     }
 

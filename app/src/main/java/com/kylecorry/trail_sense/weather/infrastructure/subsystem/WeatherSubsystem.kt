@@ -36,6 +36,7 @@ import com.kylecorry.trail_sense.weather.infrastructure.commands.MonitorWeatherC
 import com.kylecorry.trail_sense.weather.infrastructure.commands.SendWeatherAlertsCommand
 import com.kylecorry.trail_sense.weather.infrastructure.persistence.CloudRepo
 import com.kylecorry.trail_sense.weather.infrastructure.persistence.WeatherRepo
+import com.kylecorry.trail_sense.weather.infrastructure.temperatures.HistoricHumidityRepo
 import com.kylecorry.trail_sense.weather.infrastructure.temperatures.HistoricTemperatureRepo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
@@ -221,6 +222,22 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     ): List<Pair<LocalDate, Range<Temperature>>> = onDefault {
         val service = getTemperatureService(location, elevation, calibrated)
         service.getTemperatureRanges(year)
+    }
+
+    suspend fun getHumidity(
+        date: LocalDate,
+        location: Coordinate?
+    ): Float = onDefault {
+        val repo = HistoricHumidityRepo(context)
+        repo.getHumidity(location ?: this@WeatherSubsystem.location.location, date)
+    }
+
+    suspend fun getHumidity(
+        year: Int,
+        location: Coordinate?,
+    ): List<Pair<LocalDate, Float>> = onDefault {
+        val repo = HistoricHumidityRepo(context)
+        repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
     }
 
     private suspend fun resolveLocation(

@@ -213,6 +213,14 @@ F. Point of Contact: Any Recipient contact with Government Agency is to be direc
 Global Relief Model. NOAA National Centers for Environmental Information.
 https://doi.org/10.25921/fd45-gt74 . Accessed 2023-05-26.
 ETOPO 2022 metadata may be accessed here: ETOPO 2022 metadata landing page"""
+        },
+        Library(
+            "ERA5",
+            "https://doi.org/10.24381/cds.6860a573"
+        ) {
+            """Contains modified Copernicus Climate Change Service information 1991 - 2020. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains.
+
+Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 monthly averaged data on pressure levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.6860a573 (Accessed on 17-NOV-2023)"""
         }
     )
 

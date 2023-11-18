@@ -7,6 +7,7 @@ import com.kylecorry.ceres.chart.data.FullAreaChartLayer
 import com.kylecorry.ceres.chart.data.LineChartLayer
 import com.kylecorry.ceres.chart.data.ScatterChartLayer
 import com.kylecorry.sol.math.Range
+import com.kylecorry.sol.math.SolMath
 import com.kylecorry.sol.math.Vector2
 import com.kylecorry.sol.units.Temperature
 import com.kylecorry.sol.units.TemperatureUnits
@@ -31,6 +32,11 @@ class YearlyTemperatureRangeChart(
         true
     }
 
+    private val humidityLine = LineChartLayer(emptyList(), AppColor.Green.color) {
+        onClick(LocalDate.ofYearDay(year, it.x.toInt()))
+        true
+    }
+
     private val highlight = ScatterChartLayer(
         emptyList(),
         Resources.androidTextColorPrimary(chart.context),
@@ -50,7 +56,7 @@ class YearlyTemperatureRangeChart(
             labelFormatter = MonthChartLabelFormatter(chart.context, year)
         )
         chart.configureYAxis(labelCount = 5, drawGridLines = true)
-        chart.plot(freezingArea, lowLine, highLine, highlight)
+        chart.plot(freezingArea, lowLine, highLine, humidityLine, highlight)
     }
 
     fun highlight(date: LocalDate) {
@@ -91,5 +97,16 @@ class YearlyTemperatureRangeChart(
         freezingArea.bottom = range.start
         lowLine.data = lows
         highLine.data = highs
+    }
+
+    fun plotHumidity(data: List<Pair<LocalDate, Float>>) {
+        val chartRange = chart.yRange
+        val humidity = data.map {
+            Vector2(
+                it.first.dayOfYear.toFloat(),
+                SolMath.map(it.second, 0f, 100f, chartRange.start, chartRange.end)
+            )
+        }
+        humidityLine.data = humidity
     }
 }
