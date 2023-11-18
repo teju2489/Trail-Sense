@@ -65,21 +65,19 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     private val _weatherChanged = Topic()
     override val weatherChanged: ITopic = _weatherChanged
 
-    private val _weatherMonitorState =
-        com.kylecorry.andromeda.core.topics.generic.Topic(
-            defaultValue = Optional.of(
-                calculateWeatherMonitorState()
-            )
+    private val _weatherMonitorState = com.kylecorry.andromeda.core.topics.generic.Topic(
+        defaultValue = Optional.of(
+            calculateWeatherMonitorState()
         )
+    )
     override val weatherMonitorState: com.kylecorry.andromeda.core.topics.generic.ITopic<FeatureState>
         get() = _weatherMonitorState.distinct()
 
-    private val _weatherMonitorFrequency =
-        com.kylecorry.andromeda.core.topics.generic.Topic(
-            defaultValue = Optional.of(
-                calculateWeatherMonitorFrequency()
-            )
+    private val _weatherMonitorFrequency = com.kylecorry.andromeda.core.topics.generic.Topic(
+        defaultValue = Optional.of(
+            calculateWeatherMonitorFrequency()
         )
+    )
     override val weatherMonitorFrequency: com.kylecorry.andromeda.core.topics.generic.ITopic<Duration>
         get() = _weatherMonitorFrequency.distinct()
 
@@ -173,10 +171,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
 
         onIO {
             DebugWeatherCommand(
-                context,
-                readings,
-                combined,
-                prefs.weather.seaLevelFactorInTemp
+                context, readings, combined, prefs.weather.seaLevelFactorInTemp
             ).execute()
         }
 
@@ -184,10 +179,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     }
 
     override suspend fun getTemperature(
-        time: ZonedDateTime,
-        location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
+        time: ZonedDateTime, location: Coordinate?, elevation: Distance?, calibrated: Boolean
     ): Reading<Temperature> = onDefault {
         val service = getTemperatureService(location, elevation, calibrated)
         Reading(service.getTemperature(time), time.toInstant())
@@ -205,28 +197,21 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     }
 
     override suspend fun getTemperatureRange(
-        date: LocalDate,
-        location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
+        date: LocalDate, location: Coordinate?, elevation: Distance?, calibrated: Boolean
     ): Range<Temperature> = onDefault {
         val service = getTemperatureService(location, elevation, calibrated)
         service.getTemperatureRange(date)
     }
 
     override suspend fun getTemperatureRanges(
-        year: Int,
-        location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
+        year: Int, location: Coordinate?, elevation: Distance?, calibrated: Boolean
     ): List<Pair<LocalDate, Range<Temperature>>> = onDefault {
         val service = getTemperatureService(location, elevation, calibrated)
         service.getTemperatureRanges(year)
     }
 
     suspend fun getHumidity(
-        date: LocalDate,
-        location: Coordinate?
+        date: LocalDate, location: Coordinate?
     ): Float = onDefault {
         val repo = HistoricHumidityRepo(context)
         repo.getHumidity(location ?: this@WeatherSubsystem.location.location, date)
@@ -240,18 +225,29 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
         repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
     }
 
+    suspend fun getDewPoints(
+        year: Int, location: Coordinate?, elevation: Distance?, calibrated: Boolean
+    ): List<Pair<LocalDate, Temperature>> = onDefault {
+        val repo = HistoricHumidityRepo(context)
+        val humidity =
+            repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
+        val temperatures = getTemperatureRanges(year, location, elevation, calibrated)
+        humidity.mapIndexed { index, (date, humidity) ->
+            val dewPoint = Meteorology.getDewPoint(temperatures[index].second.end.temperature, humidity)
+            date to Temperature.celsius(dewPoint)
+        }
+    }
+
     private suspend fun resolveLocation(
-        location: Coordinate?,
-        elevation: Distance?
+        location: Coordinate?, elevation: Distance?
     ): Pair<Coordinate, Distance> {
         val lookupLocation: Coordinate
         val lookupElevation: Distance
         if (location == null || elevation == null) {
             val last = weatherRepo.getLast()
             lookupLocation = last?.value?.location ?: this@WeatherSubsystem.location.location
-            lookupElevation =
-                last?.value?.altitude?.let { Distance.meters(it) }
-                    ?: this@WeatherSubsystem.location.elevation
+            lookupElevation = last?.value?.altitude?.let { Distance.meters(it) }
+                ?: this@WeatherSubsystem.location.elevation
         } else {
             lookupLocation = location
             lookupElevation = elevation
@@ -264,10 +260,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
         if (!isValid) {
             refresh()
         }
-        weatherRepo.getAll()
-            .asSequence()
-            .sortedBy { it.time }
-            .filter { it.time <= Instant.now() }
+        weatherRepo.getAll().asSequence().sortedBy { it.time }.filter { it.time <= Instant.now() }
             .map { if (it.value.location == Coordinate.zero) it.copy(value = it.value.copy(location = location.location)) else it }
             .toList()
     }
@@ -298,9 +291,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     }
 
     private suspend fun getTemperatureService(
-        location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
+        location: Coordinate?, elevation: Distance?, calibrated: Boolean
     ): ITemperatureService {
         val resolved = resolveLocation(location, elevation)
         val lookupLocation = resolved.first
@@ -315,8 +306,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     }
 
     private suspend fun getWeatherForecaster(
-        location: Coordinate?,
-        elevation: Distance?
+        location: Coordinate?, elevation: Distance?
     ): IWeatherForecaster {
         val resolved = resolveLocation(location, elevation)
         val lookupLocation = resolved.first
@@ -358,8 +348,8 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
             weatherRepo.get(it)
         }
         val location = lastRawReading?.value?.location ?: location.location
-        val elevation = lastRawReading?.value?.altitude?.let { Distance.meters(it) }
-            ?: this.location.elevation
+        val elevation =
+            lastRawReading?.value?.altitude?.let { Distance.meters(it) } ?: this.location.elevation
 
         return location to elevation
     }
@@ -382,11 +372,9 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
     private fun calibrateTemperatures(readings: List<Reading<RawWeatherObservation>>): List<Reading<RawWeatherObservation>> {
         val smoothing = prefs.thermometer.smoothing
 
-        return DataUtils.smoothTemporal(
-            readings,
+        return DataUtils.smoothTemporal(readings,
             smoothing,
-            { it.temperature }
-        ) { reading, smoothed ->
+            { it.temperature }) { reading, smoothed ->
             reading.copy(temperature = smoothed)
         }
     }
@@ -396,8 +384,7 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
         if (!Sensors.hasHygrometer(context)) {
             return readings
         }
-        return DataUtils.smoothTemporal(
-            readings,
+        return DataUtils.smoothTemporal(readings,
             0.1f,
             { it.humidity ?: 0f }) { reading, smoothed ->
             reading.copy(humidity = if (smoothed == 0f) null else smoothed)

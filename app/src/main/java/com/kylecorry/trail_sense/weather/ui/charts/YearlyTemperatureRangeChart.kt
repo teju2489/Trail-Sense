@@ -32,6 +32,11 @@ class YearlyTemperatureRangeChart(
         true
     }
 
+    private val dewPointLine = LineChartLayer(emptyList(), AppColor.Purple.color) {
+        onClick(LocalDate.ofYearDay(year, it.x.toInt()))
+        true
+    }
+
     private val humidityLine = LineChartLayer(emptyList(), AppColor.Green.color) {
         onClick(LocalDate.ofYearDay(year, it.x.toInt()))
         true
@@ -56,17 +61,24 @@ class YearlyTemperatureRangeChart(
             labelFormatter = MonthChartLabelFormatter(chart.context, year)
         )
         chart.configureYAxis(labelCount = 5, drawGridLines = true)
-        chart.plot(freezingArea, lowLine, highLine, humidityLine, highlight)
+        chart.plot(freezingArea, lowLine, highLine, dewPointLine, humidityLine, highlight)
     }
 
     fun highlight(date: LocalDate) {
         val x = date.dayOfYear
         val low = lowLine.data.firstOrNull { it.x.toInt() == x }
         val high = highLine.data.firstOrNull { it.x.toInt() == x }
-        highlight.data = listOfNotNull(low, high)
+        val humidity = humidityLine.data.firstOrNull { it.x.toInt() == x }
+        val dew = dewPointLine.data.firstOrNull { it.x.toInt() == x }
+        highlight.data = listOfNotNull(low, high, humidity, dew)
     }
 
-    fun plot(data: List<Pair<LocalDate, Range<Temperature>>>, units: TemperatureUnits) {
+    fun plot(
+        data: List<Pair<LocalDate, Range<Temperature>>>,
+        dewPoints: List<Pair<LocalDate, Temperature>>,
+        units: TemperatureUnits,
+        humidity: List<Pair<LocalDate, Float>>
+    ) {
         val freezing = Temperature.celsius(0f).convertTo(units)
         val lows = data.map {
             Vector2(
@@ -80,8 +92,20 @@ class YearlyTemperatureRangeChart(
                 it.second.end.convertTo(units).temperature
             )
         }
+        val dews = dewPoints.map {
+            Vector2(
+                it.first.dayOfYear.toFloat(),
+                it.second.convertTo(units).temperature
+            )
+        }
         year = data.firstOrNull()?.first?.year ?: 2000
-        val range = Chart.getYRange(lows + highs, 5f, 10f)
+        val range = Chart.getYRange(lows + highs + dews, 5f, 10f)
+        val humidityData = humidity.map {
+            Vector2(
+                it.first.dayOfYear.toFloat(),
+                SolMath.map(it.second, 0f, 100f, range.start, range.end)
+            )
+        }
         chart.configureYAxis(
             labelCount = 5,
             drawGridLines = true,
@@ -97,16 +121,7 @@ class YearlyTemperatureRangeChart(
         freezingArea.bottom = range.start
         lowLine.data = lows
         highLine.data = highs
-    }
-
-    fun plotHumidity(data: List<Pair<LocalDate, Float>>) {
-        val chartRange = chart.yRange
-        val humidity = data.map {
-            Vector2(
-                it.first.dayOfYear.toFloat(),
-                SolMath.map(it.second, 0f, 100f, chartRange.start, chartRange.end)
-            )
-        }
-        humidityLine.data = humidity
+        dewPointLine.data = dews
+        humidityLine.data = humidityData
     }
 }

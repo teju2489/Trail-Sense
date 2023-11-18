@@ -34,6 +34,7 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
 
     private var temperatures: List<Pair<LocalDate, Range<Temperature>>> = emptyList()
     private var humidities: List<Pair<LocalDate, Float>> = emptyList()
+    private var dewPoints: List<Pair<LocalDate, Temperature>> = emptyList()
     private var currentYear = 0
 
     private val chart by lazy {
@@ -121,6 +122,7 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
                 if (recalculate) {
                     temperatures = weather.getTemperatureRanges(date.year, location, elevation)
                     humidities = weather.getHumidity(date.year, location)
+                    dewPoints = weather.getDewPoints(date.year, location, elevation, false)
                     currentYear = date.year
                 }
 
@@ -151,9 +153,7 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
     }
 
     private fun plotTemperatures(data: List<Pair<LocalDate, Range<Temperature>>>) {
-        chart.plot(data, temperatureUnits)
-        // TODO: This isn't working properly
-        chart.plotHumidity(humidities)
+        chart.plot(data, dewPoints ,temperatureUnits, humidities)
         chart.highlight(binding.displayDate.date)
     }
 
