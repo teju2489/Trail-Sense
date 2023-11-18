@@ -122,7 +122,9 @@ class ClimateFragment : BoundFragment<FragmentClimateBinding>() {
                 if (recalculate) {
                     temperatures = weather.getTemperatureRanges(date.year, location, elevation)
                     humidities = weather.getHumidity(date.year, location)
-                    dewPoints = weather.getDewPoints(date.year, location, elevation, false)
+                    dewPoints = weather.getDewPointRanges(date.year, location, elevation, true).map {
+                        it.first to it.second.end
+                    }
                     currentYear = date.year
                 }
 
