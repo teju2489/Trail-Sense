@@ -46,8 +46,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.*
-import kotlin.math.exp
-import kotlin.math.pow
 
 
 class WeatherSubsystem private constructor(private val context: Context) : IWeatherSubsystem {
@@ -228,43 +226,18 @@ class WeatherSubsystem private constructor(private val context: Context) : IWeat
 
     suspend fun getHumidity(
         date: LocalDate,
-        location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
+        location: Coordinate?
     ): Float = onDefault {
         val repo = HistoricHumidityRepo(context)
-        val specificHumidity = repo.getHumidity(location ?: this@WeatherSubsystem.location.location, date)
-        val temperatures = getTemperatureRange(date, location, elevation, calibrated)
-        val middleTemperature = (temperatures.start.temperature + temperatures.end.temperature) / 2f
-        getRelativeHumidity(Temperature(middleTemperature, temperatures.start.units), specificHumidity)
+        repo.getHumidity(location ?: this@WeatherSubsystem.location.location, date)
     }
 
     suspend fun getHumidity(
         year: Int,
         location: Coordinate?,
-        elevation: Distance?,
-        calibrated: Boolean
     ): List<Pair<LocalDate, Float>> = onDefault {
         val repo = HistoricHumidityRepo(context)
-        val specificHumidities = repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
-        val temperatures = getTemperatureRanges(year, location, elevation, calibrated)
-        specificHumidities.mapIndexed { index, (date, humidity) ->
-            val temperature = temperatures[index].second
-            date to getRelativeHumidity(temperature.end, humidity)
-        }
-    }
-
-    private fun getRelativeHumidity(temperature: Temperature, specificHumidityKgKg: Float, pressure: Float = 1013.25f): Float {
-        return 100f * getVaporPressure(specificHumidityKgKg, pressure) / getSaturationVaporPressure(temperature)
-    }
-
-    private fun getVaporPressure(specificHumidityKgKg: Float, pressure: Float = 1013.25f): Float {
-        return specificHumidityKgKg * pressure / (0.622f + specificHumidityKgKg)
-    }
-
-    private fun getSaturationVaporPressure(temperature: Temperature): Float {
-        val t = temperature.celsius().temperature
-        return 6.112f * exp(17.67f * t / (t + 243.5f))
+        repo.getYearlyHumidity(year, location ?: this@WeatherSubsystem.location.location)
     }
 
     private suspend fun resolveLocation(
