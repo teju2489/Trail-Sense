@@ -15,7 +15,7 @@ import com.kylecorry.andromeda.core.system.Intents
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.BoundFragment
-import com.kylecorry.andromeda.fragments.observe
+import com.kylecorry.trail_sense.shared.sensors.observe
 import com.kylecorry.andromeda.list.ListView
 import com.kylecorry.sol.math.filters.IFilter
 import com.kylecorry.sol.math.filters.MedianFilter

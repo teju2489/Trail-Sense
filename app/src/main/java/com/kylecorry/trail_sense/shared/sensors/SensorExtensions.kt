@@ -2,8 +2,10 @@ package com.kylecorry.trail_sense.shared.sensors
 
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import com.kylecorry.andromeda.core.coroutines.BackgroundMinimumState
 import com.kylecorry.andromeda.core.sensors.ISensor
+import com.kylecorry.andromeda.core.topics.ITopic
 import com.kylecorry.andromeda.core.tryOrLog
 import com.kylecorry.andromeda.fragments.repeatInBackground
 import com.kylecorry.luna.coroutines.IFlowable
@@ -12,7 +14,6 @@ import com.kylecorry.trail_sense.shared.extensions.onDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,7 +48,7 @@ suspend fun readAll(
     }
 }
 
-fun ISensor.asFlowable(): IFlowable<Unit> {
+fun ITopic.asFlowable(): IFlowable<Unit> {
 
     val name = this@asFlowable.javaClass.simpleName + "@" + Integer.toHexString(hashCode())
 
@@ -69,9 +70,21 @@ fun ISensor.asFlowable(): IFlowable<Unit> {
     }
 }
 
+fun <T> Fragment.observe(liveData: LiveData<T>, listener: (T) -> Unit) {
+    liveData.observe(viewLifecycleOwner) {
+        listener(it)
+    }
+}
+
+fun Fragment.observe(topic: ITopic, listener: () -> Unit) {
+    observeFlow2(topic.asFlowable().flow, state = BackgroundMinimumState.Started){
+        listener()
+    }
+}
+
 fun <T> Fragment.observeFlow2(
     flow: Flow<T>,
-    state: BackgroundMinimumState = BackgroundMinimumState.Any,
+    state: BackgroundMinimumState = BackgroundMinimumState.Started,
     collectOn: CoroutineContext = Dispatchers.Default,
     observeOn: CoroutineContext = Dispatchers.Main,
     listener: suspend (T) -> Unit
