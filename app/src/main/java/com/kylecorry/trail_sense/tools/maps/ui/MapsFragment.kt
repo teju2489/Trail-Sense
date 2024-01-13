@@ -287,7 +287,7 @@ class MapsFragment : BoundFragment<FragmentMapsBinding>() {
 
     private fun setFragment(fragment: Fragment) {
         currentFragment = fragment
-        val fragmentManager = parentFragmentManager
+        val fragmentManager = childFragmentManager
         fragmentManager.commit {
             replace(binding.mapFragment.id, fragment)
             addToBackStack(null)

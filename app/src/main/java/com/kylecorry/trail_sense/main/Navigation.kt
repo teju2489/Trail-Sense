@@ -11,6 +11,7 @@ import com.kylecorry.trail_sense.databinding.FragmentToolCliffHeightBinding
 import com.kylecorry.trail_sense.databinding.FragmentToolWhistleBinding
 import com.kylecorry.trail_sense.diagnostics.DiagnosticsFragment
 import com.kylecorry.trail_sense.diagnostics.SensorDetailsFragment
+import com.kylecorry.trail_sense.experimentation.ExperimentationFragment
 import com.kylecorry.trail_sense.licenses.LicenseFragment
 import com.kylecorry.trail_sense.navigation.beacons.ui.BeaconDetailsFragment
 import com.kylecorry.trail_sense.navigation.beacons.ui.PlaceBeaconFragment
@@ -84,89 +85,91 @@ object Navigation {
     const val WEATHER = "weather"
     const val TOOLS = "tools"
     const val SETTINGS = "settings"
-    const val BEACON_LIST = "navigation/beacons"
-    const val CREATE_BEACON = "navigation/beacons/create"
-    const val BEACON_DETAIL = "navigation/beacons/detail"
-    const val GUIDE_LIST = "tools/guides"
-    const val GUIDE = "tools/guides/guide"
+    const val BEACON_LIST = "$TOOLS/beacons"
+    const val CREATE_BEACON = "$BEACON_LIST/create"
+    const val BEACON_DETAIL = "$BEACON_LIST/detail"
+    const val GUIDE_LIST = "$TOOLS/guides"
+    const val GUIDE = "$GUIDE_LIST/guide"
 
-    const val CREATE_NOTE = "tools/notes/create"
-    const val NOTES = "tools/notes"
+    const val EXPERIMENTATION = "$TOOLS/experimentation"
 
-    const val TIDE_LIST = "tools/tides/select"
-    const val CREATE_TIDE = "tools/tides/create"
-    const val TIDES = "tools/tides"
+    const val NOTES = "$TOOLS/notes"
+    const val CREATE_NOTE = "$NOTES/create"
 
-    const val MAP = "tools/maps/map"
-    const val MAP_LIST = "tools/maps"
+    const val TIDES = "$TOOLS/tides"
+    const val TIDE_LIST = "$TIDES/select"
+    const val CREATE_TIDE = "$TIDES/create"
 
-    const val PACK_LIST = "tools/packs"
-    const val PACK = "tools/packs/details"
-    const val CREATE_PACK_ITEM = "tools/packs/details/create"
+    const val MAP = "$TOOLS/maps/map"
+    const val MAP_LIST = "$TOOLS/maps"
 
-    const val FLASHLIGHT = "tools/flashlight"
-    const val WHISTLE = "tools/whistle"
+    const val PACK_LIST = "$TOOLS/packs"
+    const val PACK = "$PACK_LIST/details"
+    const val CREATE_PACK_ITEM = "$PACK/create"
 
-    const val RULER = "tools/ruler"
-    const val PEDOMETER = "tools/pedometer"
-    const val CLIFF_HEIGHT = "tools/cliff_height"
+    const val FLASHLIGHT = "$TOOLS/flashlight"
+    const val WHISTLE = "$TOOLS/whistle"
 
-    const val PATH_LIST = "tools/paths"
-    const val PATH = "tools/paths/details"
+    const val RULER = "$TOOLS/ruler"
+    const val PEDOMETER = "$TOOLS/pedometer"
+    const val CLIFF_HEIGHT = "$TOOLS/cliff_height"
 
-    const val TRIANGULATION = "tools/triangulation"
-    const val CLINOMETER = "tools/clinometer"
-    const val LEVEL = "tools/level"
+    const val PATH_LIST = "$TOOLS/paths"
+    const val PATH = "$PATH_LIST/details"
 
-    const val CLOCK = "tools/clock"
-    const val WATER_BOIL_TIMER = "tools/water_boil_timer"
+    const val TRIANGULATION = "$TOOLS/triangulation"
+    const val CLINOMETER = "$TOOLS/clinometer"
+    const val LEVEL = "$TOOLS/level"
 
-    const val BATTERY = "tools/battery"
-    const val SOLAR_PANEL_ALIGNER = "tools/solar_panel_aligner"
-    const val LIGHT_METER = "tools/light_meter"
+    const val CLOCK = "$TOOLS/clock"
+    const val WATER_BOIL_TIMER = "$TOOLS/water_boil_timer"
 
-    const val CLIMATE = "tools/climate"
-    const val TEMPERATURE_ESTIMATION = "tools/temperature_estimation"
-    const val CLOUDS = "tools/clouds"
-    const val CLOUD_PICKER = "tools/clouds/picker"
-    const val LIGHTNING_STRIKE_DISTANCE = "tools/lightning_strike_distance"
+    const val BATTERY = "$TOOLS/battery"
+    const val SOLAR_PANEL_ALIGNER = "$TOOLS/solar_panel_aligner"
+    const val LIGHT_METER = "$TOOLS/light_meter"
 
-    const val AUGMENTED_REALITY = "tools/augmented_reality"
-    const val CONVERT = "tools/convert"
-    const val METAL_DETECTOR = "tools/metal_detector"
-    const val WHITE_NOISE = "tools/white_noise"
-    const val QR_CODE_SCANNER = "tools/qr_code_scanner"
+    const val CLIMATE = "$TOOLS/climate"
+    const val TEMPERATURE_ESTIMATION = "$TOOLS/temperature_estimation"
+    const val CLOUDS = "$TOOLS/clouds"
+    const val CLOUD_PICKER = "$TOOLS/clouds/picker"
+    const val LIGHTNING_STRIKE_DISTANCE = "$TOOLS/lightning_strike_distance"
 
-    const val CALIBRATE_GPS = "settings/sensors/gps"
-    const val CALIBRATE_ALTIMETER = "settings/sensors/altimeter"
-    const val CALIBRATE_COMPASS = "settings/sensors/compass"
-    const val CALIBRATE_THERMOMETER = "settings/sensors/thermometer"
-    const val CALIBRATE_BAROMETER = "settings/sensors/barometer"
-    const val CALIBRATE_PEDOMETER = "settings/sensors/pedometer"
+    const val AUGMENTED_REALITY = "$TOOLS/augmented_reality"
+    const val CONVERT = "$TOOLS/convert"
+    const val METAL_DETECTOR = "$TOOLS/metal_detector"
+    const val WHITE_NOISE = "$TOOLS/white_noise"
+    const val QR_CODE_SCANNER = "$TOOLS/qr_code_scanner"
 
-    const val POWER_SETTINGS = "settings/power"
-    const val WEATHER_SETTINGS = "settings/weather"
-    const val CELL_SIGNAL_SETTINGS = "settings/cell_signal"
-    const val UNIT_SETTINGS = "settings/units"
-    const val PRIVACY_SETTINGS = "settings/privacy"
-    const val EXPERIMENTAL_SETTINGS = "settings/experimental"
-    const val ERROR_SETTINGS = "settings/errors"
-    const val SENSOR_SETTINGS = "settings/sensors"
-    const val NAVIGATION_SETTINGS = "settings/navigation"
-    const val ASTRONOMY_SETTINGS = "settings/astronomy"
-    const val FLASHLIGHT_SETTINGS = "settings/flashlight"
-    const val MAP_SETTINGS = "settings/maps"
-    const val TIDE_SETTINGS = "settings/tides"
-    const val CLINOMETER_SETTINGS = "settings/clinometer"
+    const val CALIBRATE_GPS = "$SETTINGS/sensors/gps"
+    const val CALIBRATE_ALTIMETER = "$SETTINGS/sensors/altimeter"
+    const val CALIBRATE_COMPASS = "$SETTINGS/sensors/compass"
+    const val CALIBRATE_THERMOMETER = "$SETTINGS/sensors/thermometer"
+    const val CALIBRATE_BAROMETER = "$SETTINGS/sensors/barometer"
+    const val CALIBRATE_PEDOMETER = "$SETTINGS/pedometer"
 
-    const val LICENSES = "settings/licenses"
-    const val DIAGNOSTICS = "settings/diagnostics"
+    const val POWER_SETTINGS = "$SETTINGS/power"
+    const val WEATHER_SETTINGS = "$SETTINGS/weather"
+    const val CELL_SIGNAL_SETTINGS = "$SETTINGS/cell_signal"
+    const val UNIT_SETTINGS = "$SETTINGS/units"
+    const val PRIVACY_SETTINGS = "$SETTINGS/privacy"
+    const val EXPERIMENTAL_SETTINGS = "$SETTINGS/experimental"
+    const val ERROR_SETTINGS = "$SETTINGS/errors"
+    const val SENSOR_SETTINGS = "$SETTINGS/sensors"
+    const val NAVIGATION_SETTINGS = "$SETTINGS/navigation"
+    const val ASTRONOMY_SETTINGS = "$SETTINGS/astronomy"
+    const val FLASHLIGHT_SETTINGS = "$SETTINGS/flashlight"
+    const val MAP_SETTINGS = "$SETTINGS/maps"
+    const val TIDE_SETTINGS = "$SETTINGS/tides"
+    const val CLINOMETER_SETTINGS = "$SETTINGS/clinometer"
 
-    const val SCREEN_FLASHLIGHT = "tools/flashlight/screen"
+    const val LICENSES = "$SETTINGS/licenses"
+    const val DIAGNOSTICS = "$SETTINGS/diagnostics"
 
-    const val SENSOR_DETAILS = "settings/sensor/details"
+    const val SCREEN_FLASHLIGHT = "$FLASHLIGHT/screen"
 
-    const val STRIDE_LENGTH_ESTIMATION = "settings/sensors/pedometer/stride_length_estimation"
+    const val SENSOR_DETAILS = "$SETTINGS/sensor/details"
+
+    const val STRIDE_LENGTH_ESTIMATION = "$SETTINGS/pedometer/stride_length_estimation"
 
     fun initialize(controller: MyNavController){
         controller.addRoute<NavigatorFragment>(NAVIGATION)
@@ -273,6 +276,9 @@ object Navigation {
 
         // QR code scanner
         controller.addRoute<ScanQRFragment>(QR_CODE_SCANNER)
+
+        // Experimentation
+        controller.addRoute<ExperimentationFragment>(EXPERIMENTATION)
 
         // Calibration
         controller.addRoute<CalibrateGPSFragment>(CALIBRATE_GPS)

@@ -47,7 +47,7 @@ object Tools {
                 FLASHLIGHT,
                 context.getString(R.string.flashlight_title),
                 R.drawable.flashlight,
-                R.id.action_action_experimental_tools_to_fragmentToolFlashlight,
+                Navigation.FLASHLIGHT,
                 ToolCategory.Signaling,
                 guideId = R.raw.guide_tool_flashlight
             ),
@@ -55,7 +55,7 @@ object Tools {
                 WHISTLE,
                 context.getString(R.string.tool_whistle_title),
                 R.drawable.ic_tool_whistle,
-                R.id.action_action_experimental_tools_to_toolWhistleFragment,
+                Navigation.WHISTLE,
                 ToolCategory.Signaling,
                 guideId = R.raw.guide_tool_whistle
             ),
@@ -63,7 +63,7 @@ object Tools {
                 RULER,
                 context.getString(R.string.tool_ruler_title),
                 R.drawable.ruler,
-                R.id.action_action_experimental_tools_to_rulerFragment,
+                Navigation.RULER,
                 ToolCategory.Distance,
                 guideId = R.raw.guide_tool_ruler
             ),
@@ -71,7 +71,7 @@ object Tools {
                 PEDOMETER,
                 context.getString(R.string.pedometer),
                 R.drawable.steps,
-                R.id.action_tools_to_pedometer,
+                Navigation.PEDOMETER,
                 ToolCategory.Distance,
                 guideId = R.raw.guide_tool_pedometer
             ) else null,
@@ -79,7 +79,7 @@ object Tools {
                 CLIFF_HEIGHT,
                 context.getString(R.string.tool_cliff_height_title),
                 R.drawable.ic_tool_cliff_height,
-                R.id.action_action_experimental_tools_to_toolCliffHeightFragment,
+                Navigation.CLIFF_HEIGHT,
                 ToolCategory.Distance,
                 context.getString(R.string.tool_cliff_height_description),
                 isExperimental = true,
@@ -89,7 +89,7 @@ object Tools {
                 NAVIGATION,
                 context.getString(R.string.navigation),
                 R.drawable.ic_compass_icon,
-                R.id.action_navigation,
+                Navigation.NAVIGATION,
                 ToolCategory.Location,
                 guideId = R.raw.guide_tool_navigation
             ),
@@ -97,7 +97,7 @@ object Tools {
                 BEACONS,
                 context.getString(R.string.beacons),
                 R.drawable.ic_location,
-                R.id.action_tools_to_beacons,
+                Navigation.BEACON_LIST,
                 ToolCategory.Location,
                 guideId = R.raw.guide_tool_beacons
             ),
@@ -105,7 +105,7 @@ object Tools {
                 PHOTO_MAPS,
                 context.getString(R.string.photo_maps),
                 R.drawable.maps,
-                R.id.action_tools_to_maps_list,
+                Navigation.MAP_LIST,
                 ToolCategory.Location,
                 context.getString(R.string.photo_map_summary),
                 guideId = R.raw.guide_tool_photo_maps
@@ -114,7 +114,7 @@ object Tools {
                 PATHS,
                 context.getString(R.string.paths),
                 R.drawable.ic_tool_backtrack,
-                R.id.action_action_experimental_tools_to_fragmentBacktrack,
+                Navigation.PATH_LIST,
                 ToolCategory.Location,
                 guideId = R.raw.guide_tool_paths
             ),
@@ -122,7 +122,7 @@ object Tools {
                 TRIANGULATE_LOCATION,
                 context.getString(R.string.tool_triangulate_title),
                 R.drawable.ic_tool_triangulate,
-                R.id.action_action_experimental_tools_to_fragmentToolTriangulate,
+                Navigation.TRIANGULATION,
                 ToolCategory.Location,
                 guideId = R.raw.guide_tool_triangulate_location
             ),
@@ -130,7 +130,7 @@ object Tools {
                 CLINOMETER,
                 context.getString(R.string.clinometer_title),
                 R.drawable.clinometer,
-                R.id.action_toolsFragment_to_clinometerFragment,
+                Navigation.CLINOMETER,
                 ToolCategory.Angles,
                 context.getString(R.string.tool_clinometer_summary),
                 guideId = R.raw.guide_tool_clinometer
@@ -139,7 +139,7 @@ object Tools {
                 BUBBLE_LEVEL,
                 context.getString(R.string.tool_bubble_level_title),
                 R.drawable.level,
-                R.id.action_action_experimental_tools_to_levelFragment,
+                Navigation.LEVEL,
                 ToolCategory.Angles,
                 context.getString(R.string.tool_bubble_level_summary),
                 guideId = R.raw.guide_tool_bubble_level
@@ -148,7 +148,7 @@ object Tools {
                 CLOCK,
                 context.getString(R.string.tool_clock_title),
                 R.drawable.ic_tool_clock,
-                R.id.action_action_experimental_tools_to_toolClockFragment,
+                Navigation.CLOCK,
                 ToolCategory.Time,
                 guideId = R.raw.guide_tool_clock
             ),
@@ -156,7 +156,7 @@ object Tools {
                 ASTRONOMY,
                 context.getString(R.string.astronomy),
                 R.drawable.ic_astronomy,
-                R.id.action_astronomy,
+                Navigation.ASTRONOMY,
                 ToolCategory.Time,
                 guideId = R.raw.guide_tool_astronomy
             ),
@@ -164,7 +164,7 @@ object Tools {
                 WATER_BOIL_TIMER,
                 context.getString(R.string.water_boil_timer),
                 R.drawable.ic_tool_boil,
-                R.id.action_action_experimental_tools_to_waterPurificationFragment,
+                Navigation.WATER_BOIL_TIMER,
                 ToolCategory.Time,
                 context.getString(R.string.tool_boil_summary),
                 guideId = R.raw.guide_tool_water_boil_timer
@@ -173,7 +173,7 @@ object Tools {
                 TIDES,
                 context.getString(R.string.tides),
                 R.drawable.ic_tide_table,
-                R.id.action_toolsFragment_to_tidesFragment,
+                Navigation.TIDES,
                 ToolCategory.Time,
                 guideId = R.raw.guide_tool_tides
             ),
@@ -181,7 +181,7 @@ object Tools {
                 BATTERY,
                 context.getString(R.string.tool_battery_title),
                 R.drawable.ic_tool_battery,
-                R.id.action_action_experimental_tools_to_fragmentToolBattery,
+                Navigation.BATTERY,
                 ToolCategory.Power,
                 guideId = R.raw.guide_tool_battery
             ),
@@ -189,7 +189,7 @@ object Tools {
                 SOLAR_PANEL_ALIGNER,
                 context.getString(R.string.tool_solar_panel_title),
                 R.drawable.ic_tool_solar_panel,
-                R.id.action_action_experimental_tools_to_fragmentToolSolarPanel,
+                Navigation.SOLAR_PANEL_ALIGNER,
                 ToolCategory.Power,
                 context.getString(R.string.tool_solar_panel_summary),
                 guideId = R.raw.guide_tool_solar_panel_aligner
@@ -198,7 +198,7 @@ object Tools {
                 LIGHT_METER,
                 context.getString(R.string.tool_light_meter_title),
                 R.drawable.flashlight,
-                R.id.action_toolsFragment_to_toolLightFragment,
+                Navigation.LIGHT_METER,
                 ToolCategory.Power,
                 context.getString(R.string.guide_light_meter_description),
                 guideId = R.raw.guide_tool_light_meter
@@ -207,7 +207,7 @@ object Tools {
                 WEATHER,
                 context.getString(R.string.weather),
                 R.drawable.cloud,
-                R.id.action_weather,
+                Navigation.WEATHER,
                 ToolCategory.Weather,
                 guideId = R.raw.guide_tool_weather
             ) else null,
@@ -215,7 +215,7 @@ object Tools {
                 CLIMATE,
                 context.getString(R.string.tool_climate),
                 R.drawable.ic_temperature_range,
-                R.id.action_toolsFragment_to_toolClimate,
+                Navigation.CLIMATE,
                 ToolCategory.Weather,
                 context.getString(R.string.tool_climate_summary),
                 guideId = R.raw.guide_tool_climate
@@ -224,7 +224,7 @@ object Tools {
                 TEMPERATURE_ESTIMATION,
                 context.getString(R.string.tool_temperature_estimation_title),
                 R.drawable.thermometer,
-                R.id.action_tools_to_temperature_estimation,
+                Navigation.TEMPERATURE_ESTIMATION,
                 ToolCategory.Weather,
                 context.getString(R.string.tool_temperature_estimation_description),
                 guideId = R.raw.guide_tool_temperature_estimation
@@ -233,7 +233,7 @@ object Tools {
                 CLOUDS,
                 context.getString(R.string.clouds),
                 R.drawable.ic_tool_clouds,
-                R.id.action_action_experimental_tools_to_cloudFragment,
+                Navigation.CLOUDS,
                 ToolCategory.Weather,
                 guideId = R.raw.guide_tool_clouds
             ),
@@ -241,7 +241,7 @@ object Tools {
                 LIGHTNING_STRIKE_DISTANCE,
                 context.getString(R.string.tool_lightning_title),
                 R.drawable.ic_torch_on,
-                R.id.action_action_experimental_tools_to_fragmentToolLightning,
+                Navigation.LIGHTNING_STRIKE_DISTANCE,
                 ToolCategory.Weather,
                 context.getString(R.string.tool_lightning_description),
                 guideId = R.raw.guide_tool_lightning_strike_distance
@@ -250,7 +250,7 @@ object Tools {
                 AUGMENTED_REALITY,
                 context.getString(R.string.augmented_reality),
                 R.drawable.ic_camera,
-                R.id.action_tools_to_augmented_reality,
+                Navigation.AUGMENTED_REALITY,
                 ToolCategory.Other,
                 context.getString(R.string.augmented_reality_description),
                 isExperimental = true,
@@ -260,7 +260,7 @@ object Tools {
                 CONVERT,
                 context.getString(R.string.convert),
                 R.drawable.ic_tool_distance_convert,
-                R.id.action_toolsFragment_to_toolConvertFragment,
+                Navigation.CONVERT,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_convert
             ),
@@ -268,7 +268,7 @@ object Tools {
                 PACKING_LISTS,
                 context.getString(R.string.packing_lists),
                 R.drawable.ic_tool_pack,
-                R.id.action_action_experimental_tools_to_action_inventory,
+                Navigation.PACK_LIST,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_packing_lists
             ),
@@ -276,7 +276,7 @@ object Tools {
                 METAL_DETECTOR,
                 context.getString(R.string.tool_metal_detector_title),
                 R.drawable.ic_tool_metal_detector,
-                R.id.action_action_experimental_tools_to_fragmentToolMetalDetector,
+                Navigation.METAL_DETECTOR,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_metal_detector
             ) else null,
@@ -284,7 +284,7 @@ object Tools {
                 WHITE_NOISE,
                 context.getString(R.string.tool_white_noise_title),
                 R.drawable.ic_tool_white_noise,
-                R.id.action_action_experimental_tools_to_fragmentToolWhiteNoise,
+                Navigation.WHITE_NOISE,
                 ToolCategory.Other,
                 context.getString(R.string.tool_white_noise_summary),
                 guideId = R.raw.guide_tool_white_noise
@@ -293,7 +293,7 @@ object Tools {
                 NOTES,
                 context.getString(R.string.tool_notes_title),
                 R.drawable.ic_tool_notes,
-                R.id.action_action_experimental_tools_to_fragmentToolNotes,
+                Navigation.NOTES,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_notes
             ),
@@ -301,7 +301,7 @@ object Tools {
                 QR_CODE_SCANNER,
                 context.getString(R.string.qr_code_scanner),
                 R.drawable.ic_qr_code,
-                R.id.action_tools_to_qr,
+                Navigation.QR_CODE_SCANNER,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_qr_code_scanner
             ),
@@ -309,7 +309,7 @@ object Tools {
                 SENSORS,
                 context.getString(R.string.sensors),
                 R.drawable.ic_sensors,
-                R.id.sensorDetailsFragment,
+                Navigation.SENSOR_DETAILS,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_sensors
             ),
@@ -317,7 +317,7 @@ object Tools {
                 DIAGNOSTICS,
                 context.getString(R.string.diagnostics),
                 R.drawable.ic_alert,
-                R.id.action_tools_to_diagnostics,
+                Navigation.DIAGNOSTICS,
                 ToolCategory.Other,
                 guideId = R.raw.guide_tool_diagnostics
             ),
@@ -325,14 +325,14 @@ object Tools {
                 SETTINGS,
                 context.getString(R.string.settings),
                 R.drawable.ic_settings,
-                R.id.action_settings,
+                Navigation.SETTINGS,
                 ToolCategory.Other,
             ),
             Tool(
                 USER_GUIDE,
                 context.getString(R.string.tool_user_guide_title),
                 R.drawable.ic_user_guide,
-                R.id.action_action_experimental_tools_to_guideListFragment,
+                Navigation.GUIDE_LIST,
                 ToolCategory.Other,
                 context.getString(R.string.tool_user_guide_summary)
             ),
@@ -340,7 +340,7 @@ object Tools {
                 EXPERIMENTATION,
                 "Experimentation",
                 R.drawable.ic_experimental,
-                R.id.experimentationFragment,
+                Navigation.EXPERIMENTATION,
                 ToolCategory.Other,
             ) else null
         )

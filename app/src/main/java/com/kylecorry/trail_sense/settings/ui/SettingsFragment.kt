@@ -44,7 +44,7 @@ class SettingsFragment : AndromedaPreferenceFragment() {
         R.string.pref_maps_header_key to Navigation.MAP_SETTINGS,
         R.string.pref_tide_settings to Navigation.TIDE_SETTINGS,
         R.string.pref_clinometer_settings to Navigation.CLINOMETER_SETTINGS,
-        R.string.pref_odometer_calibration to Navigation.PEDOMETER_SETTINGS,
+        R.string.pref_odometer_calibration to Navigation.CALIBRATE_PEDOMETER,
 
         // About
         R.string.pref_open_source_licenses to Navigation.LICENSES,

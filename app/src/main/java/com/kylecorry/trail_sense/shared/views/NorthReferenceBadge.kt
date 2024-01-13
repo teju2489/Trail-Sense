@@ -4,11 +4,12 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.navigation.findNavController
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.views.badge.Badge
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.MainActivity
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FormatService
 
 class NorthReferenceBadge(
@@ -79,7 +80,8 @@ class NorthReferenceBadge(
 
         Alerts.dialog(context, title, message, okText = context.getString(R.string.settings)){ cancelled ->
             if (!cancelled){
-                findNavController().navigate(R.id.calibrateCompassFragment)
+                val activity = context as? MainActivity ?: return@dialog
+                activity.navigation.navigate(Navigation.CALIBRATE_COMPASS)
             }
         }
     }

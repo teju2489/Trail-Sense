@@ -1,15 +1,16 @@
 package com.kylecorry.trail_sense.quickactions
 
 import android.widget.ImageButton
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.topics.generic.ITopic
 import com.kylecorry.andromeda.core.topics.generic.replay
 import com.kylecorry.andromeda.fragments.AndromedaFragment
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.FeatureState
 import com.kylecorry.trail_sense.shared.extensions.getOrNull
 import com.kylecorry.trail_sense.shared.permissions.alertNoActivityRecognitionPermission
 import com.kylecorry.trail_sense.shared.permissions.requestActivityRecognition
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.pedometer.infrastructure.subsystem.PedometerSubsystem
 
 class QuickActionPedometer(btn: ImageButton, private val andromedaFragment: AndromedaFragment) :
@@ -33,7 +34,7 @@ class QuickActionPedometer(btn: ImageButton, private val andromedaFragment: Andr
         }
 
         button.setOnLongClickListener {
-            fragment.findNavController().navigate(R.id.fragmentToolPedometer)
+            fragment.requireMyNavigation().navigate(Navigation.PEDOMETER)
             true
         }
     }

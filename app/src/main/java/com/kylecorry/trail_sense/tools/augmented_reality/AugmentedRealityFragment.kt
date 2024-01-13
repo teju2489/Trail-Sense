@@ -9,7 +9,6 @@ import androidx.camera.view.PreviewView
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.navigation.NavController
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.ui.Colors.withAlpha
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -18,6 +17,8 @@ import com.kylecorry.sol.science.astronomy.moon.MoonPhase
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentAugmentedRealityBinding
+import com.kylecorry.trail_sense.main.MyNavController
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconRepo
 import com.kylecorry.trail_sense.navigation.infrastructure.Navigator
@@ -234,9 +235,9 @@ class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>(
     }
 
     companion object {
-        fun open(navController: NavController, mode: ARMode = ARMode.Normal) {
+        fun open(navController: MyNavController, mode: ARMode = ARMode.Normal) {
             navController.navigate(
-                R.id.augmentedRealityFragment, bundleOf(
+                Navigation.AUGMENTED_REALITY, bundleOf(
                     "mode" to mode.id
                 )
             )

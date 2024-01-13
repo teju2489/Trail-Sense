@@ -4,13 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
-import com.kylecorry.andromeda.core.capitalizeWords
-import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.core.tryOrLog
-import com.kylecorry.andromeda.core.ui.Colors
 import com.kylecorry.andromeda.alerts.dialog
 import com.kylecorry.andromeda.core.coroutines.onDefault
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -20,10 +13,11 @@ import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolsBinding
 import com.kylecorry.trail_sense.databinding.ListItemToolBinding
-import com.kylecorry.trail_sense.shared.requireMyNavigation
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.quickactions.ToolsQuickActionBinder
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.UserPreferences
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.guide.infrastructure.UserGuideUtils
 import com.kylecorry.trail_sense.tools.ui.items.ToolListItem
 import com.kylecorry.trail_sense.tools.ui.items.ToolListItemStyle
@@ -90,7 +84,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
         updateQuickActions()
 
         binding.settingsBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_settings)
+            requireMyNavigation().navigate(Navigation.SETTINGS)
         }
 
         binding.searchbox.setOnSearchListener {
@@ -200,7 +194,7 @@ class ToolsFragment : BoundFragment<FragmentToolsBinding>() {
             ToolListItemStyle.Tool,
             tool.icon,
             onClick = {
-                findNavController().navigate(tool.navAction)
+                requireMyNavigation().navigate(tool.route)
             },
             onLongClick = {
                 Pickers.menu(

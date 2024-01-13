@@ -122,7 +122,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
 
         binding.button3d.isVisible = prefs.isAugmentedRealityEnabled
         binding.button3d.setOnClickListener {
-            AugmentedRealityFragment.open(findNavController(), ARMode.Astronomy)
+            AugmentedRealityFragment.open(requireMyNavigation(), ARMode.Astronomy)
         }
 
         binding.displayDate.searchEnabled = true

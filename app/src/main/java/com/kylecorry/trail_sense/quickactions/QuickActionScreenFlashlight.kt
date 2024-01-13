@@ -2,10 +2,11 @@ package com.kylecorry.trail_sense.quickactions
 
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.QuickActionButton
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 class QuickActionScreenFlashlight(btn: ImageButton, fragment: Fragment) :
     QuickActionButton(btn, fragment) {
@@ -15,7 +16,7 @@ class QuickActionScreenFlashlight(btn: ImageButton, fragment: Fragment) :
         button.setImageResource(R.drawable.ic_screen_flashlight)
         CustomUiUtils.setButtonState(button, false)
         button.setOnClickListener {
-            fragment.findNavController().navigate(R.id.fragmentToolScreenFlashlight)
+            fragment.requireMyNavigation().navigate(Navigation.SCREEN_FLASHLIGHT)
         }
     }
 }

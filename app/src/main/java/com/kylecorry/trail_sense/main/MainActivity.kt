@@ -44,7 +44,6 @@ import com.kylecorry.trail_sense.volumeactions.VolumeAction
 
 class MainActivity : AndromedaActivity() {
 
-    //    private lateinit var navController: NavController
     private lateinit var bottomNavigation: BottomNavigationView
     val errorBanner: ErrorBannerView by lazy { findViewById(R.id.error_banner) }
 
@@ -96,8 +95,7 @@ class MainActivity : AndromedaActivity() {
                 Navigation.NAVIGATION to R.id.action_navigation,
                 Navigation.WEATHER to R.id.action_weather,
                 Navigation.ASTRONOMY to R.id.action_astronomy,
-                Navigation.TOOLS to R.id.action_experimental_tools,
-                Navigation.SETTINGS to R.id.action_settings
+                Navigation.TOOLS to R.id.action_experimental_tools
             )
         )
 
@@ -295,6 +293,15 @@ class MainActivity : AndromedaActivity() {
     companion object {
         fun intent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
+        }
+
+        fun pendingIntent(context: Context): PendingIntent {
+            return PendingIntent.getActivity(
+                context,
+                27383254,
+                intent(context),
+                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
         }
     }
 

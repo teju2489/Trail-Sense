@@ -2,12 +2,13 @@ package com.kylecorry.trail_sense.quickactions
 
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.kylecorry.andromeda.core.topics.generic.ITopic
 import com.kylecorry.andromeda.core.topics.generic.replay
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.navigation.paths.infrastructure.subsystem.BacktrackSubsystem
 import com.kylecorry.trail_sense.shared.FeatureState
+import com.kylecorry.trail_sense.shared.requireMyNavigation
 
 class QuickActionPaths(btn: ImageButton, fragment: Fragment) :
     TopicQuickAction(btn, fragment, hideWhenUnavailable = false) {
@@ -16,8 +17,7 @@ class QuickActionPaths(btn: ImageButton, fragment: Fragment) :
         super.onCreate()
         button.setImageResource(R.drawable.ic_tool_backtrack)
         button.setOnClickListener {
-            fragment.findNavController()
-                .navigate(R.id.action_navigatorFragment_to_fragmentBacktrack)
+            fragment.requireMyNavigation().navigate(Navigation.PATH_LIST)
         }
     }
 
