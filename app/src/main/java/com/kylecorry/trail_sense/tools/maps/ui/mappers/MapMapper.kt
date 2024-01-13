@@ -6,15 +6,16 @@ import android.util.Size
 import androidx.lifecycle.LifecycleOwner
 import com.kylecorry.andromeda.core.bitmap.BitmapUtils.rotate
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.andromeda.print.Printer
-import com.kylecorry.ceres.list.AsyncListIcon
-import com.kylecorry.ceres.list.ListItem
-import com.kylecorry.ceres.list.ListItemMapper
-import com.kylecorry.ceres.list.ListItemTag
-import com.kylecorry.ceres.list.ListMenuItem
-import com.kylecorry.ceres.list.ResourceListIcon
+import com.kylecorry.andromeda.views.list.AsyncListIcon
+import com.kylecorry.andromeda.views.list.ListItem
+import com.kylecorry.andromeda.views.list.ListItemMapper
+import com.kylecorry.andromeda.views.list.ListItemTag
+import com.kylecorry.andromeda.views.list.ListMenuItem
+import com.kylecorry.andromeda.views.list.ResourceListIcon
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.colors.AppColor
@@ -56,7 +57,7 @@ class MapMapper(
                     ListItemTag(
                         context.getString(R.string.on_map),
                         null,
-                        AppColor.Orange.color
+                        Resources.getPrimaryColor(context)
                     )
                 } else {
                     null

@@ -15,10 +15,9 @@ import com.kylecorry.andromeda.core.math.DecimalFormatter
 import com.kylecorry.andromeda.fragments.AndromedaActivity
 import com.kylecorry.andromeda.fragments.AndromedaFragment
 import com.kylecorry.andromeda.fragments.show
-import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.sol.units.Bearing
-import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.camera.SightingCompassBottomSheetFragment
 import com.kylecorry.trail_sense.shared.permissions.alertNoCameraPermission
@@ -39,9 +38,11 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
             if (value == null) {
                 bearingTxt.text = context.getString(R.string.direction_not_set)
                 clearBtn.isVisible = false
+                northReferenceBadge.isVisible = false
             } else {
                 bearingTxt.text = formatter.formatDegrees(value.value, replace360 = true)
                 clearBtn.isVisible = true
+                northReferenceBadge.isVisible = true
             }
             onChange()
         }
@@ -49,6 +50,7 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
     var trueNorth: Boolean = false
         set(value) {
             field = value
+            northReferenceBadge.useTrueNorth = value
             onChange()
         }
 
@@ -60,6 +62,7 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
     private val compassText: TextView
     private val manualEntryBtn: TextView
     private val clearBtn: ImageButton
+    private val northReferenceBadge: NorthReferenceBadge
 
     private var cameraSheet: SightingCompassBottomSheetFragment? = null
 
@@ -73,6 +76,9 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
         compassText = findViewById(R.id.compass_bearing)
         manualEntryBtn = findViewById(R.id.manual_bearing)
         clearBtn = findViewById(R.id.clear_btn)
+        northReferenceBadge = findViewById(R.id.north_reference_badge)
+
+        CustomUiUtils.setButtonState(compassBtn, true)
 
         manualEntryBtn.setOnClickListener {
             pickManualBearing()
@@ -81,11 +87,13 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
         clearBtn.setOnClickListener {
             bearing = null
             trueNorth = false
+            northReferenceBadge.useTrueNorth = false
         }
 
         compassBtn.setOnClickListener {
             bearing = compass.bearing
             trueNorth = false
+            northReferenceBadge.useTrueNorth = false
         }
 
         cameraBtn.setOnClickListener {
@@ -98,6 +106,7 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
                         cameraSheet = SightingCompassBottomSheetFragment {
                             bearing = it
                             trueNorth = false
+                            northReferenceBadge.useTrueNorth = false
                         }
                     }
 
@@ -163,6 +172,7 @@ class BearingInputView(context: Context, attrs: AttributeSet? = null) :
             if (!cancelled) {
                 bearing = chosenBearing
                 trueNorth = chosenTrueNorth
+                northReferenceBadge.useTrueNorth = chosenTrueNorth
             }
         }
     }

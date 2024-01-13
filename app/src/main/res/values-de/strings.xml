@@ -206,8 +206,6 @@
     <string name="tool_user_guide_summary">Ein Handbuch für die Benutzung von Trail Sense</string>
     <string name="advanced">Fortgeschritten</string>
     <string name="tool_bubble_level_summary">Stelle fest, ob eine Oberfläche eben ist</string>
-    <string name="guide_weather_prediction_title">Wettervorhersage</string>
-    <string name="guide_conserving_battery_title">Stromsparmodus</string>
     <string name="pref_adjust_for_temperature_summary">Verwende die Temperatur zur Umrechnung auf Meereshöhe</string>
     <string name="tool_bubble_level_title">Wasserwaage</string>
     <string name="edit_item_title">Gegenstand bearbeiten</string>
@@ -226,7 +224,6 @@
     <string name="distance_from">Von</string>
     <string name="inventory_empty_text">Keine Einträge</string>
     <string name="tool_whistle_title">Trillerpfeife</string>
-    <string name="cliff_height_guide">Höhe einer Klippe abschätzen</string>
     <string name="tool_cliff_height_disclaimer">Tool nur benutzen, wenn es sicher ist. Überprüfen, was sich unter der Klippe befindet, um Verletzungen zu vermeiden. Bedienungsanleitung lesen für Verwendungsanweisungen.</string>
     <string name="tool_cliff_height_description">Höhe einer Klippe oder eines Falls messen</string>
     <string name="tool_cliff_height_title">Höhe einer Klippe</string>
@@ -308,12 +305,10 @@
     <string name="map_fractional_separator">:</string>
     <string name="map_distance">Karte: %s</string>
     <string name="guide_barometer_calibration_title">Eichung des Barometers</string>
-    <string name="guide_thermometer_calibration_title">Eichung des Thermometers</string>
     <string name="delete_waypoint_prompt">Wegpunkt löschen\?</string>
     <string name="coordinate_input_invalid_location">Ungültige Ortsangabe</string>
     <string name="location_input_help_title">Unterstützte Ortsformate</string>
     <string name="backtrack">Rückweg</string>
-    <string name="guide_location_no_gps_title">Ortsbestimmung ohne GPS</string>
     <string name="min_temp_uncalibrated">Minimale Gerätetemperatur (nicht geeicht)</string>
     <string name="min_temp_calibrated">Minimale Umgebungstemperatur (geeicht)</string>
     <string name="max_temp_uncalibrated">Maximale Gerätetemperatur (nicht geeicht)</string>
@@ -453,7 +448,6 @@
     <string name="always_on">Immer an</string>
     <string name="pref_daily_weather_notification_title">Tägliche Wetter-Benachrichtigung</string>
     <string name="todays_forecast">Vorhersage für heute</string>
-    <string name="guide_light_meter_title">Effektivität einer Taschenlampe herausfinden</string>
     <string name="gps_cache">GPS Cache</string>
     <string name="location_disabled">Standort ist deaktiviert</string>
     <string name="location_not_set">Standort nicht gesetzt</string>
@@ -504,7 +498,6 @@
     <string name="update_gps_override">GPS-Override aktualisieren</string>
     <string name="next">Weiter</string>
     <string name="previous">Zurück</string>
-    <string name="guide_importing_maps_title">Karten importieren</string>
     <string name="create_map_description">Gebe den Namen der Karte ein</string>
     <string name="create_map">Karte erstellen</string>
     <string name="no_maps">Keine Karten</string>
@@ -547,7 +540,6 @@
     <string name="last_signal_beacon_name">Letztes Signal - %1$s (%2$s)</string>
     <string name="camera_permission_denied">Kameraberechtigung verweigert, kann Kamera-Features nicht aktivieren. Du kannst sie in den Einstellungen erteilen.</string>
     <string name="color">Farbe</string>
-    <string name="water_boil_guide_title">Wasser zum Trinken aufbereiten</string>
     <string name="arrow">Pfeil</string>
     <string name="whistle_signal_come_here">Komm her</string>
     <string name="whistle_signal_acknowledged">Angenommen</string>
@@ -666,7 +658,6 @@
     <string name="pack_sort_percent_low_to_high">Prozent gepackt (wenig zu viel)</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d Satelliten</string>
-    <string name="no_compass_message">Dein Gerät hat keinen Kompass</string>
     <string name="guide_packing_list">Packlisten erstellen</string>
     <string name="current_format">%s mA</string>
     <string name="beacon_qr_import_instructions">Scanne einen QR-Code zum Importieren</string>
@@ -1116,8 +1107,6 @@
     <string name="gps_satellites">GPS satelliten</string>
     <string name="gps_location_accuracy">GPS positions Genauigkeit</string>
     <string name="gps_accuracy_tip">Stelle sicher das du eine freie sicht auf den Himmel hast und bewege dich von großen Gebäuden und bäumen weg.</string>
-    <string name="no_compass_description">Dein Gerät hat keinen eingebauten Kompass. Dies ist ein Technischer Bestandteil, so kann ein Kompass nicht nachträglich hinzugefügt werden. Manche Funktionen die einen Kompass benutzen werden nicht verfügbar sein.</string>
-    <string name="restore_failure_newer_version">Diese Wiederherstellungsdatei wurde mit einer neueren Version von %s erstellt. Bitte aktualisiere %s und versuche es erneut.</string>
     <string name="invalid_backup_file">Ungültige Wiederherstellungsdatei</string>
     <string name="backup_restore">Sichern / Wiederherstellen</string>
     <string name="restore_complete_message">Wiederherstellung erfolgreich, startet neu um Änderungen zu übernehmen</string>

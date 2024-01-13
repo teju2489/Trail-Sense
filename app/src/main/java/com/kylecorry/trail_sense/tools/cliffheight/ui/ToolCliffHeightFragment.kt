@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.alerts.Alerts
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.DistanceUnits
@@ -18,13 +19,14 @@ import com.kylecorry.trail_sense.shared.PressState
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.tools.cliffheight.domain.CliffHeightService
+import com.kylecorry.trail_sense.tools.guide.infrastructure.UserGuideUtils
 import java.time.Duration
 import java.time.Instant
 
 class ToolCliffHeightFragment : BoundFragment<FragmentToolCliffHeightBinding>() {
 
     private val service = CliffHeightService()
-    private val timer = Timer {
+    private val timer = CoroutineTimer {
         update()
     }
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
@@ -48,6 +50,12 @@ class ToolCliffHeightFragment : BoundFragment<FragmentToolCliffHeightBinding>() 
                 MotionEvent.ACTION_DOWN -> updateState(PressState.Down)
             }
             true
+        }
+
+        CustomUiUtils.setButtonState(binding.cliffHeightTitle.rightButton, false)
+
+        binding.cliffHeightTitle.rightButton.setOnClickListener {
+            UserGuideUtils.showGuide(this, R.raw.guide_tool_cliff_height)
         }
     }
 
@@ -92,11 +100,8 @@ class ToolCliffHeightFragment : BoundFragment<FragmentToolCliffHeightBinding>() 
         CustomUiUtils.disclaimer(
             requireContext(),
             getString(R.string.disclaimer_message_title),
-            getString(R.string.tool_cliff_height_disclaimer) + "\n\n" + getString(
-                R.string.tool_deprecation_disclaimer,
-                getString(R.string.email)
-            ),
-            "cache_dialog_tool_cliff_height_deprecation",
+            getString(R.string.tool_cliff_height_disclaimer),
+            "cache_dialog_tool_cliff_height",
             considerShownIfCancelled = true,
             cancelText = null
         )

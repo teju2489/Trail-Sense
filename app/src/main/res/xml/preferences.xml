@@ -15,15 +15,6 @@
             app:icon="@drawable/ic_sensors"
             app:key="@string/pref_sensor_settings"
             app:title="@string/sensors" />
-        <ListPreference
-            app:defaultValue="system"
-            app:entries="@array/theme_entries"
-            app:entryValues="@array/theme_values"
-            app:icon="@drawable/ic_theme"
-            app:key="@string/pref_theme"
-            app:singleLineTitle="false"
-            app:title="@string/pref_theme_title"
-            app:useSimpleSummaryProvider="true" />
         <Preference
             app:icon="@drawable/ic_tool_battery"
             app:key="@string/pref_power_settings"
@@ -52,6 +43,12 @@
         app:title="@string/tools">
 
         <Preference
+            app:icon="@drawable/apps"
+            app:key="@string/pref_tool_quick_action_header_key"
+            app:singleLineTitle="false"
+            app:title="@string/tool_quick_actions" />
+
+        <Preference
             app:icon="@drawable/ic_compass_icon"
             app:key="@string/pref_navigation_header_key"
             app:singleLineTitle="false"
@@ -71,32 +68,62 @@
 
         <Preference
             app:icon="@drawable/ic_astronomy"
-            app:iconSpaceReserved="false"
             app:key="@string/pref_astronomy_category"
             app:singleLineTitle="false"
             app:title="@string/astronomy" />
 
         <Preference
             app:icon="@drawable/flashlight"
-            app:iconSpaceReserved="false"
             app:key="@string/pref_flashlight_settings"
             app:singleLineTitle="false"
             app:title="@string/flashlight_title" />
 
         <Preference
             app:icon="@drawable/clinometer"
-            app:iconSpaceReserved="false"
             app:key="@string/pref_clinometer_settings"
             app:singleLineTitle="false"
             app:title="@string/clinometer_title" />
 
         <Preference
+            android:key="@string/pref_odometer_calibration"
+            android:title="@string/pedometer"
+            app:icon="@drawable/steps"
+            app:singleLineTitle="false" />
+
+        <Preference
             app:icon="@drawable/ic_tide_table"
-            app:iconSpaceReserved="false"
             app:key="@string/pref_tide_settings"
             app:singleLineTitle="false"
             app:title="@string/tides" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="false"
+        app:title="@string/pref_theme_title">
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:icon="@drawable/ic_theme"
+            app:key="@string/pref_theme"
+            app:singleLineTitle="false"
+            app:title="@string/pref_theme_title"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/palette"
+            app:key="@string/pref_use_dynamic_colors"
+            app:singleLineTitle="false"
+            app:title="@string/dynamic_colors" />
+        <SwitchPreferenceCompat
+            android:summary="@string/compass_dynamic_colors_summary"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_compass_icon"
+            app:key="@string/pref_use_dynamic_colors_on_compass"
+            app:singleLineTitle="false"
+            app:title="@string/compass_dynamic_colors" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -170,7 +170,6 @@
     <string name="last_signal_beacon_name">Posljednji signal - %1$s (%2$s)</string>
     <string name="camera_permission_denied">Dozvola za kameru je odbijena, nije moguće uključiti funkcije kamere. Možete ih omogućiti u postavkama.</string>
     <string name="color">Boja</string>
-    <string name="water_boil_guide_title">Pretvori vodu da bude sigurna za piće</string>
     <string name="backtrack_battery_warning">Mali intervali (ispod 15 minuta) mogu prouzrokovati prekomjerno pražnjenje baterije</string>
     <string name="battery_warning">Upozorenje o pražnjenju baterije</string>
     <string name="backtrack_high_priority_notification">Postavljanje međutočke svakih %s</string>
@@ -192,7 +191,6 @@
     <string name="time_until_empty">dok nije prazno</string>
     <string name="next">Sljedeće</string>
     <string name="previous">Prethodno</string>
-    <string name="guide_importing_maps_title">Uvoženje kartih</string>
     <string name="place_beacon_at">Postavite svjetionik na %s\?</string>
     <string name="on_map">Na karti</string>
     <string name="no_maps">Nema kartih</string>
@@ -234,7 +232,6 @@
     <string name="tomorrows_forecast">Sutrašnja prognoza</string>
     <string name="todays_forecast">Današnja prognoza</string>
     <string name="guide_light_meter_description">Kako odrediti udaljenost snopa svjetiljki</string>
-    <string name="guide_light_meter_title">Odredite efikasnost svjetiljke</string>
     <string name="gps_cache">GPS Predmemorija</string>
     <string name="location_disabled">Lokacija je onemogućena</string>
     <string name="set">Postavi</string>
@@ -434,7 +431,6 @@
     <string name="inventory_empty_text">Nema predmeta</string>
     <string name="action_inventory_clear_confirm">Izbrišite sve upakovane količine\?</string>
     <string name="tool_whistle_title">Pištaljka</string>
-    <string name="cliff_height_guide">Procijenite visinu litice</string>
     <string name="tool_cliff_height_disclaimer">Koristite ovaj alat samo kada ga je sigurno koristiti, i obavezno provjerite što stoji pod litice kako ne biste ozljedili nekoga. Pogledajte upute za upotrebu.</string>
     <string name="tool_cliff_height_description">Izmjerite visinu litice ili pada</string>
     <string name="tool_cliff_height_title">Visina Litice</string>
@@ -450,8 +446,6 @@
     <string name="other">Ostalo</string>
     <string name="tool_bubble_level_summary">Utvrdite jesu li površine ravne</string>
     <string name="tool_bubble_level_title">Nivo mjehurića</string>
-    <string name="guide_weather_prediction_title">Vremenska prognoza</string>
-    <string name="guide_conserving_battery_title">Štedi se baterija</string>
     <string name="navigation_nearby_category">U blizini</string>
     <string name="forecasts_category">Prognoze</string>
     <string name="advanced">Napredno</string>
@@ -569,7 +563,6 @@
     <string name="battery_power_usb">USB</string>
     <string name="battery_power_ac">AC</string>
     <string name="tool_thermometer_title">Termometar</string>
-    <string name="guide_thermometer_calibration_title">Kalibracija termometra</string>
     <string name="delete_tide_prompt">Izbrisati plimu\?</string>
     <string name="delete_waypoint_prompt">Izbrisati međutočku\?</string>
     <string name="coordinate_input_invalid_location">Nevaljana lokacija</string>
@@ -596,7 +589,6 @@
     <string name="create_map_description">Unesite naziv karte</string>
     <string name="create_map">Napravi kartu</string>
     <string name="create_beacon">Napravi svjetionik</string>
-    <string name="guide_location_no_gps_title">Odredite lokaciju bez GPS-a</string>
     <string name="create_at_distance">Napravi sa daljine</string>
     <string name="min_temp_uncalibrated">Minimalna temperatura telefona (nekalibrirana)</string>
     <string name="min_temp_calibrated">Minimalna temperatura okoline (kalibrirana)</string>
@@ -667,7 +659,6 @@
     <string name="elevation_history">Povijest visine</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d satelita</string>
-    <string name="no_compass_message">Vas uređaj nema senzor za kompas</string>
     <string name="guide_packing_list">Napravi liste za pakovanje</string>
     <string name="weight_per_item">Težina po stavci</string>
     <string name="pack_sort_weight_high_to_low">Težina (visoka do niske)</string>

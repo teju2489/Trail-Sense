@@ -4,7 +4,6 @@
     <string name="fields">Alanlar</string>
     <string name="pref_show_last_signal_beacon_summary">Son telefon sinyali konumu için işaret oluşturur</string>
     <string name="pref_show_last_signal_beacon_title">Son sinyal işareti</string>
-    <string name="water_boil_guide_title">Suyu içilebilir hale getir</string>
     <string name="calibrate_new_tide">Yeni gelgit için kalibre etmek istediğinizden emin misiniz\?</string>
     <string name="backtrack_battery_warning">Kısa aralıklar (15 dakikanın altında) aşırı pil tüketimine neden olabilir</string>
     <string name="battery_warning">Pil tüketimi uyarısı</string>
@@ -42,7 +41,6 @@
     <string name="none">Yok</string>
     <string name="tomorrows_forecast">Yarının hava durumu</string>
     <string name="todays_forecast">Bugünün hava durumu</string>
-    <string name="guide_light_meter_title">El feneri tesirini belirle</string>
     <string name="pref_backtrack_save_cell_title">Telefon sinyalini kaydet</string>
     <string name="pref_backtrack_save_cell_summary">Ara noktada telefon sinyalini kaydeder. İnternete gereksinim duymaz.</string>
     <string name="beam_distance">%s ışın mesafesi</string>
@@ -125,7 +123,6 @@
     <string name="create_beacon">İşaret oluştur</string>
     <string name="backtrack_notification_channel_description">Geri iz sürme konum güncellemeleri</string>
     <string name="backtrack">Geri iz sürme</string>
-    <string name="guide_location_no_gps_title">GPS olmadan konum belirle</string>
     <string name="create_at_distance">Belirli mesafede oluştur</string>
     <string name="min_temp_uncalibrated">Minimum telefon sıcaklığı (kalibre edilmemiş)</string>
     <string name="min_temp_calibrated">Minimum ortam sıcaklığı (kalibre edilmiş)</string>
@@ -227,7 +224,6 @@
     <string name="unit_meters">Metre</string>
     <string name="inventory_empty_text">Öge yok</string>
     <string name="tool_whistle_title">Islık</string>
-    <string name="cliff_height_guide">Kayalık yüksekliğini tahmin et</string>
     <string name="tool_cliff_height_disclaimer">Bu aracı yalnızca kullanımı güvenli olduğunda kullanın ve yaralanmayı önlemek için uçurumun altında ne olduğunu kontrol ettiğinizden emin olun. Talimatlar için kullanım kılavuzuna bakın.</string>
     <string name="tool_cliff_height_title">Kayalık Yüksekliği</string>
     <string name="tool_cliff_height_description">Kayalığın yüksekliğini belirleyin</string>
@@ -240,7 +236,6 @@
     <string name="category_hydration">Sıvı</string>
     <string name="category_food">Yemek</string>
     <string name="other">Diğer</string>
-    <string name="guide_conserving_battery_title">Güç tasarrufu</string>
     <string name="navigation_nearby_category">Yakındakiler</string>
     <string name="forecasts_category">Hava durumu tahminleri</string>
     <string name="advanced">Gelişmiş</string>
@@ -448,7 +443,6 @@
     <string name="direction_south_west">SW</string>
     <string name="tool_bubble_level_summary">yüzeylerin düz olup olmadığını belirle</string>
     <string name="tool_bubble_level_title">Su Terazisi</string>
-    <string name="guide_weather_prediction_title">Hava durumu tahmini</string>
     <string name="direction_north_west">NW</string>
     <string name="direction_south_east">SE</string>
     <string name="direction_north_east">NE</string>
@@ -497,7 +491,6 @@
     <string name="battery_power_wireless">Kablosuz</string>
     <string name="battery_power_usb">USB</string>
     <string name="tool_thermometer_title">Termometre</string>
-    <string name="guide_thermometer_calibration_title">Termometre kalibrasyonu</string>
     <string name="pref_gps_override_title">Konumun üzerine yaz</string>
     <string name="coordinate_input_invalid_location">Geçersiz konum</string>
     <string name="location_input_help">Ondalık dereceler (örn. 1.00, -2.00)
@@ -521,7 +514,6 @@
     <string name="map_auto_calibrated">Harita otomatik olarak kalibre edildi, lütfen doğruluğunu onaylayın</string>
     <string name="next">Sonraki</string>
     <string name="previous">Önceki</string>
-    <string name="guide_importing_maps_title">Haritaları içe aktarma</string>
     <string name="create_map_description">Haritanın adını girin</string>
     <string name="create_map">Harita oluştur</string>
     <string name="on_map">Harita üzerinde</string>
@@ -558,8 +550,8 @@
     <string name="hygrometer">Higrometre</string>
     <string name="barometer">Barometre</string>
     <string name="network_no_signal">Sinyal yok</string>
-    <string name="pref_nmea_elevation_summary">İrtifa dönüşümü için NMEA ofsetlerini kullanır</string>
-    <string name="pref_nmea_elevation_title">NMEA irtifa ofsetleri</string>
+    <string name="pref_nmea_elevation_summary">Yükseklikleri düzeltmek için yerleşik model yerine NMEA (uydu) kullan</string>
+    <string name="pref_nmea_elevation_title">NMEA yükseklik düzeltmesi</string>
     <string name="pref_barometer_pressure_smoothing_title">Basınç düzenleme</string>
     <string name="pref_barometer_info_summary">Basınç, yakındaki istasyonlardan farklı olabilir</string>
     <string name="battery_history">Pil geçmişi - son %s</string>
@@ -658,7 +650,6 @@
     <string name="elevation_history">Rakım geçmişi</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d uydu</string>
-    <string name="no_compass_message">Aygıtınızda pusula sensörü yok</string>
     <string name="guide_packing_list">Paketleme listeleri oluştur</string>
     <string name="weight_per_item">Öge başına ağırlık</string>
     <string name="pack_sort_weight_high_to_low">Ağırlık (yüksekten düşüğe)</string>
@@ -1062,7 +1053,6 @@
     <string name="step_progression">Adım %1$d / %2$d</string>
     <string name="autofill_source">Otomatik doldurma kaynağı</string>
     <string name="pref_keep_map_facing_up_summary">Harita, Gerçek Kuzey yerine ekranın üst kısmı ile hizalanacaktır.</string>
-    <string name="tool_deprecation_disclaimer">Bu araç yürüyüş, sırt çantasıyla gezme veya kamp yapma için kullanışlı olmadığından kaldırılabilir veya yeniden tasarlanabilir. Bu aracı faydalı bulursanız, lütfen nasıl kullandığınızı benimle %s adresinde paylaşın.</string>
     <string name="rate">Oran</string>
     <string name="enter_manually">Elle gir</string>
     <string name="rotation_amount">Dönüş: %s</string>
@@ -1101,7 +1091,6 @@
     <string name="restoring_loading_message">Geri yükleniyor…</string>
     <string name="augmented_reality_description">Kameranızla yakındaki işaretleri ve güneşi / ayı görüntüleyin</string>
     <string name="triangulate_self_location_2_instructions">Görebildiğiniz bilinen başka bir konum seçin ve bulunduğunuz yerden o konuma olan yönü kaydedin.</string>
-    <string name="scheduled_for_redesign_or_removal">Yeniden tasarımı veya kaldırması düşünülüyor</string>
     <string name="crop_map_instructions_long">Çerçevelemek için kutunun köşelerini haritanın köşelerine sürükleyin.</string>
     <string name="map_auto_rotated">Harita yönü kalibrasyon ile ayarlandı</string>
     <string name="backup">Yedekle</string>
@@ -1109,7 +1098,6 @@
     <string name="daylight_duration">%s gün ışığı</string>
     <string name="accelerometer">İvmeölçer</string>
     <string name="map_file">Dosya (JPG, PNG, PDF)</string>
-    <string name="no_compass_description">Aygıtınızda yerleşik bir pusula sensörü yok. Bu bir donanım bileşenidir, bu nedenle eklemek için yapılabilecek bir şey yoktur. Pusulayı kullanan bazı özellikler kullanılamayacaktır.</string>
     <string name="astronomy_set">Batış</string>
     <string name="direction_not_set">Yön ayarlanmadı</string>
     <string name="location_number">Konum %d</string>
@@ -1146,4 +1134,37 @@
     <string name="pref_keep_map_facing_up_title">Haritayı yukarı bakacak şekilde tutun</string>
     <string name="distance_away_from_self">%s uzaklıkta</string>
     <string name="season">Mevsim</string>
+    <string name="magnetic_north">Manyetik Kuzey</string>
+    <string name="tool_long_press_hint_toast">Daha fazla seçenek görmek için bir araca uzun basın</string>
+    <string name="unpin">Sabitlemeyi kaldır</string>
+    <string name="settings_have_moved_message">Uygulama ayarları Araçlar sekmesine taşındı</string>
+    <string name="settings_have_moved">Ayarlar taşındı</string>
+    <string name="pinned">Sabitlendi</string>
+    <string name="tool_quick_actions">Araç hızlı eylemleri</string>
+    <string name="pin">Sabitle</string>
+    <string name="no_sensor_message">Aygıtınızda %s sensörü yok</string>
+    <string name="missing_sensor_message_1">%1$s aygıtınızda yerleşik bir %2$s sensörü yok. Maalesef bu, %3$s\'deki bazı özelliklerin kullanılamayacağı anlamına gelir.</string>
+    <string name="why_missing_sensor">Aygıtım yeni/pahalı, neden bu sensör eksik?</string>
+    <string name="magnetic_north_description">Manyetik Kuzey Kutbunu gösterir. Bu, çoğu pusula ile uyumlu olacaktır.</string>
+    <string name="restart_services_message">Arka plan hizmetleri yeniden başlatılamadı. Yeniden başlatmak için dokunun.</string>
+    <string name="service_restart">Hizmet Yeniden Başlatma</string>
+    <string name="restart_services_title">Hizmetleri yeniden başlat</string>
+    <string name="high_sensitivity">Yüksek hassasiyet</string>
+    <string name="missing_sensor_explanation">Bazı telefon üreticileri, yeni veya pahalı aygıtlarda bile bu sensörü eklememeyi tercih etmektedir. Aygıt üreticinizin web sitesini ziyaret ederek veya onlarla iletişime geçerek daha fazla bilgi edinebilirsiniz.</string>
+    <string name="no_sensor_unable_to_fix">Hayır, ne yazık ki bu bir donanım özelliğidir, bu nedenle eklemek için yapılabilecek bir şey yoktur.</string>
+    <string name="fused_altimeter_force_calibration">Kalibrasyona zorlama aralığı</string>
+    <string name="true_north_description">Bulunduğunuz yerin sapmasını kullanarak coğrafi Kuzey Kutbunu gösterir. Bu, çoğu harita ile uyumlu olacaktır.</string>
+    <string name="continuous_calibration_description">GPS düzeltmesi olduğunda kalibrasyon yapar</string>
+    <string name="fused_altimeter_force_calibration_summary">Her %s\'de bir GPS kalibrasyonunu zorlar</string>
+    <string name="continuous_calibration">Sürekli kalibrasyon</string>
+    <string name="is_there_a_way_to_fix_this">Bunu düzeltmenin bir yolu var mı?</string>
+    <string name="service_restart_channel_description">Hizmetleri yeniden başlatmak için bir bildirim</string>
+    <string name="clinometer_augmented_reality_description">Kameranızla açıları görselleştirin</string>
+    <string name="clinometer_augmented_reality">Eğim ölçer artırılmış gerçeklik</string>
+    <string name="dynamic_colors">Değişken Renkler</string>
+    <string name="compass_dynamic_colors">Pusula Değişken Renkleri</string>
+    <string name="compass_dynamic_colors_summary">Ana yönler için değişken renkleri kullanın</string>
+    <string name="screen_flashlight_full_name">Ekran Feneri</string>
+    <string name="view_in_3d">3 Boyutlu Görüntüle</string>
+    <string name="locate">Bul</string>
 </resources>

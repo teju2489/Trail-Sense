@@ -2,16 +2,17 @@ package com.kylecorry.trail_sense.weather.ui.charts
 
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.ui.Colors.withAlpha
-import com.kylecorry.ceres.chart.Chart
-import com.kylecorry.ceres.chart.data.LineChartLayer
-import com.kylecorry.ceres.chart.data.ScatterChartLayer
-import com.kylecorry.ceres.chart.label.NumberChartLabelFormatter
+import com.kylecorry.andromeda.views.chart.Chart
+import com.kylecorry.andromeda.views.chart.data.LineChartLayer
+import com.kylecorry.andromeda.views.chart.data.ScatterChartLayer
+import com.kylecorry.andromeda.views.chart.label.NumberChartLabelFormatter
 import com.kylecorry.sol.math.SolMath.roundPlaces
 import com.kylecorry.sol.math.Vector2
 import com.kylecorry.sol.units.Pressure
 import com.kylecorry.sol.units.PressureUnits
 import com.kylecorry.sol.units.Reading
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.Units
 import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.views.chart.label.HourChartLabelFormatter
@@ -31,7 +32,7 @@ class PressureChart(
     private var margin = 1f
     private var clickable = selectionListener != null
 
-    private val color = Resources.getAndroidColorAttr(chart.context, androidx.appcompat.R.attr.colorPrimary)
+    private val color = Resources.getPrimaryColor(chart.context)
 
     private val rawLine = LineChartLayer(
         emptyList(),

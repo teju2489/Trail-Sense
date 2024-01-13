@@ -26,6 +26,7 @@ import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.backup.BackupService
 import com.kylecorry.trail_sense.onboarding.OnboardingActivity
 import com.kylecorry.trail_sense.receivers.RestartServicesCommand
+import com.kylecorry.trail_sense.settings.ui.SettingsMoveNotice
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.commands.ComposedCommand
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
@@ -74,7 +75,6 @@ class MainActivity : AndromedaActivity() {
             UserPreferences.Theme.System -> ColorTheme.System
             UserPreferences.Theme.SunriseSunset -> sunriseSunsetTheme()
         }
-        setTheme(R.style.AppTheme)
         setColorTheme(mode, userPrefs.useDynamicColors)
         super.onCreate(savedInstanceState)
 
@@ -123,6 +123,11 @@ class MainActivity : AndromedaActivity() {
         }
     }
 
+    fun reloadTheme() {
+        cache.putBoolean("pref_theme_just_changed", true)
+        recreate()
+    }
+
     override fun onResume() {
         super.onResume()
         FlashlightSubsystem.getInstance(this).startSystemMonitor()
@@ -134,6 +139,11 @@ class MainActivity : AndromedaActivity() {
     }
 
     private fun startApp() {
+        if (cache.getBoolean("pref_theme_just_changed") == true) {
+            cache.putBoolean("pref_theme_just_changed", false)
+            recreate()
+        }
+
         errorBanner.dismissAll()
 
         if (cache.getBoolean(BackupService.RECENTLY_BACKED_UP_KEY) == true) {
@@ -146,7 +156,8 @@ class MainActivity : AndromedaActivity() {
         ComposedCommand(
             ShowDisclaimerCommand(this),
             PowerSavingModeAlertCommand(this),
-            RestartServicesCommand(this),
+            RestartServicesCommand(this, false),
+            SettingsMoveNotice(this)
         ).execute()
 
         if (!Sensors.hasBarometer(this)) {

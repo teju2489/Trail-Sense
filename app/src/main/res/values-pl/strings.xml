@@ -140,12 +140,10 @@
     </plurals>
     <string name="miles_per_hour_format">%.1f mph</string>
     <string name="sunset_alert_notification_title">Słońce niedługo zajdzie</string>
-    <string name="cliff_height_guide">Szacowanie wysokości klifu</string>
     <string name="tool_cliff_height_title">Wysokość klifu</string>
     <string name="category_safety">Bezpieczeństwo</string>
     <string name="category_clothing">Odzież</string>
     <string name="category_hydration">Nawodnienie</string>
-    <string name="guide_conserving_battery_title">Oszczędzanie baterii</string>
     <string name="navigation_nearby_category">W pobliżu</string>
     <string name="forecasts_category">Prognozy</string>
     <string name="beacon_create_beacon">Punkt nawigacyjny</string>
@@ -266,7 +264,6 @@
     <string name="tool_ruler_title">Linijka</string>
     <string name="precise_centimeters_format">%s cm</string>
     <string name="guide_recommended_apps_description">Przydatne aplikacje w sytuacjach surwiwalowych</string>
-    <string name="guide_weather_prediction_title">Przewidywanie pogody</string>
     <string name="tool_battery_title">Bateria</string>
     <string name="discharging_fast">Szybkie rozładowywanie (%s)</string>
     <string name="discharging_slow">Powolne rozładowywanie (%s)</string>
@@ -304,7 +301,6 @@
     <string name="battery_health_dead">Wyładowana</string>
     <string name="pref_backtrack_enabled_summary">Rejestruj historię lokalizacji</string>
     <string name="waypoint_time_format">%1$s, %2$s</string>
-    <string name="guide_location_no_gps_title">Określ lokalizację bez GPS</string>
     <string name="min_temp_uncalibrated">Minimalna temperatura telefonu (nieskalibrowana)</string>
     <string name="min_temp_calibrated">Minimalna temperatura otoczenia (skalibrowana)</string>
     <string name="max_temp_uncalibrated">Maksymalna temperatura telefonu (nieskalibrowana)</string>
@@ -361,7 +357,6 @@
     <string name="charging_wireless">Ładowanie (%s)</string>
     <string name="battery_power_wireless">Bezprzewodowe</string>
     <string name="tool_thermometer_title">Termometr</string>
-    <string name="guide_thermometer_calibration_title">Kalibracja termometru</string>
     <string name="battery_power_usb">USB</string>
     <string name="coordinate_format_mgrs">MGRS</string>
     <string name="pref_require_satellites_description">Wymaga co najmniej 4 satelitów, poprawia dokładność</string>
@@ -470,7 +465,6 @@
     <string name="right_quick_action">Prawa szybka akcja</string>
     <string name="left_quick_action">Lewa szybka akcja</string>
     <string name="guide_light_meter_description">Jak określić odległość wiązki światła z latarek</string>
-    <string name="guide_light_meter_title">Określ skuteczność latarki</string>
     <string name="none">Brak</string>
     <string name="time_not_set">Czas nieustawiony</string>
     <string name="tool_light_meter_title">Światłomierz</string>
@@ -500,7 +494,6 @@
     <string name="guide_using_printed_maps">Korzystanie z map drukowanych</string>
     <string name="previous">Poprzedni</string>
     <string name="next">Dalej</string>
-    <string name="guide_importing_maps_title">Importowanie mapy</string>
     <string name="create_map_description">Podaj nazwę mapy</string>
     <string name="create_map">Utwórz mapę</string>
     <string name="on_map">Na mapie</string>
@@ -551,7 +544,6 @@
     <string name="no_data">Brak danych</string>
     <string name="backtrack">Ślad powrotny</string>
     <string name="pref_nmea_elevation_title">Przesunięcia wysokości NMEA</string>
-    <string name="water_boil_guide_title">Spraw, aby woda była bezpieczna do picia</string>
     <string name="solid">Stały</string>
     <string name="arrow">Strzałka</string>
     <string name="dotted">Kropkowany</string>
@@ -653,7 +645,6 @@
     <string name="elevation_history">Historia wysokości</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d satelity(ów)</string>
-    <string name="no_compass_message">Urządzenie nie posiada czujnika kompasu</string>
     <string name="guide_packing_list">Utwórz listę rzeczy do spakowania</string>
     <string name="new_packing_list">Nowa lista rzeczy do spakowania</string>
     <string name="no_packing_lists">Brak list rzeczy do spakowania</string>

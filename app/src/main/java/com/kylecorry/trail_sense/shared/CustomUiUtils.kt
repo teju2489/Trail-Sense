@@ -20,9 +20,9 @@ import com.kylecorry.andromeda.core.ui.setState
 import com.kylecorry.andromeda.fragments.AndromedaFragment
 import com.kylecorry.andromeda.fragments.show
 import com.kylecorry.andromeda.pickers.Pickers
-import com.kylecorry.ceres.chart.Chart
-import com.kylecorry.ceres.list.CeresListView
-import com.kylecorry.ceres.list.ListItem
+import com.kylecorry.andromeda.views.chart.Chart
+import com.kylecorry.andromeda.views.list.AndromedaListView
+import com.kylecorry.andromeda.views.list.ListItem
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.sol.units.DistanceUnits
 import com.kylecorry.trail_sense.R
@@ -48,8 +48,8 @@ object CustomUiUtils {
     fun setButtonState(button: ImageButton, state: Boolean) {
         button.setState(
             state,
-            Resources.getAndroidColorAttr(button.context, androidx.appcompat.R.attr.colorPrimary),
-            Resources.color(button.context, R.color.colorSecondary)
+            Resources.getPrimaryColor(button.context),
+            Resources.getColorOnPrimary(button.context)
         )
     }
 
@@ -60,8 +60,8 @@ object CustomUiUtils {
     ) {
         button.setState(
             isOn,
-            Resources.getAndroidColorAttr(button.context, androidx.appcompat.R.attr.colorPrimary),
-            Resources.color(button.context, R.color.colorSecondary)
+            Resources.getPrimaryColor(button.context),
+            Resources.getColorOnPrimary(button.context)
         )
     }
 
@@ -237,6 +237,19 @@ object CustomUiUtils {
         }
     }
 
+    fun oneTimeToast(
+        context: Context,
+        message: String,
+        shownKey: String,
+        short: Boolean = true
+    ) {
+        val prefs = PreferencesSubsystem.getInstance(context).preferences
+        if (prefs.getBoolean(shownKey) != true) {
+            Alerts.toast(context, message, short)
+            prefs.putBoolean(shownKey, true)
+        }
+    }
+
     fun disclaimer(
         context: Context,
         title: String,
@@ -403,7 +416,7 @@ object CustomUiUtils {
         emptyText: String? = null
     ) {
         val view = View.inflate(context, R.layout.view_list_dialog, null)
-        val list = view.findViewById<CeresListView>(R.id.list)
+        val list = view.findViewById<AndromedaListView>(R.id.list)
         val empty = view.findViewById<TextView>(R.id.empty_text)
 
         if (emptyText != null) {
@@ -420,5 +433,30 @@ object CustomUiUtils {
         )
     }
 
+    fun Resources.getPrimaryColor(context: Context): Int {
+        return getAndroidColorAttr(context, com.google.android.material.R.attr.colorPrimary)
+    }
+
+    fun Resources.getColorOnPrimary(context: Context): Int {
+        return getAndroidColorAttr(context, com.google.android.material.R.attr.colorOnPrimary)
+    }
+
+    fun Resources.getCardinalDirectionColor(context: Context): Int {
+        val prefs = UserPreferences(context)
+        return if (prefs.useDynamicColors && prefs.useDynamicColorsOnCompass) {
+            getPrimaryColor(context)
+        } else {
+            AppColor.Orange.color
+        }
+    }
+
+    fun Resources.getPrimaryMarkerColor(context: Context): Int {
+        val prefs = UserPreferences(context)
+        return if (prefs.useDynamicColors && prefs.useDynamicColorsOnCompass) {
+            getPrimaryColor(context)
+        } else {
+            AppColor.Orange.color
+        }
+    }
 
 }

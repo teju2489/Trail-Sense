@@ -33,7 +33,9 @@ class PedometerTile : TopicTile() {
     }
 
     override fun start() {
-        pedometer.enable()
+        startForegroundService {
+            pedometer.enable()
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.fragments.BoundFragment
+import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.andromeda.fragments.observe
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolNotesBinding
 import com.kylecorry.trail_sense.shared.CustomUiUtils

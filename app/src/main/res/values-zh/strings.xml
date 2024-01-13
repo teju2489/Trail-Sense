@@ -210,7 +210,6 @@
     <string name="distance_from">起点</string>
     <string name="inventory_empty_text">无物品</string>
     <string name="tool_whistle_title">哨子</string>
-    <string name="cliff_height_guide">预估悬崖高度</string>
     <string name="tool_cliff_height_disclaimer">确保自身安全的情况下使用此工具，并检查悬崖下有什么，以避免受伤。详细请参见用户指南。</string>
     <string name="tool_cliff_height_description">测量悬崖或瀑布的高度</string>
     <string name="tool_cliff_height_title">悬崖高度</string>
@@ -227,8 +226,6 @@
     <string name="tool_bubble_level_summary">确定表面是否平坦</string>
     <string name="pressure_tendency_format_2">%s / 3h</string>
     <string name="tool_bubble_level_title">气泡水平仪</string>
-    <string name="guide_weather_prediction_title">天气预测</string>
-    <string name="guide_conserving_battery_title">节约电量</string>
     <string name="navigation_nearby_category">附近</string>
     <string name="forecasts_category">预测</string>
     <string name="advanced">高级设置</string>
@@ -328,7 +325,6 @@
     <string name="waypoint_time_format">%1$s, %2$s</string>
     <string name="create_beacon">创建信标</string>
     <string name="backtrack_notification_channel_description">Backtrack 位置更新</string>
-    <string name="guide_location_no_gps_title">不用 GPS 进行定位</string>
     <string name="create_at_distance">在远处创建</string>
     <string name="precise_temp_c_format">%s °C</string>
     <string name="precise_temp_f_format">%s °F</string>
@@ -354,7 +350,6 @@
 \nOSGB (如， TG 51409 13177)</string>
     <string name="location_input_help_title">支持的位置格式</string>
     <string name="tool_thermometer_title">温度计</string>
-    <string name="guide_thermometer_calibration_title">温度计校正</string>
     <string name="delete_waypoint_prompt">删除路径点？</string>
     <string name="low_power_mode_on_message">已开启省电模式，一些功能可能被禁用。</string>
     <string name="pref_low_power_mode_title">省电模式</string>
@@ -459,7 +454,6 @@
     <string name="location_not_set">未设置位置</string>
     <string name="gps_cache">GPS 缓存</string>
     <string name="guide_light_meter_description">如何确定手电筒的光束距离</string>
-    <string name="guide_light_meter_title">确定手电筒效率</string>
     <string name="pref_daily_weather_notification_title">每日天气通知</string>
     <string name="todays_forecast">今日预报</string>
     <string name="low">低</string>
@@ -498,7 +492,6 @@
     <string name="guide_using_printed_maps">使用印刷地图</string>
     <string name="next">下一张</string>
     <string name="previous">上一张</string>
-    <string name="guide_importing_maps_title">正在导入地图</string>
     <string name="create_map_description">输入地图名称</string>
     <string name="create_map">创建地图</string>
     <string name="place_beacon_at">将一个信标放置于%s？</string>
@@ -539,7 +532,6 @@
     <string name="last_signal_beacon_name">上个信号 - %1$s (%2$s)</string>
     <string name="camera_permission_denied">相机权限被拒绝，无法打开相机功能。 你可以在设置中启用它。</string>
     <string name="color">颜色</string>
-    <string name="water_boil_guide_title">使水可以安全饮用</string>
     <string name="arrow">箭头线</string>
     <string name="whistle_signal_come_here">来这里</string>
     <string name="whistle_signal_acknowledged">已承认</string>
@@ -552,9 +544,9 @@
     <string name="pref_barometer_info_summary">大气压强可能与附近气象站的大气压强不同</string>
     <string name="battery_history">历史电量 - 过去 %s</string>
     <string name="no_data">无数据</string>
-    <string name="pref_nmea_elevation_title">NMEA高度偏移</string>
+    <string name="pref_nmea_elevation_title">NMEA 高度修正</string>
     <string name="pref_barometer_pressure_smoothing_title">大气压数据平滑</string>
-    <string name="pref_nmea_elevation_summary">使用NMEA偏移量进行高度转换</string>
+    <string name="pref_nmea_elevation_summary">使用 NMEA（卫星）而不是内置模型来修正高度</string>
     <string name="moved_to">已移动到 %s</string>
     <string name="move">移动</string>
     <string name="no_groups">无群组</string>
@@ -658,7 +650,6 @@
     <string name="current_format">%s 毫安</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d 颗卫星</string>
-    <string name="no_compass_message">您的设备没有指南针传感器</string>
     <string name="elevation_history">海拔历史</string>
     <string name="qr_code">二维码</string>
     <string name="beacon_qr_import_instructions">扫描二维码来导入</string>
@@ -1097,7 +1088,6 @@
     <string name="gps_location_accuracy">GPS 定位精度</string>
     <string name="gps_elevation_accuracy">GPS 海拔精度</string>
     <string name="gps_satellites">GPS 卫星</string>
-    <string name="no_compass_description">你的设备没有内置指南针传感器。这是硬件部件，无法随意添加。因此某些使用指南针的功能将不可用。</string>
     <string name="backup">备份</string>
     <string name="backup_disclaimer">将创建一个包含本应用所有当前数据的备份文件，包括设置、路径、信标、地图等数据。
 \n
@@ -1115,8 +1105,6 @@
     <string name="zero_shutter_lag">零快门延迟</string>
     <string name="my_location">我的位置</string>
     <string name="destination">目的地</string>
-    <string name="tool_deprecation_disclaimer">此工具可能被删除或重新设计，因它对徒步旅行、背包旅行或露营并不实用。如果你觉得此工具有用，请在 %s 与我分享你如何使用它。</string>
-    <string name="scheduled_for_redesign_or_removal">将被重新设计或删除</string>
     <string name="triangulate_destination_location_1_instructions">记录你的位置和到目的地的方向。</string>
     <string name="triangulate_self_location_1_instructions">选择一个你看得到的已知位置并记录从你所在的位置到那个位置的方向。</string>
     <string name="triangulate_self_location_2_instructions">选择另一个你看得到的已知位置并记录从你所在位置到那个位置的方向。</string>
@@ -1130,4 +1118,37 @@
     <string name="direction">方向</string>
     <string name="augmented_reality">增强现实</string>
     <string name="augmented_reality_description">用相机查看附近信标及太阳/月亮</string>
+    <string name="magnetic_north">磁北</string>
+    <string name="tool_long_press_hint_toast">长按工具查看更多选项</string>
+    <string name="unpin">取消固定</string>
+    <string name="pinned">已固定</string>
+    <string name="tool_quick_actions">工具快速操作</string>
+    <string name="pin">固定</string>
+    <string name="settings_have_moved_message">应用设置已移动到工具标签页</string>
+    <string name="settings_have_moved">设置已移动</string>
+    <string name="no_sensor_message">你的设备没有 %s 传感器</string>
+    <string name="missing_sensor_message_1">你的 %1$s 没有内置的 %2$s 传感器。不幸的是，这意味着 %3$s 的某些功能将不可用。</string>
+    <string name="why_missing_sensor">我的设备刚出/很贵，为什么会缺少这个传感器？</string>
+    <string name="magnetic_north_description">指向磁北极。这么做会与多数指南针对齐。</string>
+    <string name="missing_sensor_explanation">某些收集制造商选择即使在刚推出或很贵的设备上也不添加这一传感器。要获取更多信息，请访问设备制造商网站或和制造商取得联系。</string>
+    <string name="no_sensor_unable_to_fix">没有，这是硬件功能。因此我们无法从软件层面加以解决。</string>
+    <string name="true_north_description">用你所在位置的磁偏角指向地理北极。这么做会与大多数地图对齐。</string>
+    <string name="is_there_a_way_to_fix_this">有办法解决吗？</string>
+    <string name="high_sensitivity">高敏感度</string>
+    <string name="restart_services_message">无法重启后台服务。轻按以重启。</string>
+    <string name="service_restart">服务重启</string>
+    <string name="restart_services_title">重启服务</string>
+    <string name="fused_altimeter_force_calibration">强制校正间隔</string>
+    <string name="continuous_calibration_description">不论何时只要有 GPS 修正就进行校正</string>
+    <string name="fused_altimeter_force_calibration_summary">每 %s 强制进行 GPS 校正</string>
+    <string name="continuous_calibration">持续校正</string>
+    <string name="service_restart_channel_description">重启服务的通知</string>
+    <string name="clinometer_augmented_reality_description">使用相机使倾角可视化</string>
+    <string name="clinometer_augmented_reality">测斜仪增强现实</string>
+    <string name="dynamic_colors">动态颜色</string>
+    <string name="compass_dynamic_colors">指南针动态颜色</string>
+    <string name="compass_dynamic_colors_summary">对基本方位使用动态颜色</string>
+    <string name="screen_flashlight_full_name">屏幕手电</string>
+    <string name="view_in_3d">3D 视图查看</string>
+    <string name="locate">定位</string>
 </resources>

@@ -6,24 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.ui.setCompoundDrawables
 import com.kylecorry.andromeda.core.units.CoordinateFormat
 import com.kylecorry.andromeda.fragments.BoundBottomSheetDialogFragment
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentLocationBinding
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationCopy
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationGeoSender
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationQRSender
-import com.kylecorry.trail_sense.navigation.infrastructure.share.LocationSharesheet
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.sharing.Share
-import com.kylecorry.trail_sense.shared.sharing.ShareAction
 import java.time.Duration
 import java.time.Instant
 
@@ -35,7 +30,7 @@ class LocationBottomSheet : BoundBottomSheetDialogFragment<FragmentLocationBindi
     private val prefs by lazy { UserPreferences(requireContext()) }
     private var format = CoordinateFormat.DecimalDegrees
 
-    private val intervalometer = Timer {
+    private val intervalometer = CoroutineTimer {
         updateUI()
     }
 

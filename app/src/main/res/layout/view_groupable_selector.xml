@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.kylecorry.ceres.toolbar.CeresToolbar
+    <com.kylecorry.andromeda.views.toolbar.Toolbar
         android:id="@+id/group_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,13 +16,12 @@
         tools:title="@string/beacons" />
 
     <!--TODO: Make this a searchbox icon-->
-    <androidx.appcompat.widget.SearchView
+    <com.kylecorry.trail_sense.shared.views.SearchView
         android:id="@+id/searchbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:queryHint="@string/search" />
+        android:layout_marginEnd="16dp" />
 
     <TextView
         android:id="@+id/empty_text"
@@ -35,7 +34,7 @@
         tools:text="@string/no_beacons"
         tools:visibility="visible" />
 
-    <com.kylecorry.ceres.list.CeresListView
+    <com.kylecorry.andromeda.views.list.AndromedaListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

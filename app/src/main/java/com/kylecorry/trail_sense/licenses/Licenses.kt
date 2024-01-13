@@ -1,11 +1,11 @@
 package com.kylecorry.trail_sense.licenses
 
-@Suppress("SameParameterValue")
 object Licenses {
     val libraries = listOf(
         Library(
             "Pictogrammers",
-            "https://pictogrammers.com/",
+            "https://pictogrammers.com/"
+        ) {
             """Pictogrammers Free License
 --------------------------
 
@@ -28,86 +28,97 @@ licenses or are distributed under the Apache 2.0 license.
 
 # Code: MIT (https://opensource.org/licenses/MIT)
 The MIT license applies to all non-font and non-icon files."""
-        ),
+        },
         Library(
             "Material Design Icons",
             "https://github.com/google/material-design-icons/",
-            apache2("year", "Google", "")
-        ),
+        ) { apache2("year", "Google", "") },
         Library(
             "Material Components for Android",
-            "https://github.com/material-components/material-components-android",
+            "https://github.com/material-components/material-components-android"
+        ) {
             apache2("[yyyy]", "[name of copyright owner]", "")
-        ),
+        },
         Library(
             "Android Jetpack",
-            "https://github.com/androidx/androidx",
+            "https://github.com/androidx/androidx"
+        ) {
             apache2("", "", "")
-        ),
+        },
         Library(
             "RenderScript Intrinsics Replacement Toolkit",
-            "https://github.com/android/renderscript-intrinsics-replacement-toolkit",
+            "https://github.com/android/renderscript-intrinsics-replacement-toolkit"
+        ) {
             apache2("[yyyy]", "[name of copyright owner]", "")
-        ),
+        },
         Library(
             "Markwon",
-            "https://github.com/noties/Markwon",
+            "https://github.com/noties/Markwon"
+        ) {
             apache2("{yyyy}", "{name of copyright owner}", "")
-        ),
+        },
         Library(
             "ZXing",
-            "https://github.com/zxing/zxing",
+            "https://github.com/zxing/zxing"
+        ) {
             apache2(
                 "[yyyy]",
                 "[name of copyright owner]",
                 ""
             )
-        ),
+        },
         Library(
             "CompassView",
-            "https://github.com/kix2902/CompassView",
+            "https://github.com/kix2902/CompassView"
+        ) {
             apache2(
                 "\${year}",
                 "\${owner}",
                 "Modifications made by Kyle Corry: Ported to Kotlin, changed styling."
             )
-        ),
+        },
         Library(
             "osgb",
-            "https://github.com/dstl/osgb",
+            "https://github.com/dstl/osgb"
+        ) {
             apache2(
                 "[yyyy]",
                 "[name of copyright owner]",
                 "Modifications made by Kyle Corry: Fixed WGS84 conversion bug"
             )
-        ),
+        },
         Library(
             "kotlinx.coroutines",
-            "https://github.com/Kotlin/kotlinx.coroutines",
+            "https://github.com/Kotlin/kotlinx.coroutines"
+        ) {
             apache2(
                 "2000-2020",
                 "JetBrains s.r.o. and Kotlin Programming Language contributors.",
                 ""
             )
-        ),
+        },
         Library(
             "kotlin-csv",
-            "https://github.com/doyaaaaaken/kotlin-csv",
+            "https://github.com/doyaaaaaken/kotlin-csv"
+        ) {
             apache2("2021", "doyaaaaaken", "")
-        ),
+        },
         Library(
             "subsampling-scale-image-view",
-            "https://github.com/davemorrissey/subsampling-scale-image-view",
+            "https://github.com/davemorrissey/subsampling-scale-image-view"
+        ) {
             apache2("2020", "davemorrissey", "")
-        ),
+        },
         Library(
             "NPMap Symbol Library",
-            "https://github.com/nationalparkservice/symbol-library",
+            "https://github.com/nationalparkservice/symbol-library"
+        ) {
             bsd("2013", "Mapbox, LLC")
-        ),
+        },
         Library(
             "NASA WORLD WIND (ported by Berico-Technologies)",
-            "https://github.com/Berico-Technologies/Geo-Coordinate-Conversion-Java",
+            "https://github.com/Berico-Technologies/Geo-Coordinate-Conversion-Java"
+        ) {
             """NASA WORLD WIND
 
 Copyright © 2004-2005 United States Government as represented by the Administrator of the National Aeronautics and Space Administration. All Rights Reserved. Copyright © 2004-2005 Contributors. All Rights Reserved.
@@ -181,27 +192,40 @@ D. Entire Understanding: This Agreement constitutes the entire understanding and
 E. Binding Authority: By accepting and using the Subject Software under this Agreement, a Recipient affirms its authority to bind the Recipient to all terms and conditions of this Agreement and that that Recipient hereby agrees to all terms and conditions herein.
 
 F. Point of Contact: Any Recipient contact with Government Agency is to be directed to the designated representative as follows: Patrick.Hogan@nasa.gov"""
-        ),
+        },
         Library(
             "Natural Earth",
-            "https://www.naturalearthdata.com/",
+            "https://www.naturalearthdata.com/"
+        ) {
             """Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."""
-        ),
+        },
         Library(
             "MERRA-2",
-            "https://disc.gsfc.nasa.gov/datasets/M2SMNXSLV_5.12.4/summary?keywords=statM_2d_slv_Nx",
+            "https://disc.gsfc.nasa.gov/datasets/M2SMNXSLV_5.12.4/summary?keywords=statM_2d_slv_Nx"
+        ) {
             """Global Modeling and Assimilation Office (GMAO) (2015), MERRA-2 statM_2d_slv_Nx: 2d,Monthly,Aggregated Statistics,Single-Level,Assimilation,Single-Level Diagnostics V5.12.4, Greenbelt, MD, USA, Goddard Earth Sciences Data and Information Services Center (GES DISC), Accessed: 2023-05-22, 10.5067/KVIMOMCUO83U"""
-        ),
+        },
         Library(
             "ETOPO 2022",
-            "https://doi.org/10.25921/fd45-gt74",
+            "https://doi.org/10.25921/fd45-gt74"
+        ) {
             """NOAA National Centers for Environmental Information. 2022: ETOPO 2022 15 Arc-Second
 Global Relief Model. NOAA National Centers for Environmental Information.
 https://doi.org/10.25921/fd45-gt74 . Accessed 2023-05-26.
 ETOPO 2022 metadata may be accessed here: ETOPO 2022 metadata landing page"""
-        )
+        },
+        Library(
+            "Trail Sense Contributors",
+            "https://github.com/kylecorry31/Trail-Sense"
+        ) {
+            val contributors = arrayOf("kylecorry31", "qwerty287", "sr093906", "ChuckMichael", "oersen", "laralem", "Fjuro", "comradekingu", "beriain", "ebraminio", "SecularSteve", "jer194", "raphaelventura", "ojppe", "delthia", "weblate", "cewbdex", "another-sapiens", "ACABMAN666", "zsbetu", "Jakarrrg", "shilonit", "SantosSi", "Portagoras", "crlambda", "Xoronic", "Craftefix", "mfrancesconi", "Leopardus4", "comcloudway", "fnogcps", "a-mento", "StarSkyGeminid", "mrestivill", "pr0gr8mm3r", "paulle", "notramo", "NaserKhoshfetrat", "le-jun", "LiJu09", "ingfabby", "hphan9", "KovalevArtem", "volodymyr-ahafonov", "mellvie", "huuhaa", "bowornsin", "naoritzio", "tacostea", "imBigo", "Sak94664", "rezaalmanda", "Poussinou", "Oymate", "L-P", "LuccoJ", "ygorigor", "sguinetti", "asafran", "AHOHNMYC", "efraletti", "Tijs-B", "swltr", "A5468", "Shadowstrike-code", "rherilier", "VectorKappa", "Pastitas", "the7thNightmare", "ARtHryDr", "nautilusx", "nzgha", "n30mrx", "kasmide", "xax", "jacoii", "zaioti", "jere-a", "btsmartx", "Abdulkarim28", "Akamar", "dasrecht", "helloiamcait", "E440QF", "EnderPicture", "Estebastien", "fparri", "Johnny846", "FrameXX", "W113565456", "gerrydoro", "gustavosilveiragss", "iRomanyshyn", "LightFOSS", "LucFreitas", "Luiz-bro", "TomasCartman")
+            "The following people contributed code or translations to Trail Sense under the MIT License: ${
+                contributors.joinToString(
+                    ", "
+                )
+            }"
+        }
     )
-
 
     private fun bsd(year: String, owner: String): String {
         return """BSD License

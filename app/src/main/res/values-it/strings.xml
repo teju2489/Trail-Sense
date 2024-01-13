@@ -270,7 +270,6 @@
     <string name="category_food">Cibo</string>
     <string name="other">Altro</string>
     <string name="tool_bubble_level_title">Livella a bolla</string>
-    <string name="guide_weather_prediction_title">Previsioni meteo</string>
     <string name="tap_sun_moon_hint">Clicca il sole o la luna per dettagli sulla posizione</string>
     <string name="no_group">Nessun gruppo</string>
     <string name="group">Gruppo</string>
@@ -323,11 +322,9 @@
     <string name="compass_calibrate_toast">Precisione bussola %s, è suggerita la calibrazione</string>
     <string name="open_beacon_in_maps">Visualizza sulla mappa</string>
     <string name="charging_wireless">In carica (%s)</string>
-    <string name="guide_thermometer_calibration_title">Calibrazione termometro</string>
     <string name="pref_gps_override_title">Sovrascrittura posizione</string>
     <string name="coordinate_input_invalid_location">Posizione non valida</string>
     <string name="location_input_help_title">Formati supportati per la posizione</string>
-    <string name="guide_location_no_gps_title">Determina la posizione senza GPS</string>
     <string name="unit_inches_abbreviation">in</string>
     <string name="unit_centimeters_abbreviation">cm</string>
     <string name="note_title_hint">Titolo</string>
@@ -383,7 +380,6 @@
 \n
 \nQuesto avviso può essere disabilitato nelle impostazioni dell\'app.</string>
     <string name="toast_destination_bearing_set">Direzione della destinazione impostata</string>
-    <string name="cliff_height_guide">Stima altezza precipizio</string>
     <string name="precise_centimeters_format">%s cm</string>
     <string name="clock_waiting_for_gps">Aggiornamento orario dal GPS…</string>
     <string name="contents">Contenuto</string>
@@ -405,7 +401,6 @@
     <string name="pref_low_power_mode_summary">Disabilita alcune funzioni per risparmiare energia</string>
     <string name="cirrus">Cirro</string>
     <string name="water_boil_timer_title">Bollitura acqua</string>
-    <string name="guide_conserving_battery_title">Conservare batteria</string>
     <string name="max_temp_uncalibrated">Temperatura telefono massima (calibrata)</string>
     <string name="min_temp_calibrated">Temperatura ambiente minima (calibrata)</string>
     <string name="min_temp_uncalibrated">Temperatura telefono minima (calibrata)</string>
@@ -470,7 +465,6 @@
     <string name="precise_inches_format">%s in</string>
     <string name="pedometer">Pedometro</string>
     <string name="no_tides">Nessuna marea</string>
-    <string name="guide_importing_maps_title">Importare le mappe</string>
     <string name="previous">Precedente</string>
     <string name="water_boil_timer_done_title">Bollitura acqua completata</string>
     <string name="export">Esporta</string>
@@ -525,7 +519,6 @@
     <string name="beam_distance">Profondità fascio %s</string>
     <string name="pref_backtrack_save_cell_summary">Registra la potenza del segnale cellulare presso il segnaposto. Non utilizza Internet.</string>
     <string name="pref_backtrack_save_cell_title">Registra segnale cellulare</string>
-    <string name="guide_light_meter_title">Determina l\'efficacia della torcia</string>
     <string name="guide_light_meter_description">Determina la profondità del fascio di luce delle torce</string>
     <string name="service_update_frequency">Aggiornato ogni %s</string>
     <string name="right_quick_action">Azione rapida destra</string>
@@ -551,7 +544,6 @@
     <string name="backtrack_high_priority_notification">Posiziona un segnaposto ogni %s</string>
     <string name="battery_warning">Avviso consumo batteria</string>
     <string name="calibrate_new_tide">Calibrare su una nuova marea\?</string>
-    <string name="water_boil_guide_title">Rendere l\'acqua sicura da bere</string>
     <string name="last_signal_beacon_name">Ultimo segnale - %1$s (%2$s)</string>
     <string name="noon">Mezzogiorno</string>
     <string name="delete_path_group_message">%s e tutti i suoi percorsi verranno eliminati.</string>
@@ -625,7 +617,6 @@
     <string name="merging">Unificazione</string>
     <string name="pref_barometer_pressure_smoothing_title">Stabilizzazione pressione</string>
     <string name="location_not_mocked">In uso: posizione effettiva</string>
-    <string name="no_compass_message">Il tuo dispositivo non possiede il sensore della bussola</string>
     <plurals name="number_days">
         <item quantity="one">%d giorno</item>
         <item quantity="many">%d giorni</item>
@@ -1123,7 +1114,6 @@
     <string name="gps_location_accuracy">Precisione della posizione GPS</string>
     <string name="gps_elevation_accuracy">Precisione dell\'altitudine GPS</string>
     <string name="gps_satellites">Satelliti GPS</string>
-    <string name="no_compass_description">Il tuo dispositivo non posiede una bussola. Questo è un compenente harsware, pertanto non si può far nulla per aggiungerlo. Alcune funzionalità che utilizzano la bussola non saranno disponibili.</string>
     <string name="restore">Ripristino</string>
     <string name="backup">Backup</string>
     <string name="restore_disclaimer">Questa azione sovrascriverà tutti i dati correnti. Assicurarsi di eseguire un backup prima di continuare.
@@ -1139,4 +1129,27 @@
     <string name="backup_restore">Backup / Ripristino</string>
     <string name="restore_failure_newer_version">Questo backup è stato creato con una versione più recente di %s. Per favore aggiornare l\'app e riprovare.</string>
     <string name="zero_shutter_lag">Eliminazione ritardo dello scatto</string>
+    <string name="my_location">La mia posizione</string>
+    <string name="destination">Destinazione</string>
+    <string name="no_sensor_message">Il dispositivo non dispone di un sensore %s</string>
+    <string name="missing_sensor_message_1">Il vostro %1$s non ha un sensore incorporato %2$s. Purtroppo, questo significa che alcune caratteristiche in %3$s non saranno disponibili.</string>
+    <string name="enter_manually">Inserisci manualmente</string>
+    <string name="why_missing_sensor">Il mio dispositivo è nuovo/costoso, perché manca questo sensore?</string>
+    <string name="augmented_reality">Realtà aumentata</string>
+    <string name="tool_long_press_hint_toast">Premi a lungo uno strumento per visualizzare più opzioni</string>
+    <string name="triangulate_destination_location_1_instructions">Registra la tua posizione e la direzione per la destinazione.</string>
+    <string name="high_sensitivity">Alta sensibilità</string>
+    <string name="distance_away_from_destination">%s dalla destinazione</string>
+    <string name="missing_sensor_explanation">Alcuni produttori di telefoni scelgono di non aggiungere questo sensore, anche su dispositivi nuovi o costosi. È possibile ottenere ulteriori informazioni visitando il sito dei produttori di dispositivi o contattandoli.</string>
+    <string name="no_sensor_unable_to_fix">No, purtroppo questa è una caratteristica hardware, quindi non c\'è modo di aggiungerlo.</string>
+    <string name="settings_have_moved_message">Le impostazioni dell\'app sono state spostate nella scheda Strumenti</string>
+    <string name="settings_have_moved">Le impostazioni si sono spostate</string>
+    <string name="triangulate_self_location_1_instructions">Scegli una posizione conosciuta che puoi vedere e registra la direzione da dove sei a quella posizione.</string>
+    <string name="augmented_reality_description">Visualizza i beacon vicini e sole / luna con la fotocamera</string>
+    <string name="triangulate_self_location_2_instructions">Scegli un\'altra posizione conosciuta che puoi vedere e registra la direzione da dove sei a quella posizione.</string>
+    <string name="magnetic_north">Nord magnetico</string>
+    <string name="direction_not_set">Direzione non impostata</string>
+    <string name="location_number">Posizione %d</string>
+    <string name="direction">Direzione</string>
+    <string name="is_there_a_way_to_fix_this">C\'è un modo per risolvere questo problema?</string>
 </resources>

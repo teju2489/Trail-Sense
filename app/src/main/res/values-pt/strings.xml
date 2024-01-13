@@ -76,7 +76,6 @@
     <string name="pref_daily_weather_notification_title">Notificações meteorológicas diárias</string>
     <string name="todays_forecast">Previsão para hoje</string>
     <string name="guide_light_meter_description">Como determinar a distância do sinal das lanternas</string>
-    <string name="guide_light_meter_title">Determinar a eficácia da lanterna</string>
     <string name="gps_cache">Cache do GPS</string>
     <string name="location_disabled">A localização está desativada</string>
     <string name="create_at_distance">Criar à distância</string>
@@ -173,7 +172,6 @@
     <string name="distance_from">De</string>
     <string name="inventory_empty_text">Nenhum item</string>
     <string name="tool_whistle_title">Apito</string>
-    <string name="cliff_height_guide">Estimar a altura de um penhasco</string>
     <string name="tool_cliff_height_disclaimer">Use esta ferramenta apenas quando for seguro fazê-lo e verifique o que está no fundo do penhasco para evitar, ao atirar uma pedra ou objeto, ferir alguém, animais ou danificar elementos. Consulte o guia do utilizador para mais instruções.</string>
     <string name="tool_cliff_height_description">Mede a altura de um penhasco ou descida</string>
     <string name="tool_cliff_height_title">Altura de penhasco</string>
@@ -189,8 +187,6 @@
     <string name="other">Outros</string>
     <string name="tool_bubble_level_summary">Indica se as superfícies são planas</string>
     <string name="tool_bubble_level_title">Nível de bolha</string>
-    <string name="guide_weather_prediction_title">Previsão meteorológica</string>
-    <string name="guide_conserving_battery_title">Poupar a bateria</string>
     <string name="navigation_nearby_category">Nas proximidades</string>
     <string name="forecasts_category">Previsões</string>
     <string name="advanced">Avançado</string>
@@ -449,7 +445,6 @@
     <string name="battery_power_usb">USB</string>
     <string name="battery_power_ac">AC</string>
     <string name="tool_thermometer_title">Termómetro</string>
-    <string name="guide_thermometer_calibration_title">Calibração do termómetro</string>
     <string name="delete_waypoint_prompt">Eliminar ponto de passagem\?</string>
     <string name="pref_gps_override_title">Localização simulada</string>
     <string name="coordinate_input_invalid_location">Localização inválida</string>
@@ -473,7 +468,6 @@
     <string name="create_beacon">Criar alfinete</string>
     <string name="backtrack_notification_channel_description">Atualização das localizações de voltar para trás</string>
     <string name="backtrack">Voltar para trás</string>
-    <string name="guide_location_no_gps_title">Determinar localização sem GPS</string>
     <string name="duration_hour_format">%dh</string>
     <string name="miles_per_hour_format">%.1f mph</string>
     <string name="kilometers_per_hour_format">%.1f km/h</string>
@@ -620,7 +614,6 @@
     <string name="last_signal_beacon_name">Último sinal - %1$s (%2$s)</string>
     <string name="camera_permission_denied">Permissão da câmara negada, não foi possível ativar os recursos da câmara. Tem de fornecer permissão nas configurações do telemóvel.</string>
     <string name="color">Cor</string>
-    <string name="water_boil_guide_title">Tornar a água segura para beber</string>
     <string name="calibrate_new_tide">Calibrar para uma nova maré\?</string>
     <string name="backtrack_battery_warning">Pequenos intervalos (menos de 15 minutos) podem causar um consumo excessivo da bateria</string>
     <string name="battery_warning">Aviso do consumo da bateria</string>
@@ -643,7 +636,6 @@
     <string name="time_until_empty">até esgotar</string>
     <string name="next">Seguinte</string>
     <string name="previous">Anterior</string>
-    <string name="guide_importing_maps_title">Importar mapas</string>
     <string name="create_map_description">Introduza o nome do mapa</string>
     <string name="create_map">Criar mapa</string>
     <string name="place_beacon_at">Posicionar um alfinete em %s\?</string>
@@ -696,7 +688,6 @@
     <string name="elevation_history">Histórico de altitude</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d satélites</string>
-    <string name="no_compass_message">O seu aparelho não possui um sensor de bússola</string>
     <string name="guide_packing_list">Criar lista de itens na mochila</string>
     <string name="weight_per_item">Peso por item</string>
     <string name="pack_sort_weight_high_to_low">Peso (alto para baixo)</string>

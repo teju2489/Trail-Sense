@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="color">Колір</string>
-    <string name="water_boil_guide_title">Убезпечте воду для її споживання</string>
     <string name="calibrate_new_tide">Відкалібрувати новий приплив\?</string>
     <string name="backtrack_battery_warning">Невеликі інтервали (менш як 15 хвилин) можуть призвести до надмірного розряджання батареї</string>
     <string name="battery_warning">Попередження про розряджання акумулятора</string>
@@ -24,7 +23,6 @@
     <string name="time_until_empty">до спустошення</string>
     <string name="next">Далі</string>
     <string name="previous">Назад</string>
-    <string name="guide_importing_maps_title">Імпортування мап</string>
     <string name="create_map_description">Уведіть назву мапи</string>
     <string name="create_map">Створити мапу</string>
     <string name="place_beacon_at">Установити маячок на %s\?</string>
@@ -67,7 +65,6 @@
     <string name="tomorrows_forecast">Завтрашній прогноз</string>
     <string name="todays_forecast">Сьогоднішній прогноз</string>
     <string name="guide_light_meter_description">Визначає відстань променя ліхтарика</string>
-    <string name="guide_light_meter_title">Визначення дієвості ліхтарика</string>
     <string name="gps_cache">GPS-кеш</string>
     <string name="location_disabled">Місцеперебування вимкнено</string>
     <string name="set">Установити</string>
@@ -127,15 +124,15 @@
 \n
 \n- Навігація до маячків
 \n
-\n- Підвищена точність прогнозів (потрібне місцеперебування у тлі, доступно не в усіх пристроях)
+\n- Підвищена точність прогнозів
 \n
-\n- Історія маршруту (потрібна робота в тлі)
+\n- Історія маршруту
 \n
 \n- Час сонця і місяця для вашого поточного місцеперебування
 \n
-\n- Якщо ви вирішите не надавати дозвіл на визначення місцеперебування, ви можете вручну ввести місцеперебування в меню «Налаштування» &gt; «Калібрування GPS» у Trail Sense.
+\n- Якщо ви вирішите не надавати дозвіл на визначення місцеперебування, ви можете вручну ввести місцеперебування в меню «Налаштування» &gt; «Датники» &gt; «Калібрування GPS» у Trail Sense.
 \n
-\n- Після натискання кнопки «Продовжити» вам буде запропоновано надати дозволи на місцеперебування і місцеперебування у тлі. Відмова від цих дозволів не дозволить Trail Sense отримати доступ до вашого місцеперебування, тому пораджено вводити місцеперебування вручну.</string>
+\n- Після натискання кнопки «Продовжити» вам буде запропоновано надати дозволи на місцеперебування. Відмова від цих дозволів не дозволить Trail Sense отримати доступ до вашого місцеперебування, тому пораджено вводити місцеперебування вручну.</string>
     <string name="tools">Засоби</string>
     <string name="onboarding_user_guide">Дізнайтеся, як використовувати функції Trail Sense, за допомогою посібника користувача. Доступно в нижній частині вкладки Засоби.
 \n
@@ -173,7 +170,6 @@
     <string name="unsaved_changes_message">Внесені вами зміни не будуть збережені.</string>
     <string name="inventory_empty_text">Порожньо</string>
     <string name="tool_whistle_title">Свисток</string>
-    <string name="cliff_height_guide">Оцінка висоти скелі</string>
     <string name="tool_cliff_height_disclaimer">Використовуйте цей засіб тільки тоді, коли це безпечно, і обов\'язково перевіряйте, що знаходиться під скелею, щоб уникнути травм. Вказівки дивіться в посібнику користувача.</string>
     <string name="tool_cliff_height_description">Виміряйте висоту скелі чи обриву</string>
     <string name="tool_cliff_height_title">Висота скелі</string>
@@ -188,7 +184,7 @@
 \n- Виміряйте значення лінійки Trail Sense, що відповідає одній одиниці фізичної лінійки.
 \n
 \n- Повідомте виміряне значення тут.</string>
-    <string name="access_background_location_rationale">Trail Sense використовує дані про місцеперебування у тлі. Він використовується для забезпечення точніших попереджень про захід сонця під час подорожей. [Переглянути політику приватності] (https://kylecorry.com/Trail-Sense/privacy_policy.html)</string>
+    <string name="access_background_location_rationale">Trail Sense використовує дані про місцезнаходження у фоновому режимі для калібрування тиску на рівні моря під час моніторингу погоди та для більш точних сповіщень про захід сонця. [Переглянути політику приватності] (https://kylecorry.com/Trail-Sense/privacy_policy.html)</string>
     <string name="altimeter_mode_gps_barometer">GPS + Барометр</string>
     <string name="elevation_from_pressure">Задати зсув за допомогою барометра на пристрої</string>
     <string name="category_natural">Природне</string>
@@ -202,8 +198,6 @@
     <string name="other">Інше</string>
     <string name="tool_bubble_level_summary">Визначте, чи є поверхні плоскими</string>
     <string name="tool_bubble_level_title">Рівномір</string>
-    <string name="guide_weather_prediction_title">Прогноз погоди</string>
-    <string name="guide_conserving_battery_title">Енергоощадження</string>
     <string name="navigation_nearby_category">Поблизу</string>
     <string name="forecasts_category">Прогнози</string>
     <string name="advanced">Додатково</string>
@@ -359,7 +353,6 @@
     <string name="battery_power_usb">USB</string>
     <string name="battery_power_ac">Змінний струм</string>
     <string name="tool_thermometer_title">Термометр</string>
-    <string name="guide_thermometer_calibration_title">Калібрування термометра</string>
     <string name="delete_tide_prompt">Видалити приплив\?</string>
     <string name="delete_waypoint_prompt">Видалити шляхову точку\?</string>
     <string name="pref_gps_override_title">Перевизначення місцеперебування</string>
@@ -384,7 +377,6 @@
     <string name="create_beacon">Створити маячок</string>
     <string name="backtrack_notification_channel_description">Оновлення місцеперебування історії маршруту</string>
     <string name="backtrack">Історія маршруту</string>
-    <string name="guide_location_no_gps_title">Визначення місцеперебування без GPS</string>
     <string name="create_at_distance">Створити на відстані</string>
     <string name="min_temp_uncalibrated">Мін. температура телефону (без калібрування)</string>
     <string name="min_temp_calibrated">Мін. температура довкілля (після калібрування)</string>
@@ -570,8 +562,8 @@
     <string name="dusk_type">Захід сонця (%s)</string>
     <string name="dawn_type">Схід сонця (%s)</string>
     <string name="pref_barometer_pressure_smoothing_title">Згладжування тиску</string>
-    <string name="pref_nmea_elevation_summary">Використовує зсуви NMEA для перетворення висоти</string>
-    <string name="pref_nmea_elevation_title">Зсуви висоти NMEA</string>
+    <string name="pref_nmea_elevation_summary">Використовує NMEA (супутник) для корекції висот, а не вбудовану модель</string>
+    <string name="pref_nmea_elevation_title">Корекція висоти NMEA</string>
     <string name="pref_barometer_info_summary">Тиск може відрізнятися від тиску сусідніх станцій</string>
     <string name="battery_history">Історія батареї - остан. %s</string>
     <string name="no_data">Немає даних</string>
@@ -681,7 +673,6 @@
     <string name="current_format">%s мА</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d супутників</string>
-    <string name="no_compass_message">Ваш пристрій не має датника компаса</string>
     <string name="elevation_history">Історія висот</string>
     <string name="beacon_qr_import_instructions">Зчитайте QR-код для імпорту</string>
     <string name="qr_code">QR-код</string>
@@ -1126,4 +1117,28 @@
     <string name="gps_satellites">GPS супутники</string>
     <string name="gps_elevation_accuracy">Точність висоти GPS</string>
     <string name="gps_location_accuracy">Точність розташування GPS</string>
+    <string name="no_sensor_message">Ваш пристрій не має датника %s</string>
+    <string name="backup">Бекап</string>
+    <string name="restore">Відновити</string>
+    <string name="notifications_channel">Сповіщення (%s)</string>
+    <string name="sunset_alerts_background_location_disclaimer">Сповіщення про захід сонця можуть бути неточними під час подорожі</string>
+    <string name="allow_schedule_exact_alarms_instructions">Це дозволяє %1$ встановлювати точні будильники та нагадування, наприклад, про захід сонця. Без цього будильники можуть не спрацьовувати в потрібний час.
+\n
+\nЩоб дозволити, натисніть \"%2$s\" і увімкніть налаштування для дозволу будильників і нагадувань.</string>
+    <string name="exact_alarm_permission_denied">Будильники та нагадування заборонено, сповіщення можуть бути неточними.</string>
+    <string name="backtrack_no_permission">Для запуску відслідкування шляху потрібен дозвіл на розташування</string>
+    <string name="reset_calibration">Скинути калібрування</string>
+    <string name="restore_disclaimer">Ця дія замінить всі ваші поточні дані. Будь ласка, переконайтеся, що у вас є резервна копія, перш ніж продовжити.
+\n
+\nВибирайте тільки той файл резервної копії, який ви створили за допомогою %s і довіряйте йому.</string>
+    <string name="backing_up_loading_message">Збереження бекапу…</string>
+    <string name="restoring_loading_message">Відновлення…</string>
+    <string name="backup_disclaimer">Буде створено файл резервної копії, який міститиме всі ваші поточні дані. Він міститиме налаштування, шляхи, маячки, мапи тощо.
+\n
+\nЦей файл не зашифровано. Не передавайте його нікому, кому ви не довіряєте.</string>
+    <string name="gps_accuracy_tip">Переконайтеся, що у вас є безперешкодний огляд неба, і тримайтеся подалі від високих будівель і дерев.</string>
+    <string name="allow_ignore_battery_restrictions">Дозволити %s нехтувати обмеженням заряду батареї</string>
+    <string name="battery_usage_allowed">Використання акумулятора дозволено</string>
+    <string name="allow_schedule_exact_alarms">Дозволити %s встановлювати будильники та нагадування</string>
+    <string name="sunset_alert_scheduled">Сповіщення заплановано за %s до заходу сонця</string>
 </resources>

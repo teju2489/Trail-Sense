@@ -83,7 +83,6 @@
     <string name="pref_github_title">GitHub</string>
     <string name="pref_email_title">電郵畀開發者</string>
     <string name="continue_button">繼續</string>
-    <string name="no_compass_message">您部機未備有羅經感應器</string>
     <string name="qr_code">二維碼</string>
     <string name="beacon_qr_import_instructions">掃個二維碼去匯入</string>
     <string name="last_duration">過去 %s</string>
@@ -397,7 +396,6 @@
     <string name="calibrate_new_tide">係咪要校正去新嘅潮汐？</string>
     <string name="color">色水</string>
     <string name="icon">公仔</string>
-    <string name="water_boil_guide_title">令水可以安全飲用</string>
     <string name="blank">留空</string>
     <string name="units">單位</string>
     <string name="volume">體積</string>
@@ -409,7 +407,6 @@
     <string name="time_until_empty">就會冇晒電</string>
     <string name="previous">上一頁</string>
     <string name="time_until_full">就會叉滿電</string>
-    <string name="guide_importing_maps_title">匯入地圖</string>
     <plurals name="path_group_summary">
         <item quantity="other">%d 條路徑</item>
     </plurals>
@@ -497,7 +494,6 @@
     <string name="tool_white_noise_title">白噪音</string>
     <string name="tool_white_noise_summary">幫助您入睡</string>
     <string name="map_scale_ratio">比率</string>
-    <string name="guide_location_no_gps_title">唔用 GPS 之下斷定位置</string>
     <string name="unit_centimeters_abbreviation">厘米</string>
     <string name="solar_eclipses">日蝕</string>
     <string name="solar_eclipse_start">日蝕 (開始)</string>
@@ -671,7 +667,6 @@
     <string name="always">幾時都係</string>
     <string name="beacon_create_beacon">地標</string>
     <string name="coordinate_input_invalid_location">位置無效</string>
-    <string name="guide_thermometer_calibration_title">溫度計校正</string>
     <string name="tool_thermometer_title">溫度計</string>
     <string name="guide_barometer_calibration_title">氣壓計校正</string>
     <string name="unsaved_changes">未儲存更改</string>
@@ -729,7 +724,6 @@
     <string name="weather_monitor">氣象監測</string>
     <string name="battery_history">電量紀錄：過去嗰 %s</string>
     <string name="pref_barometer_pressure_smoothing_title">氣壓平滑化</string>
-    <string name="guide_conserving_battery_title">慳電</string>
     <string name="tool_bubble_level_summary">睇下個面係咪平</string>
     <string name="bubble_level_angles">橫：%1$s
 \n縱：%2$s</string>
@@ -778,11 +772,9 @@
     <string name="peak_time">高峰</string>
     <string name="tool_clinometer_summary">估計雪崩風險同埋物件嘅高度</string>
     <string name="astronomy_direction_peak">高峰方位</string>
-    <string name="cliff_height_guide">估計懸崖高度</string>
     <string name="units_psi">每平方吋磅</string>
     <string name="astronomy_altitude_peak">高峰仰角</string>
     <string name="tool_cliff_height_description">測量懸崖或峭壁嘅高度</string>
-    <string name="guide_weather_prediction_title">氣象預測</string>
     <string name="category_hydration">補水</string>
     <string name="category_medical">醫藥</string>
     <string name="category_fire">生火</string>
@@ -869,7 +861,6 @@
     <string name="lowest_point_elevation">最低點</string>
     <string name="map_scale_verbal">明述</string>
     <string name="highest_point_elevation">最高點</string>
-    <string name="tool_deprecation_disclaimer">呢項架生有機會被飛起或者重新執過，因為未見得對行山、遠足或露營有實際用處。若然您覺得呢項架生有用，歡迎來鴻 %s 話過我知您係點樣用得著佢。</string>
     <string name="min_temp_calibrated">最低環境氣溫 (經校正)</string>
     <string name="restore_failure_newer_version">呢個備份乃較新版本嘅 %s 整嘅。請更新個 app，然後再試下啦。</string>
     <string name="min_temp_uncalibrated">最低手機溫度 (未校正)</string>
@@ -883,7 +874,6 @@
     <string name="backup_restore">備份 / 還原</string>
     <string name="gps_accuracy_tip">請確定您抬頭望向天空能一覽無遺，並遠離高樓大廈同樹木。</string>
     <string name="restoring_loading_message">還原緊…</string>
-    <string name="scheduled_for_redesign_or_removal">有待重新執過或者飛起</string>
     <string name="backup">備份</string>
     <string name="backing_up_loading_message">備份緊…</string>
     <string name="gps_location_accuracy">GPS 定位準繩</string>

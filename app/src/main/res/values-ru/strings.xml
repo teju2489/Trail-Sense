@@ -211,8 +211,6 @@
     <string name="no_group">Не в группе</string>
     <string name="tap_sun_moon_hint">Коснитесь Солнца или Луны, чтобы узнать о местоположении</string>
     <string name="forecasts_category">Прогнозы</string>
-    <string name="guide_conserving_battery_title">Экономия батареи</string>
-    <string name="guide_weather_prediction_title">Прогноз погоды</string>
     <string name="category_natural">Природное</string>
     <string name="category_safety">Безопасность</string>
     <string name="category_shelter">Укрытие</string>
@@ -233,7 +231,6 @@
     <string name="tool_cliff_height_title">Высота скалы</string>
     <string name="tool_cliff_height_description">Измерьте высоту скалы или обрыва</string>
     <string name="tool_cliff_height_disclaimer">Используйте этот инструмент только тогда, когда это безопасно, и обязательно проверяйте, что находится под скалой, чтобы избежать травм. Инструкции смотрите в руководстве пользователя.</string>
-    <string name="cliff_height_guide">Оценка высоты скалы</string>
     <string name="precise_inches_format">%s дюйм</string>
     <string name="thunder">Гром</string>
     <string name="toast_destination_bearing_set">Ориентация установлена</string>
@@ -343,7 +340,6 @@
     <string name="battery_power_usb">USB</string>
     <string name="battery_power_ac">AC</string>
     <string name="tool_thermometer_title">Термометр</string>
-    <string name="guide_thermometer_calibration_title">Калибровка термометра</string>
     <string name="delete_waypoint_prompt">Удалить путевую точку\?</string>
     <string name="pref_gps_override_title">Переопределение местоположения</string>
     <string name="coordinate_input_invalid_location">Неверное местоположение</string>
@@ -367,7 +363,6 @@
     <string name="create_beacon">Создать маячок</string>
     <string name="backtrack_notification_channel_description">Обновление местоположения истории маршрута</string>
     <string name="backtrack">История маршрута</string>
-    <string name="guide_location_no_gps_title">Определить местоположение без GPS</string>
     <string name="create_at_distance">Создать на расстоянии</string>
     <string name="update_gps_override">Обновить переопределение GPS</string>
     <string name="coordinate_format_mgrs">MGRS</string>
@@ -477,7 +472,6 @@
     <string name="pref_daily_weather_notification_title">Ежедневное уведомление о погоде</string>
     <string name="todays_forecast">Прогноз на сегодня</string>
     <string name="guide_light_meter_description">Как определить расстояние луча фонарика</string>
-    <string name="guide_light_meter_title">Определить эффективность фонарика</string>
     <string name="gps_cache">Кэш GPS</string>
     <string name="pref_daily_weather_time_title">Ежедневное время погоды</string>
     <string name="time_not_set">Время не установлено</string>
@@ -517,7 +511,6 @@
     <string name="time_until_empty">до опустения</string>
     <string name="next">Далее</string>
     <string name="previous">Назад</string>
-    <string name="guide_importing_maps_title">Импорт карт</string>
     <string name="create_map_description">Введите название карты</string>
     <string name="create_map">Создать карту</string>
     <string name="place_beacon_at">Установить маячок на %s\?</string>
@@ -562,7 +555,6 @@
     <string name="last_signal_beacon_name">Последний сигнал - %1$s (%2$s)</string>
     <string name="camera_permission_denied">В разрешении камеры отказано, невозможно включить функции камеры. Вы можете включить его в настройках.</string>
     <string name="color">Цвет</string>
-    <string name="water_boil_guide_title">Сделать воду безопасной для питья</string>
     <string name="map_perspective_instructions">Нарисуйте карту</string>
     <string name="days">Дни</string>
     <plurals name="number_days">
@@ -601,7 +593,6 @@
     <string name="elevation_history">История высот</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d спутников</string>
-    <string name="no_compass_message">В вашем устройстве отсутствует датчик компаса</string>
     <string name="guide_packing_list">Создание списков упаковки</string>
     <string name="weight_per_item">Вес на единицу</string>
     <string name="pack_sort_weight_high_to_low">Вес (по убыванию)</string>

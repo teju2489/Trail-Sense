@@ -13,21 +13,31 @@ import com.kylecorry.trail_sense.tools.battery.infrastructure.BatteryLogWorker
 import com.kylecorry.trail_sense.tools.pedometer.infrastructure.StepCounterService
 import com.kylecorry.trail_sense.weather.infrastructure.WeatherMonitorService
 import com.kylecorry.trail_sense.weather.infrastructure.WeatherUpdateScheduler
-import java.time.Duration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object TrailSenseServiceUtils {
 
-    fun restartServices(context: Context) {
-        startWeatherMonitoring(context)
-        startBacktrack(context)
-        startPedometer(context)
-        startSunsetAlarm(context)
-        startAstronomyAlerts(context)
-        BatteryLogWorker.start(context)
-        TileManager().setTilesEnabled(
-            context,
-            UserPreferences(context).power.areTilesEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-        )
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    fun restartServices(context: Context, isInBackground: Boolean = false) {
+        coroutineScope.launch {
+            if (!isInBackground){
+                ServiceRestartAlerter(context).dismiss()
+            }
+
+            startWeatherMonitoring(context)
+            startBacktrack(context)
+            startPedometer(context)
+            startSunsetAlarm(context)
+            startAstronomyAlerts(context)
+            BatteryLogWorker.start(context)
+            TileManager().setTilesEnabled(
+                context,
+                UserPreferences(context).power.areTilesEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+            )
+        }
     }
 
     /**
@@ -63,7 +73,7 @@ object TrailSenseServiceUtils {
         }
     }
 
-    private fun startBacktrack(context: Context) {
+    private suspend fun startBacktrack(context: Context) {
         val backtrack = BacktrackSubsystem.getInstance(context)
         if (backtrack.getState() == FeatureState.On) {
             if (!BacktrackService.isRunning) {

@@ -30,6 +30,8 @@ class WeatherMonitorTile : TopicTile() {
     }
 
     override fun start() {
-        weather.enableMonitor()
+        startForegroundService {
+            weather.enableMonitor()
+        }
     }
 }

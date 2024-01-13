@@ -225,7 +225,6 @@
     <string name="battery_capacity_format">%s mAh</string>
     <string name="current_format">%s mA</string>
     <string name="charging_slow">低速充電中（%s）</string>
-    <string name="guide_conserving_battery_title">バッテリーの節約</string>
     <string name="beacon_create">作成</string>
     <string name="lightning">閃光</string>
     <string name="battery_health_overheat">過熱</string>
@@ -259,7 +258,6 @@
     <string name="precise_temp_f_format">%s °F</string>
     <string name="beacon_create_beacon">ビーコン</string>
     <string name="forecasts_category">予報</string>
-    <string name="guide_weather_prediction_title">天気予測</string>
     <string name="tool_bubble_level_summary">表面が平らかどうかを確かめる</string>
     <string name="category_food">食品</string>
     <string name="category_hydration">水分</string>
@@ -269,7 +267,6 @@
     <string name="category_safety">安全</string>
     <string name="category_natural">自然</string>
     <string name="tool_cliff_height_description">がけなどの高さを測る</string>
-    <string name="cliff_height_guide">高さを推定する</string>
     <string name="distance_from">から</string>
     <string name="unit_kilometers">キロメートル</string>
     <string name="unit_feet">フィート</string>

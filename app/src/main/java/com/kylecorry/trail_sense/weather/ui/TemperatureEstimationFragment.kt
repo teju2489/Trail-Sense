@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.sol.math.SolMath.roundPlaces
@@ -21,7 +21,7 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.sensors.LocationSubsystem
 import com.kylecorry.trail_sense.shared.sensors.SensorService
-import com.kylecorry.trail_sense.shared.sensors.readAll
+import com.kylecorry.andromeda.sense.readAll
 import com.kylecorry.trail_sense.shared.views.UnitInputView
 import java.time.Duration
 import kotlin.math.roundToInt
@@ -35,9 +35,9 @@ class TemperatureEstimationFragment : BoundFragment<FragmentTemperatureEstimatio
     private val location by lazy { LocationSubsystem.getInstance(requireContext()) }
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
 
-    private val intervalometer = Timer {
+    private val intervalometer = CoroutineTimer {
         if (!isBound) {
-            return@Timer
+            return@CoroutineTimer
         }
         val temp = getEstimation()
         binding.temperatureTitle.title.text = if (temp == null || temp.temperature.isNaN()) {

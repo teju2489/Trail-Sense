@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.kylecorry.andromeda.alerts.CoroutineAlerts
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.ui.setCompoundDrawables
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
@@ -50,7 +50,7 @@ class TidesFragment : BoundFragment<FragmentTideBinding>() {
     private val dailyTideCommand by lazy { DailyTideCommand(tideService) }
     private val loadTideCommand by lazy { LoadTideTableCommand(requireContext()) }
 
-    private var currentRefreshTimer = Timer {
+    private var currentRefreshTimer = CoroutineTimer {
         inBackground { refreshCurrent() }
     }
 

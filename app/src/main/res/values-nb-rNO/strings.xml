@@ -171,7 +171,6 @@
     <string name="tap_sun_moon_hint">Trykk på solen eller månen for posisjonsdetaljer</string>
     <string name="pref_storm_alert_sensitivity_title">Uværfølsomhet</string>
     <string name="pref_forecast_sensitivity_title">Værvarselfølsomhet</string>
-    <string name="cliff_height_guide">Anslå høyden på en klippe</string>
     <string name="tool_cliff_height_disclaimer">Bruk bare dette verktøyet når det er trygt å gjøre det, og sørg for å sjekke hva som er under klippen for å unngå skade. Se brukerveiledningen for instruksjoner.</string>
     <string name="tool_cliff_height_description">Mål høyden på en klippe eller på et fall</string>
     <string name="pref_privacy_policy_title">Personvernspraksis</string>
@@ -182,7 +181,6 @@
     <string name="distance_to">Til</string>
     <string name="distance_from">Fra</string>
     <string name="inventory_empty_text">Ingen elementer</string>
-    <string name="guide_conserving_battery_title">Batterisparing</string>
     <string name="pref_show_calibrate_on_navigate_dialog_title">Kalibrer før navigering</string>
     <string name="pref_elevation_override_sea_level_title">Ved bruk av kjent havnivåtrykk</string>
     <string name="pref_elevation_override_sea_level_dialog_title">Skriv inn havnivåtrykk</string>
@@ -302,7 +300,6 @@
     <string name="map_distance">Kart: %s</string>
     <string name="unit_inches">Tomme</string>
     <string name="pref_backtrack_enabled_summary">Ta opp posisjonshistorikk</string>
-    <string name="guide_location_no_gps_title">Bestem posisjon uten GPS</string>
     <string name="degree">%s°</string>
     <string name="coordinate_input_invalid_location">Ugyldig posisjon</string>
     <string name="location_input_help">Desimalgrader (eks. 1.00, -2.00)
@@ -324,8 +321,6 @@
     <string name="pref_low_power_mode_title">Strømsparingsmodus</string>
     <string name="guide_barometer_calibration_title">Barometerkalibrering</string>
     <string name="tool_thermometer_title">Termometer</string>
-    <string name="guide_thermometer_calibration_title">Termometerkalibrering</string>
-    <string name="guide_weather_prediction_title">Værprognose</string>
     <string name="coordinate_format_mgrs">MGRS</string>
     <string name="coordinate_format_utm">UTM</string>
     <string name="pref_gps_override_title">Sett posisjon</string>
@@ -401,7 +396,6 @@
     <string name="help">Hjelp</string>
     <string name="pref_daily_weather_notification_title">Daglig værmelding</string>
     <string name="todays_forecast">Dagens værvarsel</string>
-    <string name="guide_light_meter_title">Bestem lommelykteffektivitet</string>
     <string name="gps_cache">GPS-hurtiglager</string>
     <string name="tool_light_meter_title">Lysmåler</string>
     <string name="distance_from_flashlight">Avstand fra telefon til lommelykt</string>
@@ -516,7 +510,6 @@
     <string name="wgs84">WGS 84</string>
     <string name="elevation_history">Høydehistorikk</string>
     <string name="num_satellites">%d satellitter</string>
-    <string name="no_compass_message">Enheten din har ikke kompassensor</string>
     <string name="sort">Sorter</string>
     <string name="packing_lists">Pakkelister</string>
     <string name="pref_backtrack_history_days_title">Tilbakesporingshistorikk</string>
@@ -634,7 +627,6 @@
     <string name="importing_map">Importering av kart</string>
     <string name="next">Neste</string>
     <string name="previous">Forrige</string>
-    <string name="guide_importing_maps_title">Import av kart</string>
     <string name="on_map">På kart</string>
     <string name="no_maps">Ingen kart</string>
     <string name="rename">Gi nytt navn</string>
@@ -824,7 +816,6 @@
     <string name="navigating_to_nearest_path_point">Navigerer til nærmeste stipunkt</string>
     <string name="beacons">Navigeringsmarkører</string>
     <string name="pref_start_on_boot_title">Start ved enhetsoppstart</string>
-    <string name="water_boil_guide_title">Gjør vann trygt å drikke</string>
     <string name="navigation_guide_description">Bruke navigeringsmarkører og stier</string>
     <string name="error">Feil</string>
     <string name="warning">Advarsel</string>
@@ -1056,7 +1047,6 @@
     <string name="gps_location_accuracy">GPS-posisjonsnøyakighet</string>
     <string name="gps_elevation_accuracy">GPS-høydenøyakighet</string>
     <string name="gps_accuracy_tip">Sørg for å ha fri sikt mot himmelen, og flytt deg unna høye bygninger og trær.</string>
-    <string name="no_compass_description">Enheten din har ikke en innebygd kompassensor. Dette er en maskinvarekomponent, så det er ikke noe som kan gjøres for å legge den til. Noen funksjoner som bruker kompasset vil være utilgjengelige.</string>
     <string name="restore_failure_newer_version">Sikkerhetskopien ble opprettet med en nyere versjon av %s. Installer nyeste versjon av programmet og prøv igjen.</string>
     <string name="learn_more">Lær mer</string>
     <string name="restore">Gjenopprett</string>

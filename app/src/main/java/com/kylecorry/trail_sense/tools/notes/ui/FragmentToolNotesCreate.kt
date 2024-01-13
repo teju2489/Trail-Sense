@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kylecorry.andromeda.fragments.BoundFragment
-import com.kylecorry.trail_sense.databinding.FragmentToolNotesCreateBinding
 import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.trail_sense.databinding.FragmentToolNotesCreateBinding
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.extensions.promptIfUnsavedChanges

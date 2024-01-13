@@ -2,6 +2,7 @@ package com.kylecorry.trail_sense.navigation.paths.infrastructure.subsystem
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import com.kylecorry.andromeda.core.topics.generic.ITopic
 import com.kylecorry.andromeda.core.topics.generic.Topic
 import com.kylecorry.andromeda.core.topics.generic.distinct
@@ -9,10 +10,11 @@ import com.kylecorry.andromeda.permissions.Permissions
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.navigation.paths.infrastructure.BacktrackScheduler
 import com.kylecorry.trail_sense.navigation.paths.infrastructure.commands.StopBacktrackCommand
+import com.kylecorry.trail_sense.receivers.ServiceRestartAlerter
 import com.kylecorry.trail_sense.shared.FeatureState
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.extensions.getOrNull
-import com.kylecorry.trail_sense.shared.permissions.canRunLocationForegroundService
+import com.kylecorry.trail_sense.shared.permissions.canStartLocationForgroundService
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import java.time.Duration
 import java.util.*
@@ -65,13 +67,15 @@ class BacktrackSubsystem private constructor(private val context: Context) {
         return frequency.getOrNull() ?: Duration.ofMinutes(30)
     }
 
-    fun enable(startNewPath: Boolean) {
-        if (Permissions.canRunLocationForegroundService(context)) {
-            prefs.backtrackEnabled = true
-            BacktrackScheduler.start(context, startNewPath)
-        } else {
-            disable()
+    suspend fun enable(startNewPath: Boolean) {
+        if (!Permissions.canStartLocationForgroundService(context)) {
+            ServiceRestartAlerter(context).alert()
+            Log.d("BacktrackSubsystem", "Cannot start backtrack")
+            return
         }
+
+        prefs.backtrackEnabled = true
+        BacktrackScheduler.start(context, startNewPath)
     }
 
     fun disable() {
@@ -79,10 +83,10 @@ class BacktrackSubsystem private constructor(private val context: Context) {
     }
 
     private fun calculateBacktrackState(): FeatureState {
-        return if (BacktrackScheduler.isOn(context)) {
-            FeatureState.On
-        } else if (BacktrackScheduler.isDisabled(context)) {
+        return if (BacktrackScheduler.isDisabled(context)) {
             FeatureState.Unavailable
+        } else if (BacktrackScheduler.isOn(context)) {
+            FeatureState.On
         } else {
             FeatureState.Off
         }

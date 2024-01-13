@@ -1,32 +1,40 @@
 package com.kylecorry.trail_sense.calibration.ui
 
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import com.kylecorry.andromeda.alerts.Alerts
+import androidx.preference.SwitchPreferenceCompat
+import com.kylecorry.andromeda.alerts.toast
+import com.kylecorry.andromeda.core.coroutines.onDefault
+import com.kylecorry.andromeda.core.coroutines.onIO
+import com.kylecorry.andromeda.core.coroutines.onMain
 import com.kylecorry.andromeda.core.sensors.IAltimeter
 import com.kylecorry.andromeda.core.system.Resources
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.time.Throttle
-import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.fragments.AndromedaPreferenceFragment
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.andromeda.pickers.Pickers
+import com.kylecorry.andromeda.sense.altitude.FusedAltimeter
 import com.kylecorry.andromeda.sense.barometer.IBarometer
+import com.kylecorry.andromeda.sense.readAll
+import com.kylecorry.luna.coroutines.CoroutineQueueRunner
+import com.kylecorry.sol.science.geology.Geology
+import com.kylecorry.sol.science.meteorology.Meteorology
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.sol.units.DistanceUnits
-import com.kylecorry.sol.units.Reading
+import com.kylecorry.sol.units.Pressure
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
+import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.trail_sense.shared.sensors.CustomGPS
 import com.kylecorry.trail_sense.shared.sensors.SensorService
-import com.kylecorry.trail_sense.weather.domain.RawWeatherObservation
-import com.kylecorry.trail_sense.weather.domain.sealevel.SeaLevelCalibrationFactory
-import java.time.Instant
+import kotlinx.coroutines.Dispatchers
 
 
 class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
@@ -46,12 +54,15 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
     private lateinit var altitudeOverrideGpsBtn: Preference
     private lateinit var altitudeOverrideBarometerEdit: EditTextPreference
     private lateinit var accuracyPref: Preference
+    private lateinit var clearCachePref: Preference
+    private lateinit var continuousCalibrationPref: SwitchPreferenceCompat
+    private lateinit var forceCalibrationPref: Preference
 
     private lateinit var lastMode: UserPreferences.AltimeterMode
-    private val intervalometer = Timer { updateAltitude() }
+    private val updateTimer = CoroutineTimer { updateAltitude() }
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
 
-    private var seaLevelPressure = SensorManager.PRESSURE_STANDARD_ATMOSPHERE
+    private val overridePopulationRunner = CoroutineQueueRunner(dispatcher = Dispatchers.Default)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.altimeter_calibration, rootKey)
@@ -78,16 +89,14 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
         altitudeOverrideBarometerEdit =
             findPreference(getString(R.string.pref_altitude_override_sea_level))!!
         accuracyPref = preference(R.string.pref_altimeter_accuracy_holder)!!
+        clearCachePref = preference(R.string.pref_altimeter_clear_cache_holder)!!
+        continuousCalibrationPref = switch(R.string.pref_altimeter_continuous_calibration)!!
+        forceCalibrationPref = preference(R.string.pref_fused_altimeter_force_calibration_holder)!!
 
         val altitudeOverride = Distance.meters(prefs.altitudeOverride).convertTo(distanceUnits)
         altitudeOverridePref.summary = formatService.formatDistance(altitudeOverride)
 
-        setOverrideStates()
-        altitudeOverrideBarometerEdit.isVisible = prefs.weather.hasBarometer
-        if (!prefs.weather.hasBarometer) {
-            calibrationModeList.setEntries(R.array.altimeter_mode_no_barometer_entries)
-            calibrationModeList.setEntryValues(R.array.altimeter_mode_no_barometer_values)
-        }
+        updateConditionalPreferences()
 
         altitudeOverrideBarometerEdit.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER.or(InputType.TYPE_NUMBER_FLAG_DECIMAL)
@@ -95,12 +104,13 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
         }
 
         altitudeOverrideGpsBtn.setOnPreferenceClickListener {
-            updateElevationFromGPS()
+            setOverrideFromGPS()
             true
         }
 
         altitudeOverrideBarometerEdit.setOnPreferenceChangeListener { _, newValue ->
-            updateElevationFromBarometer(newValue.toString().toFloatOrNull() ?: 0.0f)
+            val seaLevelPressure = newValue.toString().toFloatOrNull() ?: 0.0f
+            setOverrideFromBarometer(seaLevelPressure)
             true
         }
 
@@ -136,57 +146,76 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
             }
         }
 
+        onClick(clearCachePref) {
+            FusedAltimeter.clearCachedCalibration(PreferencesSubsystem.getInstance(requireContext()).preferences)
+            toast(getString(R.string.done))
+        }
 
+        onClick(continuousCalibrationPref) {
+            restartAltimeter()
+        }
+
+        onClick(forceCalibrationPref) {
+            updateForceCalibrationInterval()
+        }
+
+        updateForceCalibrationIntervalSummary()
+
+        // Update the altitude override to the current altitude
         if (prefs.altimeterMode == UserPreferences.AltimeterMode.Barometer) {
-            updateElevationFromBarometer(prefs.seaLevelPressureOverride)
+            updateAltitudeOverride()
         }
 
         lastMode = prefs.altimeterMode
     }
 
-    private fun setOverrideStates() {
+    private fun updateConditionalPreferences() {
+        val hasBarometer = prefs.weather.hasBarometer
         val mode = prefs.altimeterMode
-        val enabled =
-            mode == UserPreferences.AltimeterMode.Barometer || mode == UserPreferences.AltimeterMode.Override
 
-        altitudeOverridePref.isEnabled = enabled
-        altitudeOverrideGpsBtn.isEnabled = enabled
-        altitudeOverrideBarometerEdit.isEnabled = enabled
+        // Cache, continuous calibration, and force calibration interval are only available on the fused barometer
+        clearCachePref.isVisible =
+            hasBarometer && mode == UserPreferences.AltimeterMode.GPSBarometer
+        continuousCalibrationPref.isVisible =
+            hasBarometer && mode == UserPreferences.AltimeterMode.GPSBarometer
+        forceCalibrationPref.isVisible =
+            hasBarometer && mode == UserPreferences.AltimeterMode.GPSBarometer
+
+        // Overrides are available on the barometer or the manual mode
+        val canProvideOverrides =
+            mode == UserPreferences.AltimeterMode.Barometer || mode == UserPreferences.AltimeterMode.Override
+        altitudeOverridePref.isVisible = canProvideOverrides
+        altitudeOverrideGpsBtn.isVisible = canProvideOverrides
+        altitudeOverrideBarometerEdit.isVisible = canProvideOverrides && hasBarometer
+
+        // Sample size is only available when the GPS is being used
+        accuracyPref.isVisible =
+            mode == UserPreferences.AltimeterMode.GPS || mode == UserPreferences.AltimeterMode.GPSBarometer
+
+        // Restrict the calibration mode list if there is no barometer
+        if (!hasBarometer) {
+            calibrationModeList.setEntries(R.array.altimeter_mode_no_barometer_entries)
+            calibrationModeList.setEntryValues(R.array.altimeter_mode_no_barometer_values)
+        }
     }
 
     private fun restartAltimeter() {
         stopAltimeter()
         altimeter = sensorService.getAltimeter()
         startAltimeter()
-        updateAltitude()
     }
 
     override fun onResume() {
         super.onResume()
         startAltimeter()
-        intervalometer.interval(20)
+        updateTimer.interval(200)
     }
 
     override fun onPause() {
         super.onPause()
-        barometer.stop(this::onElevationFromBarometerCallback)
-        barometer.stop(this::onSeaLevelPressureOverrideCallback)
-        gps.stop(this::onElevationFromGPSCallback)
         stopAltimeter()
-        intervalometer.stop()
-    }
-
-    private fun updateElevationFromGPS() {
-        gps.start(this::onElevationFromGPSCallback)
-    }
-
-    private fun onElevationFromGPSCallback(): Boolean {
-        val elevation = gps.altitude
-        prefs.altitudeOverride = elevation
-        updateSeaLevelPressureOverride()
-        updateAltitude()
-        Alerts.toast(requireContext(), getString(R.string.elevation_override_updated_toast))
-        return false
+        updateTimer.stop()
+        overridePopulationRunner.cancel()
     }
 
     private fun startAltimeter() {
@@ -202,47 +231,98 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
         altimeter.stop(this::updateAltitude)
     }
 
-    private fun updateSeaLevelPressureOverride() {
-        barometer.start(this::onSeaLevelPressureOverrideCallback)
+    private fun setOverrideFromBarometer(seaLevelPressure: Float) {
+        inBackground {
+            onDefault {
+                overridePopulationRunner.replace {
+                    barometer.read()
+                    val elevation = Geology.getAltitude(
+                        Pressure.hpa(barometer.pressure),
+                        Pressure.hpa(seaLevelPressure)
+                    )
+
+                    onIO {
+                        prefs.altitudeOverride = elevation.meters().distance
+                        prefs.seaLevelPressureOverride = seaLevelPressure
+                    }
+
+                    onMain {
+                        restartAltimeter()
+                        toast(getString(R.string.elevation_override_updated_toast))
+                    }
+                }
+            }
+        }
     }
 
-    private fun onSeaLevelPressureOverrideCallback(): Boolean {
-        val altitude = prefs.altitudeOverride
-        val calibrator = SeaLevelCalibrationFactory().create(prefs)
-        val readings = listOf(
-            Reading(
-                RawWeatherObservation(
-                    0,
-                    barometer.pressure,
-                    altitude,
-                    16f,
-                    if (altimeter is IGPS) (altimeter as IGPS).verticalAccuracy else null
-                ),
-                Instant.now(),
-            )
-        )
-        val seaLevel = calibrator.calibrate(readings).first()
-        prefs.seaLevelPressureOverride = seaLevel.value.hpa().pressure
+    private fun setOverrideFromGPS() {
+        inBackground {
+            onDefault {
+                overridePopulationRunner.replace {
+                    readAll(listOf(gps, barometer))
+                    val elevation = gps.altitude
+                    val seaLevelPressure = Meteorology.getSeaLevelPressure(
+                        Pressure.hpa(barometer.pressure),
+                        Distance.meters(elevation)
+                    )
+
+                    onIO {
+                        prefs.altitudeOverride = elevation
+                        prefs.seaLevelPressureOverride = seaLevelPressure.pressure
+                    }
+
+                    onMain {
+                        restartAltimeter()
+                        toast(getString(R.string.elevation_override_updated_toast))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateAltitudeOverride() {
+        inBackground {
+            onDefault {
+                overridePopulationRunner.replace {
+                    altimeter.read()
+                    prefs.altitudeOverride = altimeter.altitude
+                }
+            }
+        }
+    }
+
+    private fun onAltimeterModeChanged() {
+        lastMode = prefs.altimeterMode
         restartAltimeter()
-        return false
+        updateConditionalPreferences()
+
+        // Update the altitude override to the current altitude
+        if (prefs.altimeterMode == UserPreferences.AltimeterMode.Barometer) {
+            updateAltitudeOverride()
+        }
     }
 
-    private fun updateElevationFromBarometer(seaLevelPressure: Float) {
-        this.seaLevelPressure = seaLevelPressure
-        barometer.start(this::onElevationFromBarometerCallback)
+    private fun updateForceCalibrationInterval() {
+        CustomUiUtils.pickDuration(
+            requireContext(),
+            prefs.altimeter.fusedAltimeterForcedRecalibrationInterval,
+            getString(R.string.fused_altimeter_force_calibration)
+        ) {
+            if (it != null) {
+                prefs.altimeter.fusedAltimeterForcedRecalibrationInterval = it
+                updateForceCalibrationIntervalSummary()
+            }
+        }
     }
 
-    private fun onElevationFromBarometerCallback(): Boolean {
-        val elevation = SensorManager.getAltitude(seaLevelPressure, barometer.pressure)
-        prefs.altitudeOverride = elevation
-        updateSeaLevelPressureOverride()
-        updateAltitude()
-        Alerts.toast(requireContext(), getString(R.string.elevation_override_updated_toast))
-        return false
+    private fun updateForceCalibrationIntervalSummary() {
+        val interval =
+            formatService.formatDuration(prefs.altimeter.fusedAltimeterForcedRecalibrationInterval)
+        forceCalibrationPref.summary =
+            getString(R.string.fused_altimeter_force_calibration_summary, interval)
     }
 
     private fun updateAltitude(): Boolean {
-
         if (throttle.isThrottled()) {
             return true
         }
@@ -251,13 +331,7 @@ class CalibrateAltimeterFragment : AndromedaPreferenceFragment() {
         altitudeTxt.summary = formatService.formatDistance(altitude)
 
         if (lastMode != prefs.altimeterMode) {
-            lastMode = prefs.altimeterMode
-            restartAltimeter()
-            setOverrideStates()
-            accuracyPref.isVisible = prefs.altimeterMode == UserPreferences.AltimeterMode.GPS
-            if (prefs.altimeterMode == UserPreferences.AltimeterMode.Barometer) {
-                updateSeaLevelPressureOverride()
-            }
+            onAltimeterModeChanged()
         }
 
         val altitudeOverride = Distance.meters(prefs.altitudeOverride).convertTo(distanceUnits)

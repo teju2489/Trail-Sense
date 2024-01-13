@@ -9,11 +9,11 @@ import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.loading.AlertLoadingIndicator
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.capitalizeWords
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.ui.setOnProgressChangeListener
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.andromeda.markdown.MarkdownService
 import com.kylecorry.andromeda.pickers.Pickers
 import com.kylecorry.sol.science.astronomy.SunTimesMode
@@ -49,6 +49,8 @@ import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sensors.overrides.CachedGPS
 import com.kylecorry.trail_sense.shared.sensors.overrides.OverrideGPS
 import com.kylecorry.trail_sense.shared.views.UserError
+import com.kylecorry.trail_sense.tools.augmented_reality.ARMode
+import com.kylecorry.trail_sense.tools.augmented_reality.AugmentedRealityFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Duration
@@ -81,7 +83,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
 
     private var gpsErrorShown = false
 
-    private val intervalometer = Timer {
+    private val intervalometer = CoroutineTimer {
         updateUI()
     }
 
@@ -116,6 +118,11 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
 
         binding.displayDate.setOnDateChangeListener {
             updateUI()
+        }
+
+        binding.button3d.isVisible = prefs.isAugmentedRealityEnabled
+        binding.button3d.setOnClickListener {
+            AugmentedRealityFragment.open(findNavController(), ARMode.Astronomy)
         }
 
         binding.displayDate.searchEnabled = true
@@ -202,6 +209,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
     private fun showTimeSeeker() {
         binding.timeSeekerPanel.isVisible = true
         binding.astronomyDetailList.isVisible = false
+        binding.button3d.isVisible = false
         currentSeekChartTime = ZonedDateTime.now()
         binding.seekTime.text =
             formatService.formatTime(currentSeekChartTime.toLocalTime(), includeSeconds = false)
@@ -246,6 +254,7 @@ class AstronomyFragment : BoundFragment<ActivityAstronomyBinding>() {
     private fun hideTimeSeeker() {
         binding.timeSeekerPanel.isVisible = false
         binding.astronomyDetailList.isVisible = true
+        binding.button3d.isVisible = prefs.isAugmentedRealityEnabled
         val displayDate = binding.displayDate.date
         if (displayDate == LocalDate.now()) {
             plotMoonImage(data.moon)

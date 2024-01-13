@@ -36,7 +36,8 @@ class CameraView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     val fov: Pair<Float, Float>
         get() {
             val defaultFOV = 45f
-            val fieldOfView = camera?.getZoomedFOV() ?: lastFov ?: (defaultFOV to defaultFOV * 4f / 3f)
+            val fieldOfView =
+                camera?.getZoomedFOV() ?: lastFov ?: (defaultFOV to defaultFOV * 4f / 3f)
             lastFov = fieldOfView
             return fieldOfView
         }
@@ -51,7 +52,16 @@ class CameraView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     private var zoom: Float = -1f
     private var isCapturing = false
 
-    private var isStarted = false
+    val previewImage: Bitmap?
+        get() = try {
+            preview.bitmap
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+
+    var isStarted = false
+        private set
     private val startLock = Any()
 
     fun start(
@@ -174,32 +184,6 @@ class CameraView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
         preview.scaleType = type
     }
 
-    private val commonAspectRatios = listOf(
-        1f,
-        3 / 2f,
-        2 / 3f,
-        4 / 3f,
-        3 / 4f,
-        16 / 9f,
-        9 / 16f,
-    )
-
-    private val aspectRatioPercentTolerance = 0.1f
-
-    fun getPreviewSize(): Size {
-        val fov = fov
-        val aspectRatio = fov.first / fov.second
-        val aspect = commonAspectRatios.minByOrNull { abs(it - aspectRatio) }.let {
-            if (it == null || abs(it - aspectRatio) / it > aspectRatioPercentTolerance) {
-                aspectRatio
-            } else {
-                it
-            }
-        }
-        val width = preview.width.toFloat()
-        return Size(width.toInt(), (width / aspect).toInt())
-    }
-
     @SuppressLint("UnsafeOptInUsageError")
     private fun onCameraUpdate(): Boolean {
         if (zoom == -1f) {
@@ -248,7 +232,7 @@ class CameraView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
 
     private val mGestureListener = object : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(e: MotionEvent): Boolean {
-            if (zoom != -1f && zoomSeek.isVisible) {
+            if (zoom != -1f) {
                 val remainingZoom = 1 - zoom
                 val newZoom = (zoom + remainingZoom / 2).coerceIn(0f, 1f)
                 zoomListener?.invoke(newZoom)
@@ -266,8 +250,8 @@ class CameraView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     private val scaleListener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
         override fun onScale(detector: ScaleGestureDetector): Boolean {
-            if (zoom != -1f && zoomSeek.isVisible) {
-                val newZoom = (zoom - 1 + detector.scaleFactor ).coerceIn(0f, 1f)
+            if (zoom != -1f) {
+                val newZoom = (zoom - 1 + detector.scaleFactor).coerceIn(0f, 1f)
                 zoomListener?.invoke(newZoom)
                 setZoom(newZoom)
                 return true

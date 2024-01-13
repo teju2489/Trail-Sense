@@ -4,21 +4,20 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.method.LinkMovementMethodCompat
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.markdown.MarkdownService
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.ActivityOnboardingBinding
 import com.kylecorry.trail_sense.main.MainActivity
-import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
-import com.kylecorry.trail_sense.shared.sensors.SensorService
 
 
 class OnboardingActivity : AppCompatActivity() {
 
     private val cache by lazy { PreferencesSubsystem.getInstance(this).preferences }
     private val markdown by lazy { MarkdownService(this) }
-    private val sensors by lazy { SensorService(this) }
+    private val pages by lazy { OnboardingPages.getPages(this) }
 
     private lateinit var binding: ActivityOnboardingBinding
 
@@ -33,14 +32,7 @@ class OnboardingActivity : AppCompatActivity() {
         load(pageIdx)
 
         binding.nextButton.setOnClickListener {
-            var nextPage = pageIdx + 1
-
-            // Skip the missing compass page if the compass is available
-            if (nextPage == OnboardingPages.MISSING_COMPASS && sensors.hasCompass()){
-                nextPage++
-            }
-            
-            load(nextPage)
+            load(pageIdx + 1)
         }
 
     }
@@ -55,7 +47,7 @@ class OnboardingActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         pageIdx = savedInstanceState.getInt("page", 0)
-        if (pageIdx >= OnboardingPages.pages.size || pageIdx < 0) {
+        if (pageIdx >= pages.size || pageIdx < 0) {
             pageIdx = 0
         }
         load(pageIdx)
@@ -71,16 +63,21 @@ class OnboardingActivity : AppCompatActivity() {
 
         pageIdx = page
 
-        if (page >= OnboardingPages.pages.size) {
+        if (page >= pages.size) {
             navigateToApp()
         } else {
-            val pageContents = OnboardingPages.pages[page]
-            binding.pageName.title.text = getString(pageContents.title)
+            val pageContents = pages[page]
+            binding.pageName.title.text = pageContents.title
             binding.pageImage.setImageResource(pageContents.image)
             binding.pageImage.imageTintList =
                 ColorStateList.valueOf(Resources.androidTextColorPrimary(this))
-            binding.nextButton.text = getString(pageContents.nextButtonText)
-            markdown.setMarkdown(binding.pageContents, getString(pageContents.contents))
+            binding.nextButton.text = pageContents.nextButtonText ?: getString(R.string.next)
+            binding.pageContents.movementMethod = LinkMovementMethodCompat.getInstance()
+            if (pageContents.contents is String){
+                markdown.setMarkdown(binding.pageContents, pageContents.contents)
+            } else {
+                binding.pageContents.text = pageContents.contents
+            }
         }
     }
 

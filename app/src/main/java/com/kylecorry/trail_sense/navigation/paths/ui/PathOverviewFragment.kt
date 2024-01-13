@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import com.kylecorry.andromeda.alerts.Alerts
 import com.kylecorry.andromeda.alerts.toast
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.time.Throttle
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.tryOrNothing
 import com.kylecorry.andromeda.core.ui.Colors
 import com.kylecorry.andromeda.fragments.BoundFragment
@@ -61,10 +62,10 @@ import com.kylecorry.trail_sense.navigation.ui.layers.BeaconLayer
 import com.kylecorry.trail_sense.navigation.ui.layers.MyAccuracyLayer
 import com.kylecorry.trail_sense.navigation.ui.layers.MyLocationLayer
 import com.kylecorry.trail_sense.navigation.ui.layers.PathLayer
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryMarkerColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.Units
 import com.kylecorry.trail_sense.shared.UserPreferences
-import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.debugging.DebugPathElevationsCommand
 import com.kylecorry.trail_sense.shared.declination.DeclinationFactory
 import com.kylecorry.trail_sense.shared.extensions.isDebug
@@ -72,6 +73,7 @@ import com.kylecorry.trail_sense.shared.extensions.onDefault
 import com.kylecorry.trail_sense.shared.extensions.onIO
 import com.kylecorry.trail_sense.shared.extensions.onMain
 import com.kylecorry.trail_sense.shared.extensions.range
+import com.kylecorry.trail_sense.shared.extensions.withCancelableLoading
 import com.kylecorry.trail_sense.shared.io.IOFactory
 import com.kylecorry.trail_sense.shared.navigation.NavControllerAppNavigation
 import com.kylecorry.trail_sense.shared.requireMyNavigation
@@ -81,6 +83,7 @@ import com.kylecorry.trail_sense.tools.maps.infrastructure.layers.ILayerManager
 import com.kylecorry.trail_sense.tools.maps.infrastructure.layers.MultiLayerManager
 import com.kylecorry.trail_sense.tools.maps.infrastructure.layers.MyAccuracyLayerManager
 import com.kylecorry.trail_sense.tools.maps.infrastructure.layers.MyLocationLayerManager
+import kotlinx.coroutines.launch
 import java.time.Duration
 
 
@@ -163,8 +166,15 @@ class PathOverviewFragment : BoundFragment<FragmentPathOverviewBinding>() {
         super.onResume()
         layerManager = MultiLayerManager(
             listOf(
-                MyAccuracyLayerManager(myAccuracyLayer, AppColor.Orange.color, 25),
-                MyLocationLayerManager(myLocationLayer, AppColor.Orange.color)
+                MyAccuracyLayerManager(
+                    myAccuracyLayer,
+                    Resources.getPrimaryMarkerColor(requireContext()),
+                    25
+                ),
+                MyLocationLayerManager(
+                    myLocationLayer,
+                    Resources.getPrimaryMarkerColor(requireContext())
+                )
             )
         )
         layerManager?.start()
@@ -208,7 +218,7 @@ class PathOverviewFragment : BoundFragment<FragmentPathOverviewBinding>() {
                 }
             }
             binding.pathMapFullscreenToggle.setImageResource(if (isFullscreen) R.drawable.ic_fullscreen_exit else R.drawable.ic_recenter)
-            val timer = Timer {
+            val timer = CoroutineTimer {
                 if (isBound) {
                     binding.root.scrollTo(0, binding.pathMapHolder.top)
                     binding.pathImage.recenter()
@@ -219,11 +229,20 @@ class PathOverviewFragment : BoundFragment<FragmentPathOverviewBinding>() {
 
         binding.addPointBtn.setOnClickListener {
             inBackground {
-                binding.addPointBtn.isEnabled = false
-                BacktrackCommand(requireContext(), pathId).execute()
-                if (isBound) {
-                    toast(getString(R.string.point_added))
-                    binding.addPointBtn.isEnabled = true
+                var wasSuccessful = false
+                val job = launch {
+                    BacktrackCommand(requireContext(), pathId).execute()
+                    wasSuccessful = true
+                }
+
+                Alerts.withCancelableLoading(
+                    requireContext(),
+                    getString(R.string.loading),
+                    onCancel = { job.cancel() }) {
+                    job.join()
+                    if (wasSuccessful) {
+                        toast(getString(R.string.point_added))
+                    }
                 }
             }
         }
@@ -300,7 +319,7 @@ class PathOverviewFragment : BoundFragment<FragmentPathOverviewBinding>() {
             command.execute(path)
         }
 
-        if (!hasCompass){
+        if (!hasCompass) {
             myLocationLayer.setShowDirection(false)
         }
     }

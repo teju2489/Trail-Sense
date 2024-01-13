@@ -399,7 +399,7 @@ class BeaconListFragment : BoundFragment<FragmentBeaconListBinding>() {
     private fun navigate(beacon: Beacon) {
         val navigator = Navigator.getInstance(requireContext())
         navigator.navigateTo(beacon)
-        requireMyNavigation().back()
+        requireMyNavigation().navigate(Navigation.NAVIGATION)
     }
 
     private fun delete(beacon: Beacon) {

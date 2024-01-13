@@ -14,7 +14,9 @@ import com.kylecorry.sol.math.SolMath.deltaAngle
 import com.kylecorry.sol.units.CompassDirection
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getCardinalDirectionColor
 import com.kylecorry.trail_sense.shared.FormatService
+import com.kylecorry.trail_sense.shared.colors.AppColor
 import kotlin.math.min
 
 
@@ -121,7 +123,7 @@ class RoundCompassView : BaseCompassView {
         iconSize = dp(24f).toInt()
         compassSize = min(height, width) - 2 * iconSize - 2 * dp(2f).toInt()
         cardinalSize = sp(18f)
-        primaryColor = Resources.color(context, R.color.orange_40)
+        primaryColor = Resources.getCardinalDirectionColor(context)
         val secondaryColor = Resources.color(context, R.color.colorSecondary)
         dial = CompassDial(
             PixelCoordinate(width / 2f, height / 2f),

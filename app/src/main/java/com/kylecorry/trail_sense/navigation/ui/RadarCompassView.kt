@@ -25,9 +25,11 @@ import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.navigation.domain.RadarCompassCoordinateToPixelStrategy
 import com.kylecorry.trail_sense.navigation.ui.layers.ILayer
 import com.kylecorry.trail_sense.navigation.ui.layers.IMapView
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getCardinalDirectionColor
 import com.kylecorry.trail_sense.shared.DistanceUtils.toRelativeDistance
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.Units
+import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.maps.ICoordinateToPixelStrategy
 import kotlin.math.min
 
@@ -198,7 +200,7 @@ class RadarCompassView : BaseCompassView, IMapView {
         }
         distanceSize = sp(10f)
         cardinalSize = sp(12f)
-        primaryColor = Resources.color(context, R.color.orange_40)
+        primaryColor = Resources.getCardinalDirectionColor(context)
         secondaryColor = Resources.color(context, R.color.colorSecondary)
         textColor = Resources.androidTextColorSecondary(context)
         maxDistanceMeters = Distance.meters(prefs.navigation.maxBeaconDistance)

@@ -10,15 +10,16 @@ import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.kylecorry.andromeda.alerts.Alerts
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.units.CoordinateExtensions.parse
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.BeaconPickers
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconService
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.sort.ClosestBeaconSort
+import com.kylecorry.trail_sense.shared.CustomUiUtils
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,7 @@ class CoordinateInputView(context: Context?, attrs: AttributeSet? = null) :
     private val sensorService by lazy { SensorService(getContext()) }
     lateinit var gps: IGPS
 
-    private val errorHandler = Timer {
+    private val errorHandler = CoroutineTimer {
         locationEdit.error = getContext().getString(R.string.coordinate_input_invalid_location)
     }
 
@@ -69,6 +70,9 @@ class CoordinateInputView(context: Context?, attrs: AttributeSet? = null) :
             helpBtn = findViewById(R.id.coordinate_input_help_btn)
             gpsBtn = findViewById(R.id.gps_btn)
             beaconBtn = findViewById(R.id.beacon_btn)
+
+            CustomUiUtils.setButtonState(gpsBtn, true)
+            CustomUiUtils.setButtonState(beaconBtn, true)
 
             gpsBtn.visibility = View.VISIBLE
             gpsLoadingIndicator.visibility = View.GONE

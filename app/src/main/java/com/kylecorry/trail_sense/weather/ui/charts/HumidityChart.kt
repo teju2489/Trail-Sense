@@ -1,16 +1,17 @@
 package com.kylecorry.trail_sense.weather.ui.charts
 
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.ceres.chart.Chart
-import com.kylecorry.ceres.chart.data.LineChartLayer
+import com.kylecorry.andromeda.views.chart.Chart
+import com.kylecorry.andromeda.views.chart.data.LineChartLayer
 import com.kylecorry.sol.units.Reading
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.views.chart.label.HourChartLabelFormatter
 import java.time.Instant
 
 class HumidityChart(private val chart: Chart) {
 
-    private val color = Resources.getAndroidColorAttr(chart.context, androidx.appcompat.R.attr.colorPrimary)
+    private val color = Resources.getPrimaryColor(chart.context)
     private var startTime = Instant.now()
 
     init {

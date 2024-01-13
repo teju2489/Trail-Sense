@@ -319,7 +319,6 @@
     <string name="pref_compass_sensor" translatable="false">pref_compass_calibration</string>
     <string name="pref_holder_altitude" translatable="false">pref_holder_altitude</string>
     <string name="pref_auto_altitude" translatable="false">pref_auto_altitude</string>
-    <string name="pref_fine_tune_altitude" translatable="false">pref_fine_tune_altitude</string>
     <string name="pref_altitude_override" translatable="false">pref_altitude_override</string>
     <string name="pref_altitude_from_gps_btn" translatable="false">pref_altitude_from_gps_btn</string>
     <string name="pref_altitude_override_sea_level" translatable="false">pref_altitude_override_sea_level</string>
@@ -369,8 +368,6 @@
     <string name="navigation_nearby_category">Nearby</string>
     <string name="pref_navigation_header_key" translatable="false">pref_navigation_header_key</string>
     <string name="pref_astronomy_category" translatable="false">pref_astronomy_category</string>
-    <string name="guide_conserving_battery_title">Conserving battery</string>
-    <string name="guide_weather_prediction_title">Weather prediction</string>
     <string name="tool_bubble_level_title">Bubble Level</string>
     <string name="tool_bubble_level_summary">Determine if surfaces are flat</string>
     <string name="other">Other</string>
@@ -386,7 +383,6 @@
     <string name="tool_cliff_height_title">Cliff Height</string>
     <string name="tool_cliff_height_description">Measure the height of a cliff or drop</string>
     <string name="tool_cliff_height_disclaimer">Only use this tool when it is safe to do so, and be sure to check what is below the cliff to avoid injury. See the user guide for instructions.</string>
-    <string name="cliff_height_guide">Estimate cliff height</string>
     <string name="tool_whistle_title">Whistle</string>
     <string name="action_inventory_clear_confirm">Clear all packed amounts?</string>
     <string name="inventory_empty_text">No items</string>
@@ -493,7 +489,6 @@
     <string name="min_temp_calibrated">Min ambient temperature (calibrated)</string>
     <string name="min_temp_uncalibrated">Min phone temperature (uncalibrated)</string>
     <string name="create_at_distance">Create at distance</string>
-    <string name="guide_location_no_gps_title">Determine location without GPS</string>
     <string name="backtrack">Backtrack</string>
     <string name="backtrack_notification_channel_description">Backtrack location updates</string>
     <string name="create_beacon">Create beacon</string>
@@ -509,7 +504,6 @@
     <string name="pref_gps_override_title">Location override</string>
     <string name="delete_waypoint_prompt">Delete waypoint?</string>
     <string name="delete_tide_prompt">Delete tide?</string>
-    <string name="guide_thermometer_calibration_title">Thermometer calibration</string>
     <string name="tool_thermometer_title">Thermometer</string>
     <string name="battery_power_ac">AC</string>
     <string name="battery_power_usb">USB</string>
@@ -616,7 +610,6 @@
     <string name="set">Set</string>
     <string name="location_disabled">Location is disabled</string>
     <string name="gps_cache">GPS Cache</string>
-    <string name="guide_light_meter_title">Determine flashlight effectiveness</string>
     <string name="guide_light_meter_description">How to determine the beam distance of flashlights</string>
     <string name="todays_forecast">Today\'s forecast</string>
     <string name="tomorrows_forecast">Tomorrow\'s forecast</string>
@@ -673,7 +666,6 @@
     <string name="place_beacon_at">Place a beacon at %s?</string>
     <string name="create_map">Create map</string>
     <string name="create_map_description">Enter the name of the map</string>
-    <string name="guide_importing_maps_title">Importing maps</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="time_until_empty">until empty</string>
@@ -713,7 +705,6 @@
     <string name="battery_warning">Battery drain warning</string>
     <string name="backtrack_battery_warning">Small intervals (under 15 minutes) may cause excess battery drain</string>
     <string name="calibrate_new_tide">Calibrate to a new tide?</string>
-    <string name="water_boil_guide_title">Make water safe to drink</string>
     <string name="color">Color</string>
     <string name="icon">Icon</string>
     <string name="camera_permission_denied">Camera permission denied, unable to turn on camera features. You can enable it in settings.</string>
@@ -736,8 +727,8 @@
     <string name="pref_nmea_altitude" translatable="false">pref_nmea_altitude</string>
     <string name="pref_barometer_info_holder" translatable="false">pref_barometer_info_holder</string>
     <string name="pref_barometer_info_summary">The pressure may differ from that of nearby stations</string>
-    <string name="pref_nmea_elevation_title">NMEA elevation offsets</string>
-    <string name="pref_nmea_elevation_summary">Uses NMEA offsets for elevation conversion</string>
+    <string name="pref_nmea_elevation_title">NMEA elevation correction</string>
+    <string name="pref_nmea_elevation_summary">Use NMEA (satellite) to correct elevations, rather than built-in model</string>
     <string name="pref_barometer_pressure_smoothing" translatable="false">pref_barometer_pressure_smoothing</string>
     <string name="pref_barometer_pressure_smoothing_title">Pressure smoothing</string>
     <string name="convert">Convert</string>
@@ -866,8 +857,8 @@
     <string name="weight_per_item">Weight per item</string>
     <string name="guide_packing_list">Create packing lists</string>
     <string name="humidity">Humidity</string>
-    <string name="no_compass_message">Your device does not have a compass sensor</string>
-    <string name="no_compass_description">Your device does not have a built-in compass sensor. This is a hardware component, so there is nothing that can be done to add it. Some features that use the compass will be unavailable.</string>
+    <!--    The %s is the name of the sensor-->
+    <string name="no_sensor_message">Your device does not have a %s sensor</string>
     <string name="num_satellites">%d satellites</string>
     <string name="wgs84">WGS 84</string>
     <string name="elevation_history">Elevation history</string>
@@ -1332,9 +1323,7 @@
     <string name="pref_use_zero_shutter_lag" translatable="false">pref_use_zero_shutter_lag</string>
     <string name="my_location">My location</string>
     <string name="destination">Destination</string>
-    <string name="tool_deprecation_disclaimer">This tool may be removed or redesigned since it is not practical for hiking, backpacking, or camping. If you find this tool useful, please share how you are using it with me at %s.</string>
     <string name="pref_cliff_height_enabled" translatable="false">pref_cliff_height_enabled</string>
-    <string name="scheduled_for_redesign_or_removal">Scheduled for redesign or removal</string>
     <string name="triangulate_destination_location_1_instructions">Record your location and the direction to the destination.</string>
     <!--%s is the recommended distance between locations. Ex. 30 m-->
     <string name="triangulate_destination_location_2_instructions">Move at least %s from the first location and record your location and the direction to the destination again.</string>
@@ -1356,6 +1345,50 @@
     <string name="augmented_reality_description">View nearby beacons and the sun / moon with your camera</string>
     <string name="pref_enable_augmented_reality_tool" translatable="false">pref_enable_augmented_reality_tool</string>
     <string name="magnetic_north">Magnetic North</string>
+    <string name="pinned">Pinned</string>
+    <string name="unpin">Unpin</string>
+    <string name="pin">Pin</string>
+    <string name="tool_long_press_hint_toast">Long press a tool to see more options</string>
+    <string name="pref_tool_sort" translatable="false">pref_tool_sort</string>
+    <string name="tool_quick_actions">Tool quick actions</string>
+    <string name="pref_tool_quick_action_header_key" translatable="false">pref_tool_quick_action_header_key</string>
+    <string name="pref_tool_quick_actions" translatable="false">pref_tool_quick_actions</string>
+    <string name="pref_pinned_tools" translatable="false">pref_pinned_tools</string>
+    <string name="settings_have_moved">Settings have moved</string>
+    <string name="settings_have_moved_message">App settings have been moved to the Tools tab</string>
+    <!--The first %s is the device model, the second %s is the sensor name, and the third %s is the app name (Trail Sense)-->
+    <string name="missing_sensor_message_1">Your %1$s does not have a built-in %2$s sensor. Unfortunately, this means that some features in %3$s won\’t be available.</string>
+    <string name="is_there_a_way_to_fix_this">Is there a way to fix this?</string>
+    <string name="no_sensor_unable_to_fix">No, unfortunately this is a hardware feature, so there is nothing that can be done to add it.</string>
+    <string name="why_missing_sensor">My device is new/expensive, why is it missing this sensor?</string>
+    <string name="missing_sensor_explanation">Some phone manufacturers choose not to add this sensor, even on new or expensive devices. You can get more information by visiting your device manufacturer\’s website or getting in touch with them.</string>
+    <string name="true_north_description">Points to the geographic North Pole using the declination for your location. This will align with most maps.</string>
+    <string name="magnetic_north_description">Points to the magnetic North Pole. This will align with most compasses.</string>
+    <string name="high_sensitivity">High sensitivity</string>
+    <string name="pref_altimeter_clear_cache_holder" translatable="false">pref_altimeter_clear_cache_holder</string>
+    <string name="continuous_calibration">Continuous calibration</string>
+    <string name="continuous_calibration_description">Calibrates whenever there is a GPS fix</string>
+    <string name="pref_altimeter_continuous_calibration" translatable="false">pref_altimeter_continuous_calibration</string>
+    <string name="service_restart">Service Restart</string>
+    <string name="service_restart_channel_description">A notification to restart services</string>
+    <string name="restart_services_title">Restart services</string>
+    <string name="restart_services_message">Background services could not be restarted. Tap to restart.</string>
+    <string name="pref_altimeter_forced_recalibration_interval" translatable="false">pref_altimeter_forced_recalibration_interval</string>
+    <string name="fused_altimeter_force_calibration">Force calibration interval</string>
+    <string name="pref_fused_altimeter_force_calibration_holder" translatable="false">pref_fused_altimeter_force_calibration_holder</string>
+    <!--    %s is the interval, ex. 1 h-->
+    <string name="fused_altimeter_force_calibration_summary">Forces a GPS calibration every %s</string>
+    <string name="pref_clinometer_use_ar" translatable="false">pref_clinometer_use_ar</string>
+    <string name="clinometer_augmented_reality">Clinometer augmented reality</string>
+    <string name="clinometer_augmented_reality_description">Visualize angles with your camera</string>
+    <string name="pref_use_dynamic_colors" translatable="false">pref_use_dynamic_colors</string>
+    <string name="dynamic_colors">Dynamic Colors</string>
+    <string name="pref_use_dynamic_colors_on_compass" translatable="false">pref_use_dynamic_colors_on_compass</string>
+    <string name="compass_dynamic_colors">Compass Dynamic Colors</string>
+    <string name="compass_dynamic_colors_summary">Use Dynamic Colors for cardinal directions</string>
+    <string name="screen_flashlight_full_name">Screen Flashlight</string>
+    <string name="view_in_3d">View in 3D</string>
+    <string name="locate">Locate</string>
     <plurals name="map_group_summary">
         <item quantity="one">%d map</item>
         <item quantity="other">%d maps</item>

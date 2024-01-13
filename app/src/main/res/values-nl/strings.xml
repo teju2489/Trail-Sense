@@ -105,7 +105,7 @@
     <string name="set_inclination_instructions">Tik of houd ergens vast om te vergrendelen of te ontgrendelen</string>
     <string name="clinometer_rotate_device">Houd je telefoon verticaal om de helling te meten</string>
     <string name="tool_clinometer_summary">Het schatten van risico op lawines en de hoogte van objecten</string>
-    <string name="clinometer_title">Hellingsmeter</string>
+    <string name="clinometer_title">Hellingmeter</string>
     <string name="moon_phase">Maanstand</string>
     <string name="lunar_noon">Maanmiddag</string>
     <string name="solar_noon">Zonnemiddag</string>
@@ -181,7 +181,7 @@
     <string name="precise_feet_format">%s voet</string>
     <string name="dialog_deny">Nee bedankt</string>
     <string name="dialog_grant">Instellingen bijwerken</string>
-    <string name="access_background_location_rationale">Trail Sense gebruikt je locatiegegevens op de achtergrond voor het ijken van de zeeniveauluchtdrukmeter, voor weeranalyse en om nauwkeurige meldingen voor zonsondergang te geven. [Privacybeleid bekijken](https://kylecorry.com/Trail-Sense/privacy_policy.html)</string>
+    <string name="access_background_location_rationale">Trail Sense gebruikt je locatiegegevens op de achtergrond voor het kalibreren van de zeeniveauluchtdrukmeter, voor weeranalyse en om nauwkeurige meldingen voor zonsondergang te geven. [Privacybeleid bekijken](https://kylecorry.com/Trail-Sense/privacy_policy.html)</string>
     <string name="access_background_location">Locatie-instellingen bijwerken</string>
     <string name="copied_to_clipboard_toast">Naar klembord gekopieerd</string>
     <string name="moderate">Matig</string>
@@ -193,7 +193,6 @@
     <string name="tomorrows_forecast">De voorspelling voor morgen</string>
     <string name="todays_forecast">De voorspelling van vandaag</string>
     <string name="guide_light_meter_description">De reikafstand van een zaklamp bepalen</string>
-    <string name="guide_light_meter_title">De effectiviteit van een zaklamp bepalen</string>
     <string name="gps_cache">gps-cache</string>
     <string name="location_disabled">Locatie is uitgeschakeld</string>
     <string name="set">Instellen</string>
@@ -273,7 +272,6 @@
     <string name="battery_power_usb">USB</string>
     <string name="battery_power_ac">wisselspanning</string>
     <string name="tool_thermometer_title">Thermometer</string>
-    <string name="guide_thermometer_calibration_title">IJking van de thermometer</string>
     <string name="delete_tide_prompt">Getijde verwijderen\?</string>
     <string name="delete_waypoint_prompt">Routepunt verwijderen\?</string>
     <string name="pref_gps_override_title">Locatie overschrijven</string>
@@ -364,7 +362,6 @@
     <string name="threshold">Drempelwaarde</string>
     <string name="inventory_empty_text">Geen voorwerpen</string>
     <string name="tool_whistle_title">Fluitje</string>
-    <string name="cliff_height_guide">Klifhoogte schatten</string>
     <string name="tool_cliff_height_disclaimer">Gebruik dit gereedschap alleen als het veilig is. Controleer wat zich onder de klif bevindt om letsel te voorkomen. Lees de handleiding voor instructies.</string>
     <string name="tool_cliff_height_description">Klif- of dalhoogte meten</string>
     <string name="tool_cliff_height_title">Klifhoogte</string>
@@ -380,8 +377,6 @@
     <string name="other">Anders</string>
     <string name="tool_bubble_level_summary">Bepalen of oppervlakken vlak zijn</string>
     <string name="tool_bubble_level_title">Waterpas</string>
-    <string name="guide_weather_prediction_title">Weersvoorspelling</string>
-    <string name="guide_conserving_battery_title">Batterijbesparing</string>
     <string name="navigation_nearby_category">In de buurt</string>
     <string name="forecasts_category">Voorspellingen</string>
     <string name="advanced">Geavanceerd</string>
@@ -471,7 +466,6 @@
     <string name="distance_from">Van</string>
     <string name="waypoint_time_format">%1$s, %2$s</string>
     <string name="create_beacon">Baken maken</string>
-    <string name="guide_location_no_gps_title">Locatie bepalen zonder gps</string>
     <string name="create_at_distance">Op afstand maken</string>
     <string name="min_temp_uncalibrated">Minimale telefoontemperatuur (niet gekalibreerd)</string>
     <string name="min_temp_calibrated">Minimale omgevingstemperatuur (gekalibreerd)</string>
@@ -569,8 +563,8 @@
     <string name="distance">Afstand</string>
     <string name="convert">Omrekenen</string>
     <string name="pref_barometer_pressure_smoothing_title">Drukvereffening</string>
-    <string name="pref_nmea_elevation_summary">Gebruikt NMEA-offsets voor hoogteconversie</string>
-    <string name="pref_nmea_elevation_title">NMEA hoogte offsets</string>
+    <string name="pref_nmea_elevation_summary">Gebruik NMEA (satelliet) om hoogtes te corrigeren in plaats van het ingebouwde model</string>
+    <string name="pref_nmea_elevation_title">NMEA hoogtecorrectie</string>
     <string name="pref_barometer_info_summary">De druk kan verschillen van die van nabijgelegen stations</string>
     <string name="battery_history">Batterijgeschiedenis - afgelopen %s</string>
     <string name="dusk_type">Schemering (%s)</string>
@@ -585,7 +579,6 @@
     <string name="last_signal_beacon_name">Laatste signaal - %1$s (%2$s)</string>
     <string name="camera_permission_denied">Cameratoestemming geweigerd, kan camerafuncties niet inschakelen. Je kunt het inschakelen in de instellingen.</string>
     <string name="color">Kleur</string>
-    <string name="water_boil_guide_title">Maak water veilig om te drinken</string>
     <string name="calibrate_new_tide">Kalibreren voor een nieuw tij\?</string>
     <string name="battery_warning">Waarschuwing batterij leeg</string>
     <string name="arrow">Pijl</string>
@@ -606,7 +599,6 @@
     <string name="time_until_empty">tot leeg</string>
     <string name="next">Volgende</string>
     <string name="previous">Vorige</string>
-    <string name="guide_importing_maps_title">Kaarten importeren</string>
     <string name="create_map_description">Voer de naam van de kaart in</string>
     <string name="create_map">Kaart maken</string>
     <string name="place_beacon_at">Een baken plaatsen op %s\?</string>
@@ -661,7 +653,6 @@
     <string name="elevation_history">Hoogtegeschiedenis</string>
     <string name="wgs84">WGS 84</string>
     <string name="num_satellites">%d satellieten</string>
-    <string name="no_compass_message">Je apparaat heeft geen kompassensor</string>
     <string name="guide_packing_list">Paklijsten maken</string>
     <string name="weight_per_item">Gewicht per voorwerp</string>
     <string name="pack_sort_weight_high_to_low">Gewicht (hoog naar laag)</string>
@@ -712,9 +703,9 @@
     <string name="distance_unset">Afstand niet ingesteld</string>
     <string name="clinometer_measure_distance_instructions">Om de afstand van een voorwerp dat %s hoog is te meten:
 \n
-\n1. Richt de hellingsmeter op de voet van het doel
+\n1. Richt de hellingmeter op de voet van het doel
 \n2. Tik op het scherm en houd vast
-\n3. Richt de hellingsmeter naar het hoogste punt van het doel
+\n3. Richt de hellingmeter naar het hoogste punt van het doel
 \n4. Laat los om vast te zetten en om de afstand tot het doel te zien</string>
     <string name="compass_accuracy">Nauwkeurigheid van kompas</string>
     <string name="saved_to_note">Opgeslagen als aantekening</string>
@@ -752,9 +743,9 @@
     <string name="new_text">Nieuw</string>
     <string name="clinometer_measure_height_instructions">Om de hoogte van een voorwerp op %s afstand te meten:
 \n
-\n1. Richt de hellingsmeter naar de voet van het doel
+\n1. Richt de hellingmeter naar de voet van het doel
 \n2. Tik op het scherm en houd vast
-\n3. Richt de hellingsmeter naar het hoogste punt van het doel
+\n3. Richt de hellingmeter naar het hoogste punt van het doel
 \n4. Laat los om vast te zetten en om de hoogte van het doel te zien</string>
     <string name="measure">Meten</string>
     <string name="compass_unavailable">Kompas niet beschikbaar</string>
@@ -860,7 +851,7 @@
     <string name="simplifying">Vereenvoudigen</string>
     <string name="simplification_quality">Vereenvoudiging kwaliteit</string>
     <string name="pref_auto_simplify_paths_title">Vereenvoudig paden bij inladen</string>
-    <string name="pref_clinometer_baseline_distance_title">Grondlijn afstand</string>
+    <string name="pref_clinometer_baseline_distance_title">Afstand grondlijn</string>
     <string name="height">Hoogte</string>
     <string name="navigation_guide_description">Gebruik van herkenningspunten en paden</string>
     <string name="saving">Opslaan</string>
@@ -1014,7 +1005,6 @@
     <string name="pref_include_leading_zero_title">Voeg voorloopnul toe aan de tijd</string>
     <string name="center">Centrum</string>
     <string name="pref_keep_map_facing_up_summary">De kaart zal uitlijnen met de bovenkant van het scherm, in plaats van het ware noorden.</string>
-    <string name="tool_deprecation_disclaimer">Dit hulpmiddel zal misschien verwijderd worden omdat het niet praktisch is tijdens een wandeling, trektocht of kamperen. Als je het toch een nuttig hulpmiddel vind, deel a.u.b met mij hoe je het gebruikt: %s.</string>
     <string name="last_lightning_strike_at">Laatste blikseminslag om %s</string>
     <string name="now_value">Nu: %s</string>
     <string name="rate">Frequentie</string>
@@ -1072,7 +1062,6 @@
     <string name="step_progression">Stap %1$d / %2$d</string>
     <string name="restoring_loading_message">Herstellen…</string>
     <string name="triangulate_self_location_2_instructions">Kies een andere bekende locatie waar je zicht op hebt een neem de richting op vanaf waar jij bent ten opzichte van die locatie.</string>
-    <string name="scheduled_for_redesign_or_removal">Opgenomen om vernieuwd of verwijderd te worden</string>
     <string name="crop_map_instructions_long">Sleep de hoeken van het kader naar de hoeken van de kaart.</string>
     <string name="map_auto_rotated">Kaartrotatie aangepast met kalibratie</string>
     <string name="pref_backfill_temperatures_title">Werk opgenomen temperaturen bij</string>
@@ -1082,7 +1071,6 @@
     <string name="accelerometer">Versnellingsmeter</string>
     <string name="historic_temperature_years" tools:ignore="PluralsCandidate">Historisch (%d jaar)</string>
     <string name="map_file">Bestand (JPG, PNG, PDF)</string>
-    <string name="no_compass_description">Je apparaat heeft geen ingebouwde kompas-sensor. Dit is een hardware-component, dus er valt niets aan te doen om dit toe te voegen. Sommige functies die het kompas gebruiken zullen niet beschikbaar zijn.</string>
     <string name="astronomy_altitude_peak">Maximum hoogte</string>
     <plurals name="map_group_summary">
         <item quantity="one">%d kaart</item>
@@ -1144,4 +1132,38 @@
     <string name="pref_keep_map_facing_up_title">Kaart omhoog laten wijzen</string>
     <string name="distance_away_from_self">%s ver</string>
     <string name="season">Seizoen</string>
+    <string name="augmented_reality">Aangevulde realiteit</string>
+    <string name="augmented_reality_description">Bekijk bakens in de buurt en de zon/maan met je camera</string>
+    <string name="magnetic_north">Magnetisch Noorden</string>
+    <string name="tool_long_press_hint_toast">Houdt een hulpmiddel ingedrukt voor meer opties</string>
+    <string name="unpin">Losmaken</string>
+    <string name="settings_have_moved_message">Instellingen zijn verplaatst naar het tabblad Hulpmiddelen</string>
+    <string name="settings_have_moved">Instellingen zijn verplaatst</string>
+    <string name="pinned">Vastgezet</string>
+    <string name="tool_quick_actions">Hulpmiddel snelle acties</string>
+    <string name="pin">Vastzetten</string>
+    <string name="no_sensor_message">Je apparaat heef geen %ssensor</string>
+    <string name="missing_sensor_message_1">Jouw %1$s heeft geen ingebouwde %2$ssensor. Helaas betekent dit dat sommige functies in %3$s niet beschikbaar zijn.</string>
+    <string name="why_missing_sensor">Mijn apparaat is nieuw/prijzig, waarom ontbreekt deze sensor?</string>
+    <string name="magnetic_north_description">Wijst naar de magnetische Noordpool. Dit werkt met de meeste kompassen.</string>
+    <string name="missing_sensor_explanation">Sommige telefoonfabrikanten kiezen ervoor om deze sensor niet in te bouwen, zelfs in nieuwe of prijzige apparaten. Je kunt meer te weten komen door de website van de telefoonfabrikant te bezoeken, of hen te contacteren.</string>
+    <string name="no_sensor_unable_to_fix">Nee, dit is helaas een hardware-functie, er is dus niks aan te doen om dit toe te voegen.</string>
+    <string name="true_north_description">Wijst naar de geografische Noordpool door de declinatie voor jouw locatie te gebruiken. Dit werkt met de meeste kaarten.</string>
+    <string name="is_there_a_way_to_fix_this">Is er een manier om dit op te lossen?</string>
+    <string name="high_sensitivity">Hoge gevoeligheid</string>
+    <string name="restart_services_message">Achtergrondactiviteiten konden niet opnieuw opgestart worden. Tik om te herstarten.</string>
+    <string name="service_restart">Activiteit herstarten</string>
+    <string name="restart_services_title">Herstart activiteiten</string>
+    <string name="fused_altimeter_force_calibration">Forceer kalibratie-interval</string>
+    <string name="continuous_calibration_description">Kalibreert als een geolocatie wordt bepaald</string>
+    <string name="fused_altimeter_force_calibration_summary">Forceert een GPS-kalibratie elke %s</string>
+    <string name="continuous_calibration">Voortdurende kalibratie</string>
+    <string name="service_restart_channel_description">Een melding om activiteiten te herstarten</string>
+    <string name="clinometer_augmented_reality_description">Visualiseer hoeken met je camera</string>
+    <string name="clinometer_augmented_reality">Hellingmeter aangevulde realiteit</string>
+    <string name="compass_dynamic_colors">Dynamische kleuren kompas</string>
+    <string name="dynamic_colors">Dynamische kleuren</string>
+    <string name="screen_flashlight_full_name">Schermzaklamp</string>
+    <string name="compass_dynamic_colors_summary">Gebruik dynamische kleuren voor windstreken</string>
+    <string name="view_in_3d">Bekijk in 3D</string>
 </resources>

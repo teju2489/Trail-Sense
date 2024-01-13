@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".navigation.ui.NavigatorFragment">
 
-    <com.kylecorry.ceres.toolbar.CeresToolbar
+    <com.kylecorry.andromeda.views.toolbar.Toolbar
         android:id="@+id/navigation_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         android:id="@+id/view_camera_line"
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:background="@color/orange_40"
+        android:background="?attr/colorPrimary"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/view_camera"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,19 +100,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/round_compass" />
 
-    <com.kylecorry.trail_sense.tools.ruler.ui.RulerView
-        android:id="@+id/ruler"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
-        android:background="?android:colorBackgroundFloating"
-        android:elevation="4dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.kylecorry.trail_sense.tools.ruler.ui.RulerView>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/sighting_compass_btn"
         style="?attr/floatingActionButtonSmallStyle"
@@ -124,21 +111,19 @@
         android:focusable="true"
         android:tint="?android:textColorSecondary"
         android:visibility="invisible"
-        app:backgroundTint="?android:colorBackgroundFloating"
+        app:backgroundTint="?attr/colorBackgroundFloating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear_compass"
         app:srcCompat="@drawable/ic_camera" />
 
-    <com.kylecorry.ceres.badge.CeresBadge
+    <com.kylecorry.trail_sense.shared.views.NorthReferenceBadge
         android:id="@+id/north_reference_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_bottom_margin"
         app:layout_constraintBottom_toTopOf="@id/navigation_sheet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:foregroundTint="?android:textColorPrimary"
-        app:icon="@drawable/ic_star" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/beaconBtn"
@@ -164,7 +149,7 @@
         app:layout_constraintBottom_toTopOf="@+id/navigation_sheet"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.kylecorry.ceres.badge.CeresBadge
+        <com.kylecorry.andromeda.views.badge.Badge
             android:id="@+id/gps_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -172,7 +157,7 @@
             app:foregroundTint="@android:color/black"
             app:icon="@drawable/satellite" />
 
-        <com.kylecorry.ceres.badge.CeresBadge
+        <com.kylecorry.andromeda.views.badge.Badge
             android:id="@+id/compass_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

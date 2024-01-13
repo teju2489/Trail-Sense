@@ -234,8 +234,6 @@
     <string name="advanced">Pokročilé</string>
     <string name="forecasts_category">Předpovědi</string>
     <string name="navigation_nearby_category">Poblíž</string>
-    <string name="guide_conserving_battery_title">Úspora baterie</string>
-    <string name="guide_weather_prediction_title">Předpověď počasí</string>
     <string name="other">Ostatní</string>
     <string name="category_food">Potraviny</string>
     <string name="category_hydration">Hydratace</string>
@@ -245,7 +243,6 @@
     <string name="category_natural">Přírodní</string>
     <string name="tool_cliff_height_title">Výška útesu</string>
     <string name="tool_cliff_height_disclaimer">Tento nástroj používejte pouze tehdy, je-li to bezpečné, a nezapomeňte zkontrolovat, co se nachází pod útesem, abyste předešli zranění. Pokyny naleznete v uživatelské příručce.</string>
-    <string name="cliff_height_guide">Odhadněte výšku útesu</string>
     <string name="inventory_empty_text">Žádně věci</string>
     <string name="distance_from">Od</string>
     <string name="unit_meters">Metry</string>
@@ -321,7 +318,6 @@
     <string name="map_scale_verbal">Slovní</string>
     <string name="delete_waypoint_prompt">Smazat navigační bod\?</string>
     <string name="delete_tide_prompt">Smazat příliv a odliv\?</string>
-    <string name="guide_thermometer_calibration_title">Kalibrace teploměru</string>
     <string name="tool_thermometer_title">Teploměr</string>
     <string name="battery_power_ac">AC</string>
     <string name="open_beacon_in_maps">Zobrazit na mapě</string>
@@ -359,7 +355,6 @@
     <string name="create_at_distance">Vytvořit v dálce</string>
     <string name="backtrack">Zpětná navigace</string>
     <string name="pref_gps_override_title">Přepsání polohy</string>
-    <string name="guide_location_no_gps_title">Určete polohu bez GPS</string>
     <string name="quality_good">Dobrá</string>
     <string name="time_ago">Před %s</string>
     <string name="satellites">satelity</string>
@@ -501,7 +496,6 @@
     <string name="beacon_export_error">Nepodařilo se exportovat majáky</string>
     <string name="distance_from_flashlight">Vzdálenost telefonu od svítilny</string>
     <string name="beam_distance">%s vzdálenost paprsku</string>
-    <string name="guide_light_meter_title">Určete účinnost svítilny</string>
     <string name="tomorrows_forecast">Předpověď na zítřek</string>
     <string name="lux_format">%s lx</string>
     <string name="candela_format">%s cd</string>
@@ -544,7 +538,6 @@
     <string name="camera_permission_denied">Povolení používání fotoaparátu bylo zamítnuto, nelze zapnout funkce, které používající fotoaparát. Můžete je povolit v nastavení.</string>
     <string name="backtrack_battery_warning">Malé intervaly (do 15 minut) mohou způsobit nadměrné vybíjení baterie</string>
     <string name="calibrate_new_tide">Kalibrovat na nový příliv/odliv\?</string>
-    <string name="water_boil_guide_title">Zajistěte, aby byla voda pitná</string>
     <string name="color">Barva</string>
     <string name="square">Čtverec</string>
     <string name="search">Hledat</string>
@@ -556,7 +549,6 @@
     <string name="place_beacon_at">Umístit maják na %s\?</string>
     <string name="create_map">Vytvořit mapu</string>
     <string name="create_map_description">Zadejte název mapy</string>
-    <string name="guide_importing_maps_title">Importování map</string>
     <string name="previous">Předchozí</string>
     <string name="next">Další</string>
     <string name="time_until_empty">do prázdné baterie</string>
@@ -589,8 +581,8 @@
     <string name="whistle_signal_come_here">Pojďte sem</string>
     <string name="dusk_type">Soumrak (%s)</string>
     <string name="pref_barometer_info_summary">Tlak se může lišit od tlaku okolních stanic</string>
-    <string name="pref_nmea_elevation_title">Kompenzace nadmořské výšky NMEA</string>
-    <string name="pref_nmea_elevation_summary">Používá kompenzace NMEA pro převod nadmořské výšky</string>
+    <string name="pref_nmea_elevation_title">Oprava nadmořské výšky NMEA</string>
+    <string name="pref_nmea_elevation_summary">Použít NMEA (satelit) pro opravu výšek namísto vestavěného modelu</string>
     <string name="pref_barometer_pressure_smoothing_title">Vyhlazení tlaku</string>
     <string name="convert">Převést</string>
     <string name="distance">Vzdálenost</string>
@@ -743,7 +735,6 @@
     <string name="daylight">Denní světlo</string>
     <string name="no_permission">Povolení nebylo uděleno</string>
     <string name="no_issues">Nebyly zjištěny žádné problémy</string>
-    <string name="no_compass_message">Vaše zařízení nemá podporu kompasu</string>
     <string name="wgs84">WGS 84</string>
     <string name="battery_restricted_resolution">Nastavte Trail Sense jako Neoptimalizováné</string>
     <string name="power_saving_mode_resolution">Vypněte úsporný režim</string>
@@ -1145,7 +1136,6 @@
     <string name="gps_elevation_accuracy">Přesnost nadmořské výšky GPS</string>
     <string name="gps_location_accuracy">Přesnost lokace GPS</string>
     <string name="gps_satellites">Satelity GPS</string>
-    <string name="no_compass_description">Vaše zařízení nemá vestavěný senzor kompasu. Jedná se o hardwarovou součást, takže ji nelze nijak přidat. Některé funkce, které kompas využívají, nebudou k dispozici.</string>
     <string name="backup_disclaimer">Bude vytvořen soubor zálohy obsahující všechna vaše aktuální data. Budou v něm zahrnuta nastavení, trasy, majáky, mapy apod.
 \n
 \nTento soubor není šifrován. Nesdílejte jej s nikým, komu nevěříte.</string>
@@ -1154,9 +1144,7 @@
     <string name="backup_restore">Záloha / obnovení</string>
     <string name="restore_failure_newer_version">Tato záloha byla vytvořena s novější verzí aplikace %s. Aktualizujte prosím aplikaci a zkuste to znovu.</string>
     <string name="zero_shutter_lag">Nulové zpoždění závěrky</string>
-    <string name="tool_deprecation_disclaimer">Tento nástroj může být odstraněn nebo přepracován, protože není praktický pro pěší turistiku, turistiku s batohem nebo kempování. Pokud je pro vás tento nástroj užitečný, podělte se se mnou o to, jak ho používáte, na %s.</string>
     <string name="my_location">Moje lokace</string>
-    <string name="scheduled_for_redesign_or_removal">Naplánováno přepracování nebo odstranění</string>
     <string name="destination">Cíl</string>
     <string name="triangulate_destination_location_1_instructions">Zaznamenejte svou lokaci a směr k cíli.</string>
     <string name="triangulate_self_location_1_instructions">Vyberte známou lokaci, kterou vidíte a zaznamenejte směr, ze kterého se díváte na danou lokaci.</string>
@@ -1171,4 +1159,37 @@
     <string name="direction">Směr</string>
     <string name="augmented_reality">Rozšířená realita</string>
     <string name="augmented_reality_description">Zobrazte si blízké majáky a slunce/měsíc vaším fotoaparátem</string>
+    <string name="magnetic_north">Magnetický sever</string>
+    <string name="tool_long_press_hint_toast">Podržte pro zobrazení více možností</string>
+    <string name="unpin">Odepnout</string>
+    <string name="pinned">Připnuto</string>
+    <string name="tool_quick_actions">Rychlé akce nástroje</string>
+    <string name="pin">Připnout</string>
+    <string name="settings_have_moved_message">Nastavení aplikace byla přesunuta na kartu Nástroje</string>
+    <string name="settings_have_moved">Přesunuli jsme nastavení</string>
+    <string name="no_sensor_message">Vaše zařízení nemá senzor %s</string>
+    <string name="missing_sensor_message_1">Vaše zařízení %1$s nemá vestavěný senzor %2$s. To bohužel znamená, že některé funkce v %3$s nebudou dostupné.</string>
+    <string name="why_missing_sensor">Moje zařízení je nové/drahé, proč mu chybí tento senzor?</string>
+    <string name="magnetic_north_description">Ukazuje na magnetický severní pól. To odpovídá většině kompasů.</string>
+    <string name="missing_sensor_explanation">Někteří výrobci telefonů nezahrnují tento senzor ani na nových nebo drahých zařízeních. Více informací naleznete na webu výrobce vašeho zařízení nebo jeho kontaktováním.</string>
+    <string name="no_sensor_unable_to_fix">Bohužel ne, jedná se o hardwarovou funkci, takže se s tím bohužel nedá nic dělat.</string>
+    <string name="true_north_description">Ukazuje na zeměpisný severní pól pomocí deklinace pro vaši polohu. To odpovídá většině map.</string>
+    <string name="is_there_a_way_to_fix_this">Dá se to nějak opravit?</string>
+    <string name="high_sensitivity">Vysoká senzitivita</string>
+    <string name="restart_services_message">Nepodařilo se restartovat služby na pozadí. Klepněte pro restartování.</string>
+    <string name="service_restart">Restart služby</string>
+    <string name="restart_services_title">Restartovat služby</string>
+    <string name="fused_altimeter_force_calibration">Interval vynucení kalibrace</string>
+    <string name="continuous_calibration_description">Aplikace provede kalibraci při dostupné opravě GPS</string>
+    <string name="fused_altimeter_force_calibration_summary">Vynutí kalibraci každých %s</string>
+    <string name="continuous_calibration">Průběžná kalibrace</string>
+    <string name="service_restart_channel_description">Oznámení pro restart služeb</string>
+    <string name="clinometer_augmented_reality_description">Vizualizace úhlů pomocí vašeho fotoaparátu</string>
+    <string name="clinometer_augmented_reality">Rozšířená realita clinometru</string>
+    <string name="dynamic_colors">Dynamické barvy</string>
+    <string name="compass_dynamic_colors">Dynamické barvy kompasu</string>
+    <string name="compass_dynamic_colors_summary">Použít dynamické barvy pro světové strany</string>
+    <string name="screen_flashlight_full_name">Obrazovka jako svítilna</string>
+    <string name="view_in_3d">Zobrazit ve 3D</string>
+    <string name="locate">Lokace</string>
 </resources>

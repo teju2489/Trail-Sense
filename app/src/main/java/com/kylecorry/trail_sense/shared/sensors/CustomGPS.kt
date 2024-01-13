@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.kylecorry.andromeda.core.sensors.AbstractSensor
 import com.kylecorry.andromeda.core.sensors.Quality
-import com.kylecorry.andromeda.core.time.Timer
-import com.kylecorry.andromeda.location.GPS
-import com.kylecorry.andromeda.location.IGPS
+import com.kylecorry.andromeda.core.time.CoroutineTimer
+import com.kylecorry.andromeda.sense.location.GPS
+import com.kylecorry.andromeda.sense.location.IGPS
 import com.kylecorry.sol.math.RingBuffer
 import com.kylecorry.sol.math.SolMath.real
 import com.kylecorry.sol.time.Time.isInPast
@@ -81,11 +81,11 @@ class CustomGPS(
     private val cache by lazy { PreferencesSubsystem.getInstance(context).preferences }
     private val userPrefs by lazy { UserPreferences(context) }
 
-    private val timeout = Timer {
+    private val timeout = CoroutineTimer {
         onTimeout()
     }
 
-    private val geoidTimer = Timer {
+    private val geoidTimer = CoroutineTimer {
         geoidOffset = AltitudeCorrection.getGeoid(context, location)
     }
 
@@ -237,7 +237,10 @@ class CustomGPS(
         var shouldNotify = true
 
         // Verify satellite requirement for notification
-        if (userPrefs.requiresSatellites && (baseGPS.satellites ?: 0) < 4) {
+        // If satellite count is null, then the phone doesn't support satellite count
+        val satelliteCount = baseGPS.satellites
+        val hasFix = satelliteCount == null || (userPrefs.requiresSatellites && satelliteCount >= 4)
+        if (!hasFix) {
             shouldNotify = false
         } else {
             // Reset the timeout, there's a valid reading

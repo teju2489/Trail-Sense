@@ -7,13 +7,16 @@ import com.kylecorry.andromeda.canvas.ImageMode
 import com.kylecorry.andromeda.canvas.TextAlign
 import com.kylecorry.andromeda.canvas.TextMode
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.sol.math.SolMath.roundNearest
 import com.kylecorry.sol.math.geometry.Size
 import com.kylecorry.sol.units.CompassDirection
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getCardinalDirectionColor
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.camera.AugmentedRealityUtils
+import com.kylecorry.trail_sense.shared.colors.AppColor
+import com.kylecorry.trail_sense.shared.extensions.getValuesBetween
 
 class LinearCompassView : BaseCompassView {
 
@@ -67,15 +70,18 @@ class LinearCompassView : BaseCompassView {
     private fun drawCompass() {
         val values = getValuesBetween(rawMinimum, rawMaximum, 5f).map { it.toInt() }
 
+        val primaryColor = Resources.getCardinalDirectionColor(context)
+        val secondaryColor = Resources.androidTextColorPrimary(context)
+
         values.forEach {
             val x = toPixel(it.toFloat())
 
             // Set the color
             if (it % 45 == 0) {
-                stroke(Resources.color(context, R.color.orange_40))
+                stroke(primaryColor)
                 strokeWeight(8f)
             } else {
-                stroke(Resources.androidTextColorPrimary(context))
+                stroke(secondaryColor)
                 strokeWeight(8f)
             }
 
@@ -103,33 +109,13 @@ class LinearCompassView : BaseCompassView {
                     else -> ""
                 }
                 noStroke()
-                fill(Resources.androidTextColorPrimary(context))
+                fill(secondaryColor)
                 textMode(TextMode.Corner)
                 text(coord, x, 5 / 12f * height)
             }
         }
 
         noStroke()
-    }
-
-    /**
-     * Returns the values between min and max, inclusive, that are divisible by divisor
-     * @param min The minimum value
-     * @param max The maximum value
-     * @param divisor The divisor
-     * @return The values between min and max, inclusive, that are divisible by divisor
-     */
-    private fun getValuesBetween(min: Float, max: Float, divisor: Float): List<Float> {
-        val values = mutableListOf<Float>()
-        val start = min.roundNearest(divisor)
-        var i = start
-        while (i <= max) {
-            if (i >= min) {
-                values.add(i)
-            }
-            i += divisor
-        }
-        return values
     }
 
     override fun setup() {

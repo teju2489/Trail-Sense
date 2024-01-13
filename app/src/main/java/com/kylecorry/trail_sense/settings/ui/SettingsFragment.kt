@@ -1,9 +1,13 @@
 package com.kylecorry.trail_sense.settings.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
+import com.google.android.material.color.HarmonizedColors
 import com.kylecorry.andromeda.core.system.Intents
 import com.kylecorry.andromeda.core.system.Package
 import com.kylecorry.andromeda.core.system.Resources
@@ -14,6 +18,8 @@ import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.backup.BackupCommand
 import com.kylecorry.trail_sense.backup.RestoreCommand
 import com.kylecorry.trail_sense.main.Navigation
+import com.kylecorry.trail_sense.shared.QuickActionUtils
+import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.io.ActivityUriPicker
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.trail_sense.shared.requireMainActivity
@@ -38,16 +44,17 @@ class SettingsFragment : AndromedaPreferenceFragment() {
         R.string.pref_maps_header_key to Navigation.MAP_SETTINGS,
         R.string.pref_tide_settings to Navigation.TIDE_SETTINGS,
         R.string.pref_clinometer_settings to Navigation.CLINOMETER_SETTINGS,
+        R.string.pref_odometer_calibration to Navigation.PEDOMETER_SETTINGS,
 
         // About
         R.string.pref_open_source_licenses to Navigation.LICENSES,
         R.string.pref_diagnostics to Navigation.DIAGNOSTICS,
     )
 
-    private val cache by lazy { PreferencesSubsystem.getInstance(requireContext()).preferences }
     private val uriPicker by lazy { ActivityUriPicker(requireMainActivity()) }
     private val backupCommand by lazy { BackupCommand(requireContext(), uriPicker) }
     private val restoreCommand by lazy { RestoreCommand(requireContext(), uriPicker) }
+    private val prefs by lazy { UserPreferences(requireContext()) }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -62,7 +69,7 @@ class SettingsFragment : AndromedaPreferenceFragment() {
         preference(R.string.pref_flashlight_settings)?.isVisible =
             FlashlightSubsystem.getInstance(requireContext()).isAvailable()
 
-        refreshOnChange(list(R.string.pref_theme))
+        reloadThemeOnChange(list(R.string.pref_theme))
 
         onClick(preference(R.string.pref_github)) {
             val i = Intents.url(it.summary.toString())
@@ -77,6 +84,17 @@ class SettingsFragment : AndromedaPreferenceFragment() {
         onClick(preference(R.string.pref_email)) {
             val intent = Intents.email(it.summary.toString(), getString(R.string.app_name))
             startActivity(Intent.createChooser(intent, it.title.toString()))
+        }
+
+        val dynamicColorsSwitch = switch(R.string.pref_use_dynamic_colors)
+        val dynamicCompassColorsSwitch = switch(R.string.pref_use_dynamic_colors_on_compass)
+        dynamicColorsSwitch?.isVisible = DynamicColors.isDynamicColorAvailable()
+        dynamicCompassColorsSwitch?.isVisible = DynamicColors.isDynamicColorAvailable()
+        dynamicCompassColorsSwitch?.isEnabled = prefs.useDynamicColors
+        dynamicColorsSwitch?.setOnPreferenceChangeListener { _, _ ->
+            requireMainActivity().reloadTheme()
+            dynamicCompassColorsSwitch?.isEnabled = prefs.useDynamicColors
+            true
         }
 
         val version = Package.getVersionName(requireContext())
@@ -98,12 +116,27 @@ class SettingsFragment : AndromedaPreferenceFragment() {
                 }
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        if (cache.getBoolean("pref_theme_just_changed") == true) {
-            refresh(false)
+
+        onClick(findPreference(getString(R.string.pref_tool_quick_action_header_key))){
+            val potentialActions = QuickActionUtils.tools(requireContext())
+
+            val selected = prefs.toolQuickActions
+
+            val selectedIndices = potentialActions.mapIndexedNotNull { index, quickActionType ->
+                if (selected.contains(quickActionType)) index else null
+            }
+
+            Pickers.items(
+                requireContext(),
+                getString(R.string.tool_quick_actions),
+                potentialActions.map { QuickActionUtils.getName(requireContext(), it) },
+                selectedIndices
+            ) {
+                if (it != null) {
+                    prefs.toolQuickActions = it.map { potentialActions[it] }
+                }
+            }
         }
     }
 
@@ -119,14 +152,9 @@ class SettingsFragment : AndromedaPreferenceFragment() {
         }
     }
 
-    private fun refresh(recordChange: Boolean) {
-        cache.putBoolean("pref_theme_just_changed", recordChange)
-        activity?.recreate()
-    }
-
-    private fun refreshOnChange(pref: Preference?) {
+    private fun reloadThemeOnChange(pref: Preference?) {
         pref?.setOnPreferenceChangeListener { _, _ ->
-            refresh(true)
+            requireMainActivity().reloadTheme()
             true
         }
     }

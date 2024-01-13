@@ -60,34 +60,43 @@ See the [Technical Blog / Research](https://kylecorry.com/research/categories/tr
 
 ## Features
 
-- Navigation
-- Weather
-- Astronomy
-- Tides
-- Clinometer
-- And many more tools
+- Designed for hiking, backpacking, camping, and geocaching
+- Place beacons and navigate to them
+- Follow paths
+- Retrace your steps with backtrack
+- Use a photo as a map
+- Plan what to pack
+- Be alerted before the sun sets
+- Predict the weather
+- Use your phone as a flashlight
+- [And much more!](https://github.com/kylecorry31/Trail-Sense/wiki/Use-Cases)
 
-See the need for a new feature? [Post it here!](https://github.com/kylecorry31/Trail-Sense/issues/59)
+See the need for a new feature? [Post it here!](https://github.com/kylecorry31/Trail-Sense/issues/1911)
 
-### Navigation
-
-Trail Sense's compass helps you determine the direction of North and navigate to saved locations, known as beacons. In addition to navigating to beacons, you can also use the Backtrack feature to record waypoints and retrace your steps. This tool makes it easy to navigate and find your way in the great outdoors.
-
-Example beacons: home, work, trailhead, campsite
-
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Navigation Screenshot" height="500"/>
-
-### Weather
-
-Trail Sense helps you stay informed about the weather, while completely offline. You can use it to predict if what the weather will be or be notified if a storm is likely to occur. It also displays the historical daily temperatures for your location, so you can be better prepared. This feature is only available on phones that have a barometer.
-
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" alt="Weather Screenshot" height="500"/>
-
-### Astronomy
-
-View reliable and accurate sunrise and sunset times for your location. In addition, you can stay informed about the phases of the moon, lunar eclipses, and meteor showers. These tools can help you plan your outdoor activities and ensure you have the necessary light for your endeavors.
-
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" alt="Astronomy Screenshot" height="500"/>
+<table>
+  <tr>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png"/>
+    </td>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png"/>
+    </td>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg"/>
+    </td>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png"/>
+    </td>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png"/>
+    </td>
+  </tr>
+</table>
 
 # Privacy
 
@@ -136,18 +145,17 @@ Only available on debug APKs / builds via Android Studio
 
 # Contributing
 
-- [Request a new feature](https://github.com/kylecorry31/Trail-Sense/issues/59)
+- [Request a new feature](https://github.com/kylecorry31/Trail-Sense/issues/1911)
 - [Submit an issue](https://github.com/kylecorry31/Trail-Sense/issues)
-- [Translate Trail Sense on Weblate](https://hosted.weblate.org/projects/trail-sense/trail-sense-android)
-- [Test out new features](https://github.com/kylecorry31/Trail-Sense/issues/74)
+- [Translate Trail Sense](https://github.com/kylecorry31/Trail-Sense/issues/213)
+- [Test out nightly builds](https://github.com/kylecorry31/Trail-Sense/discussions/1940)
+- [Test out experimental features](https://github.com/kylecorry31/Trail-Sense/discussions/2099)
 
-If you choose to write a new feature yourself, send me a message to verify that it is something that I will accept into Trail Sense before your write it (if not, you can always fork this repo and create your own version of Trail Sense!). I will conduct a code review on incoming pull requests to verify they align nicely with the rest of the code base and the feature works as intended.
+If you choose to write a new feature yourself, send me a message to verify that it is something that I will accept into Trail Sense before your write it (if not, you can always fork this repo and create your own version of Trail Sense). I will conduct a code review on incoming pull requests to verify they align nicely with the rest of the code base and the feature works as intended.
 
-Issues marked with the help-wanted label are open for community contribution at any time (just submit a PR to main and I will review it), or leave a comment on the story to say you are working on it / ask for more details. Please leave a comment on any other issue before you work on them because they might not have all the details, I may not want it implemented yet, or I may have to implement it myself - for fun.
+Issues marked with the help-wanted label are open for community contribution at any time (just submit a PR to main and I will review it), or leave a comment on the story to say you are working on it / ask for more details. Please leave a comment on any other issue before you work on them because they might not have all the details, I may not want it implemented yet, or I may want to implement it myself - for fun.
 
-If an issue has a milestone and you would like to work on it, please leave a comment before working on it or creating a pull request. If you do not have the feature completed within 4 days of when I plan to release, I will implement it.
-
-If you submit an issue, please be civil and constructive - I will consider all feedback, and if I choose not to implement your suggestion I will post my reasoning. If you are experiencing an issue, please include all relevant details to help me understand and reproduce the issue. If you disagree with a change, please describe why you disagree and how I can improve it (if applicable, please provide research / evidence so I can cross verify).
+If you submit an issue, please be civil and constructive - I will consider all feedback, and if I choose not to implement your suggestion I will post my reasoning. If you are experiencing an issue, please include all relevant details to help me understand and reproduce the issue. If you disagree with a change, please describe why you disagree and how I can improve it. Finally, if applicable, please provide research / evidence so I can cross verify.
 
 # FAQ
 The FAQ has moved [to the wiki](https://github.com/kylecorry31/Trail-Sense/wiki/Frequently-Asked-Questions-(FAQ))
@@ -159,9 +167,10 @@ The best way to support Trail Sense is to send me your feedback, share how you a
 # Open Source Credits
 
 - Thank you to everyone who tried out this app and opened issues, suggested features, provided translations, or tested debug builds for me
-- Thanks to @qwerty287 and @Portagoras for implementing several features and bugfixes
+- Thanks to @qwerty287 and @Portagoras for implementing some features and bugfixes
 - Please see the in app licenses for all open source licenses
 - Contributors and translators: https://github.com/kylecorry31/Trail-Sense/graphs/contributors
+- [showdownjs](https://github.com/showdownjs/showdown): used for website markdown rendering [License](https://github.com/showdownjs/showdown/blob/master/LICENSE)
 
 # License
 

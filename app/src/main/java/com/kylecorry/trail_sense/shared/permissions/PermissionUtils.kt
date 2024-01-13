@@ -106,24 +106,27 @@ fun AndromedaFragment.requestCamera(action: (hasPermission: Boolean) -> Unit) {
     }
 }
 
-fun Permissions.canRunLocationForegroundService(context: Context): Boolean {
+fun Permissions.canStartLocationForgroundService(context: Context): Boolean {
+    // Older API versions don't need foreground permission
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
         return true
     }
-    return canGetLocation(context)
+
+    // The service can be started if it has background permission or if the system says it can get location
+    return isBackgroundLocationEnabled(context) || canGetLocation(context, checkAppOps = true)
 }
 
 /**
  * Request location permission when absolutely required to start a foreground service (Android 14+)
  */
-fun <T> T.requestLocationForegroundServicePermission(action: (hasPermission: Boolean) -> Unit) where T : IPermissionRequester, T : Fragment {
-    if (Permissions.canRunLocationForegroundService(requireContext())) {
+fun <T> T.requestBacktrackPermission(action: (hasPermission: Boolean) -> Unit) where T : IPermissionRequester, T : Fragment {
+    if (Permissions.canStartLocationForgroundService(requireContext())) {
         action(true)
         return
     }
 
     requestPermissions(listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-        val hasPermission = Permissions.canRunLocationForegroundService(requireContext())
+        val hasPermission = Permissions.canStartLocationForgroundService(requireContext())
         if (!hasPermission){
             toast(getString(R.string.backtrack_no_permission))
         }

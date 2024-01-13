@@ -4,25 +4,27 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Path
-import android.hardware.SensorManager
-import android.opengl.Matrix
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.kylecorry.andromeda.canvas.CanvasView
 import com.kylecorry.andromeda.canvas.TextAlign
 import com.kylecorry.andromeda.canvas.TextMode
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.ui.Colors.withAlpha
 import com.kylecorry.andromeda.core.units.PixelCoordinate
-import com.kylecorry.andromeda.sense.clinometer.CameraClinometer
-import com.kylecorry.andromeda.sense.clinometer.SideClinometer
-import com.kylecorry.andromeda.sense.orientation.IOrientationSensor
+import com.kylecorry.andromeda.fragments.inBackground
+import com.kylecorry.luna.coroutines.CoroutineQueueRunner
 import com.kylecorry.sol.math.Euler
 import com.kylecorry.sol.math.Quaternion
-import com.kylecorry.sol.math.QuaternionMath
-import com.kylecorry.sol.math.SolMath.real
 import com.kylecorry.sol.math.SolMath.toDegrees
-import com.kylecorry.sol.math.SolMath.toRadians
 import com.kylecorry.sol.math.Vector3
 import com.kylecorry.sol.math.geometry.Size
 import com.kylecorry.sol.units.Bearing
@@ -33,15 +35,17 @@ import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.camera.AugmentedRealityUtils
 import com.kylecorry.trail_sense.shared.canvas.PixelCircle
 import com.kylecorry.trail_sense.shared.declination.DeclinationFactory
-import com.kylecorry.trail_sense.shared.declination.DeclinationUtils
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.text
 import com.kylecorry.trail_sense.shared.textDimensions
+import com.kylecorry.trail_sense.shared.views.CameraView
+import com.kylecorry.trail_sense.tools.augmented_reality.mapper.CalibratedCameraAnglePixelMapper
+import com.kylecorry.trail_sense.tools.augmented_reality.mapper.CameraAnglePixelMapper
+import com.kylecorry.trail_sense.tools.augmented_reality.position.ARPoint
+import com.kylecorry.trail_sense.tools.augmented_reality.position.AugmentedRealityCoordinate
+import kotlinx.coroutines.Dispatchers
 import java.time.Duration
-import kotlin.math.asin
 import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
 
 // TODO: Notify location change
 // TODO: This needs a parent view that has the camera, this, and any buttons (like the freeform button)
@@ -62,17 +66,14 @@ class AugmentedRealityView : CanvasView {
     var backgroundFillColor: Int = Color.TRANSPARENT
 
     private var rotationMatrix = FloatArray(16)
-    private val quaternion = FloatArray(4)
     private val orientation = FloatArray(3)
-    private var size = Size(width.toFloat(), height.toFloat())
+    private var previewRect: RectF? = null
+    private var cameraMapper: CameraAnglePixelMapper? = null
 
     // Sensors / preferences
     private val userPrefs = UserPreferences(context)
     private val sensors = SensorService(context)
-    private val compass = sensors.getCompass()
-    private val clinometer = CameraClinometer(context)
-    private val sideClinometer = SideClinometer(context)
-    private var orientationSensor: IOrientationSensor? = sensors.getOrientation()
+    private val orientationSensor = sensors.getOrientation()
     private val gps = sensors.getGPS(frequency = Duration.ofMillis(200))
     private val altimeter = sensors.getAltimeter(gps = gps)
     private val declinationProvider = DeclinationFactory().getDeclinationStrategy(
@@ -82,7 +83,8 @@ class AugmentedRealityView : CanvasView {
     private val isTrueNorth = userPrefs.compass.useTrueNorth
     private val formatter = FormatService.getInstance(context)
 
-    private val orientationLock = Any()
+    private var fromTrueNorth = Quaternion.zero
+    private var toTrueNorth = Quaternion.zero
 
     /**
      * The compass bearing of the device in degrees.
@@ -114,6 +116,11 @@ class AugmentedRealityView : CanvasView {
     val altitude: Float
         get() = altimeter.altitude
 
+    var showReticle: Boolean = true
+    var showPosition: Boolean = true
+
+    private var reticleColor = Color.WHITE.withAlpha(127)
+
     /**
      * The diameter of the reticle in pixels
      */
@@ -124,35 +131,44 @@ class AugmentedRealityView : CanvasView {
     private val layerLock = Any()
 
     // Guidance
-    private var guideLocation: ARPosition? = null
+    private var guidePoint: ARPoint? = null
     private var guideThreshold: Float? = null
     private var onGuideReached: (() -> Unit)? = null
 
-    fun start() {
-        gps.start(this::onSensorUpdate)
-        altimeter.start(this::onSensorUpdate)
-        // Recreate the orientation sensor - seems to be an upstream bug with the rotation vector that if you reuse, it may not be accurate
-        orientationSensor?.stop(this::onSensorUpdate)
-        orientationSensor = sensors.getOrientation()
-        if (orientationSensor != null) {
-            orientationSensor?.start(this::onSensorUpdate)
-        } else {
-            compass.start(this::onSensorUpdate)
-            clinometer.start(this::onSensorUpdate)
-            sideClinometer.start(this::onSensorUpdate)
+    // Camera binding
+    private var camera: CameraView? = null
+    private val fovRunner = CoroutineQueueRunner(1, dispatcher = Dispatchers.Main)
+    private var owner: LifecycleOwner? = null
+    private val lifecycleObserver = LifecycleEventObserver { _, event ->
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> {
+                syncTimer.interval(1000)
+            }
+
+            Lifecycle.Event.ON_PAUSE -> {
+                syncTimer.stop()
+                fovRunner.cancel()
+            }
+
+            else -> {} // Do nothing
         }
+    }
+    private val syncTimer = CoroutineTimer {
+        syncWithCamera()
+    }
+
+    fun start(useGPS: Boolean = true) {
+        if (useGPS) {
+            gps.start(this::onSensorUpdate)
+            altimeter.start(this::onSensorUpdate)
+        }
+        orientationSensor.start(this::onSensorUpdate)
     }
 
     fun stop() {
         gps.stop(this::onSensorUpdate)
         altimeter.stop(this::onSensorUpdate)
-        if (orientationSensor != null) {
-            orientationSensor?.stop(this::onSensorUpdate)
-        } else {
-            compass.stop(this::onSensorUpdate)
-            clinometer.stop(this::onSensorUpdate)
-            sideClinometer.stop(this::onSensorUpdate)
-        }
+        orientationSensor.stop(this::onSensorUpdate)
     }
 
     fun addLayer(layer: ARLayer) {
@@ -181,36 +197,22 @@ class AugmentedRealityView : CanvasView {
     }
 
     fun guideTo(
-        location: ARPosition,
+        guidePoint: ARPoint,
         thresholdDegrees: Float? = null,
         onReached: () -> Unit = { clearGuide() }
     ) {
-        guideLocation = location
+        this.guidePoint = guidePoint
         guideThreshold = thresholdDegrees
         onGuideReached = onReached
     }
 
     fun clearGuide() {
-        guideLocation = null
+        guidePoint = null
         guideThreshold = null
         onGuideReached = null
     }
 
     private fun onSensorUpdate(): Boolean {
-        if (orientationSensor != null) {
-            // No need to update the positions because the orientation sensor is valid
-            return true
-        }
-        if (isTrueNorth) {
-            compass.declination = declinationProvider.getDeclination()
-        } else {
-            compass.declination = 0f
-        }
-        synchronized(orientationLock) {
-            azimuth = compass.rawBearing
-            inclination = clinometer.incline
-            sideInclination = sideClinometer.angle - 90f
-        }
         return true
     }
 
@@ -240,10 +242,15 @@ class AugmentedRealityView : CanvasView {
             focusText = null
         }
 
-        drawReticle()
-        drawGuidance()
-        drawFocusText()
-        drawPosition()
+        if (showReticle) {
+            drawGuidance()
+            drawReticle()
+            drawFocusText()
+        }
+
+        if (showPosition) {
+            drawPosition()
+        }
     }
 
     private fun drawPosition() {
@@ -259,7 +266,8 @@ class AugmentedRealityView : CanvasView {
 
     private fun drawGuidance() {
         // Draw an arrow around the reticle that points to the desired location
-        val coordinate = guideLocation?.getHorizonCoordinate(location, altitude) ?: return
+        reticleColor = Color.WHITE.withAlpha(127)
+        val coordinate = guidePoint?.getAugmentedRealityCoordinate(this) ?: return
         val threshold = guideThreshold
         val point = toPixel(coordinate)
         val center = PixelCoordinate(width / 2f, height / 2f)
@@ -270,6 +278,7 @@ class AugmentedRealityView : CanvasView {
         )
 
         if (circle.contains(center)) {
+            reticleColor = Color.WHITE
             onGuideReached?.invoke()
         }
 
@@ -354,7 +363,7 @@ class AugmentedRealityView : CanvasView {
     }
 
     private fun drawReticle() {
-        stroke(Color.WHITE.withAlpha(127))
+        stroke(reticleColor)
         strokeWeight(dp(2f))
         noFill()
         circle(width / 2f, height / 2f, reticleDiameter)
@@ -374,73 +383,36 @@ class AugmentedRealityView : CanvasView {
         return sizeToPixel(angularSize)
     }
 
-    // TODO: These are off by a about a degree when you point the device at around 45 degrees (ex. a north line appears 1 degree to the side of actual north)
-    // TODO: This may just be the compass being off
     /**
-     * Gets the pixel coordinate of a point on the screen given the bearing and azimuth.
-     * @param coordinate The horizon coordinate of the point
+     * Gets the pixel coordinate of a point in the East-North-Up coordinate system
+     * @param coordinate The augmented reality coordinate of the point
      * @return The pixel coordinate of the point
      */
-    fun toPixel(coordinate: HorizonCoordinate): PixelCoordinate {
-        val bearing = getActualBearing(coordinate)
-
-        return AugmentedRealityUtils.getPixel(
-            bearing,
-            coordinate.elevation,
+    fun toPixel(coordinate: AugmentedRealityCoordinate): PixelCoordinate {
+        val actual = getActualPoint(coordinate.position, coordinate.isTrueNorth)
+        val screenPixel = AugmentedRealityUtils.getPixel(
+            actual,
             rotationMatrix,
-            size,
-            fov
+            previewRect ?: RectF(0f, 0f, width.toFloat(), height.toFloat()),
+            fov,
+            if (camera?.isStarted == true) cameraMapper else null
         )
+        return PixelCoordinate(screenPixel.x - x, screenPixel.y - y)
     }
 
-    fun toPixel(coordinate: Coordinate, elevation: Float? = null): PixelCoordinate {
-        val bearing = gps.location.bearingTo(coordinate).value
-        val distance = gps.location.distanceTo(coordinate)
-        val elevationAngle = if (elevation == null) {
-            0f
+    private fun getActualPoint(point: Vector3, isPointTrueNorth: Boolean): Vector3 {
+        return if (isTrueNorth && !isPointTrueNorth) {
+            toTrueNorth.rotate(point)
+        } else if (!isTrueNorth && isPointTrueNorth) {
+            fromTrueNorth.rotate(point)
         } else {
-            atan2((elevation - gps.altitude), distance).toDegrees()
-        }
-        return toPixel(HorizonCoordinate(bearing, elevationAngle, true))
-    }
-
-    private fun getActualBearing(coordinate: HorizonCoordinate): Float {
-        return if (isTrueNorth && !coordinate.isTrueNorth) {
-            // Convert coordinate to true north
-            DeclinationUtils.toTrueNorthBearing(
-                coordinate.bearing,
-                declinationProvider.getDeclination()
-            )
-        } else if (!isTrueNorth && coordinate.isTrueNorth) {
-            // Convert coordinate to magnetic north
-            DeclinationUtils.fromTrueNorthBearing(
-                coordinate.bearing,
-                declinationProvider.getDeclination()
-            )
-        } else {
-            coordinate.bearing
+            point
         }
     }
 
     private fun updateOrientation() {
-        size = Size(width.toFloat(), height.toFloat())
-
-        val orientationSensor = orientationSensor
-        if (orientationSensor == null) {
-            QuaternionMath.fromEuler(
-                floatArrayOf(inclination, -sideInclination, -azimuth),
-                quaternion
-            )
-            SensorManager.getRotationMatrixFromVector(
-                rotationMatrix,
-                quaternion
-            )
-            return
-        }
-
         AugmentedRealityUtils.getOrientation(
             orientationSensor,
-            quaternion,
             rotationMatrix,
             orientation,
             if (isTrueNorth) declinationProvider.getDeclination() else null
@@ -449,6 +421,10 @@ class AugmentedRealityView : CanvasView {
         azimuth = orientation[0]
         inclination = orientation[1]
         sideInclination = orientation[2]
+
+        // Update declination quaternions
+        fromTrueNorth = Quaternion.from(Euler(0f, 0f, declinationProvider.getDeclination()))
+        toTrueNorth = Quaternion.from(Euler(0f, 0f, -declinationProvider.getDeclination()))
     }
 
     private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
@@ -466,15 +442,61 @@ class AugmentedRealityView : CanvasView {
     private val mGestureDetector = GestureDetector(context, gestureListener)
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (!isVisible){
+            return false
+        }
         mGestureDetector.onTouchEvent(event)
-        invalidate()
+        camera?.onTouchEvent(event)
         return true
     }
 
-    data class HorizonCoordinate(
-        val bearing: Float,
-        val elevation: Float,
-        val isTrueNorth: Boolean = true
-    )
+    fun unbind() {
+        owner?.lifecycle?.removeObserver(lifecycleObserver)
+        syncTimer.stop()
+        fovRunner.cancel()
+        cameraMapper = null
+        camera = null
+        owner = null
+    }
 
+    fun bind(
+        camera: CameraView,
+        lifecycleOwner: LifecycleOwner? = null,
+        defaultLayoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    ) {
+        this.camera = camera
+        owner = lifecycleOwner ?: this.findViewTreeLifecycleOwner() ?: return
+
+        if (layoutParams == null) {
+            layoutParams = defaultLayoutParams
+        }
+
+        // Cancel fovRunner on pause
+        owner?.lifecycle?.addObserver(lifecycleObserver)
+    }
+
+    private fun syncWithCamera() {
+        owner?.inBackground {
+            fovRunner.enqueue {
+                val camera = camera ?: return@enqueue
+                if (!camera.isStarted) {
+                    return@enqueue
+                }
+
+                val fov = camera.camera?.getPreviewFOV(false) ?: return@enqueue
+                this@AugmentedRealityView.fov = Size(fov.first, fov.second)
+                if (previewRect == null) {
+                    previewRect = camera.camera?.getPreviewRect(false)
+                }
+                if (cameraMapper == null) {
+                    cameraMapper = camera.camera?.let {
+                        CalibratedCameraAnglePixelMapper(it, AugmentedRealityUtils.defaultMapper)
+                    }
+                }
+            }
+        }
+    }
 }

@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
+import com.kylecorry.andromeda.core.ui.setOnProgressChangeListener
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolFlashlightBinding
 import com.kylecorry.trail_sense.shared.CustomUiUtils
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.haptics.HapticSubsystem
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
-import com.kylecorry.andromeda.core.ui.setOnProgressChangeListener
 import com.kylecorry.trail_sense.main.Navigation
 import com.kylecorry.trail_sense.shared.requireMyNavigation
 import com.kylecorry.trail_sense.tools.flashlight.domain.FlashlightMode
@@ -29,13 +30,13 @@ class FragmentToolFlashlight : BoundFragment<FragmentToolFlashlightBinding>() {
     private var flashlightMode = FlashlightMode.Off
     private val haptics by lazy { HapticSubsystem.getInstance(requireContext()) }
     private val flashlight by lazy { FlashlightSubsystem.getInstance(requireContext()) }
-    private val intervalometer = Timer {
+    private val intervalometer = CoroutineTimer {
         update()
     }
 
     private var brightness = 1f
 
-    private val switchStateTimer = Timer {
+    private val switchStateTimer = CoroutineTimer {
         turnOn()
     }
 
@@ -57,6 +58,7 @@ class FragmentToolFlashlight : BoundFragment<FragmentToolFlashlightBinding>() {
         maxBrightness = flashlight.brightnessLevels
         hasBrightnessControl = maxBrightness > 0
         binding.brightnessSeek.max = maxBrightness
+        binding.flashlightDial.selectedColor = Resources.getPrimaryColor(requireContext())
         updateBrightness()
         binding.brightnessSeek.isVisible = hasBrightnessControl
         binding.brightnessSeek.setOnProgressChangeListener { progress, fromUser ->

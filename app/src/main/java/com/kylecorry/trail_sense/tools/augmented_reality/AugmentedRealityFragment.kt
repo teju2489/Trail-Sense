@@ -2,62 +2,52 @@ package com.kylecorry.trail_sense.tools.augmented_reality
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.camera.view.PreviewView
-import androidx.core.graphics.drawable.toBitmapOrNull
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
-import com.kylecorry.andromeda.camera.Camera
-import com.kylecorry.andromeda.core.coroutines.onDefault
-import com.kylecorry.andromeda.core.coroutines.onMain
+import androidx.navigation.NavController
 import com.kylecorry.andromeda.core.system.Resources
-import com.kylecorry.andromeda.core.time.CoroutineTimer
+import com.kylecorry.andromeda.core.ui.Colors.withAlpha
 import com.kylecorry.andromeda.fragments.BoundFragment
-import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.observeFlow
-import com.kylecorry.luna.coroutines.CoroutineQueueRunner
-import com.kylecorry.sol.time.Time
-import com.kylecorry.sol.units.Bearing
+import com.kylecorry.sol.science.astronomy.moon.MoonPhase
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.R
-import com.kylecorry.trail_sense.astronomy.domain.AstronomyService
-import com.kylecorry.trail_sense.astronomy.ui.MoonPhaseImageMapper
 import com.kylecorry.trail_sense.databinding.FragmentAugmentedRealityBinding
 import com.kylecorry.trail_sense.navigation.beacons.domain.Beacon
 import com.kylecorry.trail_sense.navigation.beacons.infrastructure.persistence.BeaconRepo
-import com.kylecorry.trail_sense.navigation.domain.NavigationService
 import com.kylecorry.trail_sense.navigation.infrastructure.Navigator
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getCardinalDirectionColor
 import com.kylecorry.trail_sense.shared.DistanceUtils.toRelativeDistance
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.Units
 import com.kylecorry.trail_sense.shared.UserPreferences
-import com.kylecorry.trail_sense.shared.colors.AppColor
 import com.kylecorry.trail_sense.shared.permissions.alertNoCameraPermission
 import com.kylecorry.trail_sense.shared.permissions.requestCamera
-import com.kylecorry.trail_sense.shared.sensors.LocationSubsystem
-import kotlinx.coroutines.Dispatchers
-import java.time.Duration
-import java.time.LocalDate
-import java.time.ZoneId
+import com.kylecorry.trail_sense.shared.withId
+import com.kylecorry.trail_sense.tools.augmented_reality.guide.ARGuide
+import com.kylecorry.trail_sense.tools.augmented_reality.guide.AstronomyARGuide
+import com.kylecorry.trail_sense.tools.augmented_reality.guide.NavigationARGuide
 import java.time.ZonedDateTime
 import kotlin.math.hypot
 
 // TODO: Support arguments for default layer visibility (ex. coming from astronomy, enable only sun/moon)
 class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>() {
 
+    private var mode = ARMode.Normal
+
     private val userPrefs by lazy { UserPreferences(requireContext()) }
     private val beaconRepo by lazy {
         BeaconRepo.getInstance(requireContext())
     }
 
-    private var lastSize: Size? = null
-
     private val formatter by lazy { FormatService.getInstance(requireContext()) }
+
+    private var guide: ARGuide? = null
 
     private val beaconLayer by lazy {
         ARBeaconLayer(
@@ -73,41 +63,52 @@ class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>(
         }
     }
 
+    private val astronomyLayer by lazy {
+        ARAstronomyLayer(
+            drawLines = true,
+            drawBelowHorizon = false,
+            onSunFocus = this::onSunFocused,
+            onMoonFocus = this::onMoonFocused
+        )
+    }
+
     private val navigator by lazy { Navigator.getInstance(requireContext()) }
 
-    private val sunLayer = ARMarkerLayer()
-    private val moonLayer = ARMarkerLayer()
-    private val horizonLayer = ARHorizonLayer()
-    private val northLayer = ARNorthLayer()
+    private val gridLayer by lazy {
+        ARGridLayer(
+            30,
+            northColor = Resources.getCardinalDirectionColor(requireContext()),
+            horizonColor = Color.WHITE,
+            labelColor = Color.WHITE,
+            color = Color.WHITE.withAlpha(100),
+            useTrueNorth = userPrefs.compass.useTrueNorth
+        )
+    }
 
     private var isCameraEnabled = true
-
-    private val fovRunner = CoroutineQueueRunner(1, dispatcher = Dispatchers.Default)
 
     // TODO: Draw an indicator around the focused marker
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Beacon layer setup (TODO: Move this to a layer manager)
         observeFlow(beaconRepo.getBeacons()) {
             beaconLayer.setBeacons(it)
         }
-
         observeFlow(navigator.destination) {
-            if (it == null) {
-                binding.arView.clearGuide()
-            } else {
-                binding.arView.guideTo(ARPosition.geographic(it.coordinate, it.elevation)) {
-                    // Do nothing when reached
-                }
-            }
             beaconLayer.destination = it
         }
 
-        binding.camera.setScaleType(PreviewView.ScaleType.FIT_CENTER)
+        binding.camera.setScaleType(PreviewView.ScaleType.FILL_CENTER)
         binding.camera.setShowTorch(false)
 
-        binding.arView.setLayers(listOf(northLayer, horizonLayer, sunLayer, moonLayer, beaconLayer))
+        binding.arView.bind(binding.camera)
+
+        val modeId = requireArguments().getLong("mode", ARMode.Normal.id)
+        val desiredMode = ARMode.entries.withId(modeId) ?: ARMode.Normal
+
+        setMode(desiredMode)
 
         binding.cameraToggle.setOnClickListener {
             if (isCameraEnabled) {
@@ -116,22 +117,19 @@ class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>(
                 startCamera()
             }
         }
-
-        scheduleUpdates(INTERVAL_1_FPS)
     }
 
     override fun onResume() {
         super.onResume()
 
         binding.arView.start()
-        isCameraEnabled = Camera.isAvailable(requireContext())
-        binding.cameraToggle.isVisible = isCameraEnabled
         if (isCameraEnabled) {
             startCamera()
         } else {
             stopCamera()
         }
-        updateAstronomyLayers()
+
+        guide?.start(binding.arView, binding.guidancePanel)
     }
 
     // TODO: Move this to the AR view
@@ -167,176 +165,29 @@ class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>(
         super.onPause()
         binding.camera.stop()
         binding.arView.stop()
-        fovRunner.cancel()
+        guide?.stop(binding.arView, binding.guidancePanel)
     }
 
-    override fun onUpdate() {
-        super.onUpdate()
-
-        runInBackground {
-            fovRunner.enqueue {
-                if (!isBound) {
-                    return@enqueue
-                }
-
-                val fov = binding.camera.fov
-
-                onMain {
-                    binding.arView.fov = com.kylecorry.sol.math.geometry.Size(fov.first, fov.second)
-
-                    // Set the arView size to be the camera preview size
-                    val size = binding.camera.getPreviewSize()
-                    if (size != lastSize) {
-                        lastSize = size
-                        if (binding.arView.layoutParams == null) {
-                            binding.arView.layoutParams =
-                                FrameLayout.LayoutParams(size.width, size.height)
-                        } else {
-                            binding.arView.updateLayoutParams {
-                                width = size.width
-                                height = size.height
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+    private fun onSunFocused(time: ZonedDateTime): Boolean {
+        binding.arView.focusText =
+            getString(R.string.sun) + "\n" + formatter.formatRelativeDateTime(
+                time,
+                includeSeconds = false
+            )
+        return true
     }
 
-    private fun updateAstronomyLayers() {
-        // TODO: Extract this population
-        inBackground {
-            // TODO: Show icons / render path rather than circles
-            onDefault {
-                val astro = AstronomyService()
-                val locationSubsystem = LocationSubsystem.getInstance(requireContext())
-                val location = locationSubsystem.location
-
-                val moonBeforePathObject = CircleCanvasObject(
-                    Color.WHITE,
-                    opacity = 20
+    private fun onMoonFocused(time: ZonedDateTime, phase: MoonPhase): Boolean {
+        binding.arView.focusText =
+            getString(R.string.moon) + "\n" + formatter.formatRelativeDateTime(
+                time,
+                includeSeconds = false
+            ) + "\n${formatter.formatMoonPhase(phase.phase)} (${
+                formatter.formatPercentage(
+                    phase.illumination
                 )
-
-                val moonAfterPathObject = CircleCanvasObject(
-                    Color.WHITE,
-                    opacity = 127
-                )
-
-                val sunBeforePathObject = CircleCanvasObject(
-                    AppColor.Yellow.color,
-                    opacity = 20
-                )
-
-                val sunAfterPathObject = CircleCanvasObject(
-                    AppColor.Yellow.color,
-                    opacity = 127
-                )
-
-                val moonPositions = Time.getReadings(
-                    LocalDate.now(),
-                    ZoneId.systemDefault(),
-                    Duration.ofMinutes(15)
-                ) {
-                    val obj = if (it.isBefore(ZonedDateTime.now())) {
-                        moonBeforePathObject
-                    } else {
-                        moonAfterPathObject
-                    }
-
-                    ARMarkerImpl.horizon(
-                        AugmentedRealityView.HorizonCoordinate(
-                            astro.getMoonAzimuth(location, it).value,
-                            astro.getMoonAltitude(location, it),
-                            true
-                        ),
-                        1f,
-                        obj,
-                        onFocusedFn = {
-                            binding.arView.focusText =
-                                getString(R.string.moon) + "\n" + formatter.formatRelativeDateTime(
-                                    it,
-                                    includeSeconds = false
-                                )
-                            true
-                        }
-                    )
-                }.map { it.value }
-
-                val sunPositions = Time.getReadings(
-                    LocalDate.now(), ZoneId.systemDefault(), Duration.ofMinutes(15)
-                ) {
-                    val obj = if (it.isBefore(ZonedDateTime.now())) {
-                        sunBeforePathObject
-                    } else {
-                        sunAfterPathObject
-                    }
-
-                    ARMarkerImpl.horizon(
-                        AugmentedRealityView.HorizonCoordinate(
-                            astro.getSunAzimuth(location, it).value,
-                            astro.getSunAltitude(location, it),
-                            true
-                        ),
-                        1f,
-                        obj,
-                        onFocusedFn = {
-                            binding.arView.focusText =
-                                getString(R.string.sun) + "\n" + formatter.formatRelativeDateTime(
-                                    it,
-                                    includeSeconds = false
-                                )
-                            true
-                        }
-                    )
-                }.map { it.value }
-
-                val moonAltitude = astro.getMoonAltitude(location)
-                val moonAzimuth = astro.getMoonAzimuth(location).value
-
-                val sunAltitude = astro.getSunAltitude(location)
-                val sunAzimuth = astro.getSunAzimuth(location).value
-
-                val phase = astro.getMoonPhase(LocalDate.now())
-                val moonIconId = MoonPhaseImageMapper().getPhaseImage(phase.phase)
-                val moonIcon = Resources.drawable(requireContext(), moonIconId)
-                val moonImageSize = Resources.dp(requireContext(), 24f).toInt()
-                val moonBitmap = moonIcon?.toBitmapOrNull(moonImageSize, moonImageSize)
-
-                val moon = ARMarkerImpl.horizon(
-                    AugmentedRealityView.HorizonCoordinate(
-                        moonAzimuth,
-                        moonAltitude,
-                        true
-                    ),
-                    2f,
-                    moonBitmap?.let { BitmapCanvasObject(moonBitmap) }
-                        ?: CircleCanvasObject(Color.WHITE),
-                    onFocusedFn = {
-                        // TODO: Display moon phase
-                        binding.arView.focusText = getString(R.string.moon)
-                        true
-                    }
-                )
-
-                val sun = ARMarkerImpl.horizon(
-                    AugmentedRealityView.HorizonCoordinate(
-                        sunAzimuth,
-                        sunAltitude,
-                        true
-                    ),
-                    2f,
-                    CircleCanvasObject(AppColor.Yellow.color),
-                    onFocusedFn = {
-                        binding.arView.focusText = getString(R.string.sun)
-                        true
-                    }
-                )
-
-                sunLayer.setMarkers(sunPositions + sun)
-                moonLayer.setMarkers(moonPositions + moon)
-            }
-        }
+            })"
+        return true
     }
 
     private fun onBeaconFocused(beacon: Beacon): Boolean {
@@ -360,4 +211,36 @@ class AugmentedRealityFragment : BoundFragment<FragmentAugmentedRealityBinding>(
     ): FragmentAugmentedRealityBinding {
         return FragmentAugmentedRealityBinding.inflate(layoutInflater, container, false)
     }
+
+    private fun setMode(mode: ARMode) {
+        this.mode = mode
+        when (mode) {
+            ARMode.Normal -> {
+                binding.arView.setLayers(listOf(gridLayer, astronomyLayer, beaconLayer))
+                changeGuide(NavigationARGuide(navigator))
+            }
+
+            ARMode.Astronomy -> {
+                binding.arView.setLayers(listOf(gridLayer, astronomyLayer))
+                changeGuide(AstronomyARGuide { setMode(ARMode.Normal) })
+            }
+        }
+    }
+
+    private fun changeGuide(guide: ARGuide?) {
+        this.guide?.stop(binding.arView, binding.guidancePanel)
+        this.guide = guide
+        this.guide?.start(binding.arView, binding.guidancePanel)
+    }
+
+    companion object {
+        fun open(navController: NavController, mode: ARMode = ARMode.Normal) {
+            navController.navigate(
+                R.id.augmentedRealityFragment, bundleOf(
+                    "mode" to mode.id
+                )
+            )
+        }
+    }
+
 }

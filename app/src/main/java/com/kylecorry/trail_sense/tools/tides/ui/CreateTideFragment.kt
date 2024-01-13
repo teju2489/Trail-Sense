@@ -9,7 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
-import com.kylecorry.andromeda.core.time.Timer
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.ui.flatten
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
@@ -50,7 +50,7 @@ class CreateTideFragment : BoundFragment<FragmentCreateTideBinding>() {
 
     private var backCallback: OnBackPressedCallback? = null
 
-    private val intervalometer = Timer {
+    private val intervalometer = CoroutineTimer {
         binding.createTideTitle.rightButton.isVisible = formIsValid()
     }
 
@@ -82,7 +82,7 @@ class CreateTideFragment : BoundFragment<FragmentCreateTideBinding>() {
 
         binding.createTideTitle.leftButton.flatten()
         binding.createTideTitle.leftButton.setOnClickListener {
-            UserGuideUtils.showGuide(this, R.raw.tides)
+            UserGuideUtils.showGuide(this, R.raw.guide_tool_tides)
         }
 
         CustomUiUtils.setButtonState(binding.createTideTitle.rightButton, true)

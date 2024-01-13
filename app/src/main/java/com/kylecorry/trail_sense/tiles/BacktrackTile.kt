@@ -18,13 +18,16 @@ class BacktrackTile : TopicTile() {
         get() = backtrack.state.replay()
 
     override val subtitleTopic: ITopic<String>
-        get() = backtrack.frequency.map { formatter.formatDuration(it, includeSeconds = true) }.replay()
+        get() = backtrack.frequency.map { formatter.formatDuration(it, includeSeconds = true) }
+            .replay()
 
     override fun stop() {
         backtrack.disable()
     }
 
     override fun start() {
-        backtrack.enable(true)
+        startForegroundService {
+            backtrack.enable(true)
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.hardware.SensorManager
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.core.toFloatCompat
 import com.kylecorry.andromeda.preferences.BooleanPreference
+import com.kylecorry.andromeda.preferences.IntEnumPreference
 import com.kylecorry.andromeda.preferences.IntPreference
 import com.kylecorry.andromeda.preferences.StringEnumPreference
 import com.kylecorry.sol.units.Coordinate
@@ -15,6 +16,7 @@ import com.kylecorry.sol.units.WeightUnits
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.astronomy.infrastructure.AstronomyPreferences
 import com.kylecorry.trail_sense.navigation.infrastructure.NavigationPreferences
+import com.kylecorry.trail_sense.settings.infrastructure.AltimeterPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.CameraPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.CellSignalPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.ClinometerPreferences
@@ -29,8 +31,15 @@ import com.kylecorry.trail_sense.settings.infrastructure.PowerPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.PrivacyPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.ThermometerPreferences
 import com.kylecorry.trail_sense.settings.infrastructure.TidePreferences
+import com.kylecorry.trail_sense.shared.extensions.getIntArray
+import com.kylecorry.trail_sense.shared.extensions.getLongArray
+import com.kylecorry.trail_sense.shared.extensions.putIntArray
+import com.kylecorry.trail_sense.shared.extensions.putLongArray
 import com.kylecorry.trail_sense.shared.preferences.PreferencesSubsystem
 import com.kylecorry.trail_sense.shared.sharing.MapSite
+import com.kylecorry.trail_sense.tools.flashlight.infrastructure.FlashlightSubsystem
+import com.kylecorry.trail_sense.tools.ui.Tools
+import com.kylecorry.trail_sense.tools.ui.sort.ToolSortType
 import com.kylecorry.trail_sense.weather.infrastructure.WeatherPreferences
 import java.time.Duration
 
@@ -54,8 +63,7 @@ class UserPreferences(private val context: Context) : IDeclinationPreferences {
     val thermometer by lazy { ThermometerPreferences(context) }
     val compass by lazy { CompassPreferences(context) }
     val camera by lazy { CameraPreferences(context) }
-
-    var hapticsEnabled = false
+    val altimeter by lazy { AltimeterPreferences(context) }
 
     private val isMetricPreferred = Resources.isMetricPreferred(context)
 
@@ -138,23 +146,57 @@ class UserPreferences(private val context: Context) : IDeclinationPreferences {
         false
     )
 
-    val theme: Theme
+    var lastTheme: Theme by StringEnumPreference(
+        cache,
+        "pref_last_theme",
+        mapOf(
+            "light" to Theme.Light,
+            "dark" to Theme.Dark,
+            "black" to Theme.Black,
+            "sunrise_sunset" to Theme.SunriseSunset,
+            "night" to Theme.Night,
+            "system" to Theme.System
+        ),
+        Theme.System
+    )
+
+    private var _theme: Theme by StringEnumPreference(
+        cache,
+        context.getString(R.string.pref_theme),
+        mapOf(
+            "light" to Theme.Light,
+            "dark" to Theme.Dark,
+            "black" to Theme.Black,
+            "sunrise_sunset" to Theme.SunriseSunset,
+            "night" to Theme.Night,
+            "system" to Theme.System
+        ),
+        Theme.System
+    )
+
+    var theme: Theme
         get() {
             if (isLowPowerModeOn) {
                 return Theme.Black
             }
 
-            return when (cache.getString(context.getString(R.string.pref_theme))) {
-                "light" -> Theme.Light
-                "dark" -> Theme.Dark
-                "black" -> Theme.Black
-                "sunrise_sunset" -> Theme.SunriseSunset
-                "night" -> Theme.Night
-                else -> Theme.System
-            }
+            return _theme
+        }
+        set(value) {
+            _theme = value
         }
 
-    val useDynamicColors = false
+    val useDynamicColors by BooleanPreference(
+        cache,
+        context.getString(R.string.pref_use_dynamic_colors),
+        false
+    )
+
+    val useDynamicColorsOnCompass by BooleanPreference(
+        cache,
+        context.getString(R.string.pref_use_dynamic_colors_on_compass),
+        false
+    )
 
     // Calibration
 
@@ -204,7 +246,7 @@ class UserPreferences(private val context: Context) : IDeclinationPreferences {
             var raw = cache.getString(getString(R.string.pref_altimeter_calibration_mode))
 
             if (raw == null) {
-                if (useAutoAltitude && useFineTuneAltitude && weather.hasBarometer) {
+                if (useAutoAltitude && weather.hasBarometer) {
                     raw = "gps_barometer"
                 } else if (useAutoAltitude) {
                     raw = "gps"
@@ -238,10 +280,6 @@ class UserPreferences(private val context: Context) : IDeclinationPreferences {
     private var useAutoAltitude: Boolean
         get() = cache.getBoolean(getString(R.string.pref_auto_altitude)) ?: true
         set(value) = cache.putBoolean(getString(R.string.pref_auto_altitude), value)
-
-    private var useFineTuneAltitude: Boolean
-        get() = cache.getBoolean(getString(R.string.pref_fine_tune_altitude)) ?: true
-        set(value) = cache.putBoolean(getString(R.string.pref_fine_tune_altitude), value)
 
     val useNMEA: Boolean
         get() = cache.getBoolean(context.getString(R.string.pref_nmea_altitude)) ?: false
@@ -290,6 +328,49 @@ class UserPreferences(private val context: Context) : IDeclinationPreferences {
             "osm" to MapSite.OSM
         ), MapSite.OSM
     )
+
+    var toolSort: ToolSortType by IntEnumPreference(
+        cache,
+        context.getString(R.string.pref_tool_sort),
+        mapOf(
+            1 to ToolSortType.Name,
+            2 to ToolSortType.Category
+        ),
+        ToolSortType.Category
+    )
+
+    var toolQuickActions: List<QuickActionType>
+        get() {
+            val ids = cache.getIntArray(context.getString(R.string.pref_tool_quick_actions))
+                ?: return listOfNotNull(
+                    if (FlashlightSubsystem.getInstance(context)
+                            .isAvailable()
+                    ) QuickActionType.Flashlight else null,
+                    QuickActionType.Whistle,
+                    QuickActionType.LowPowerMode,
+                )
+
+            return ids.mapNotNull { QuickActionType.values().find { q -> q.id == it } }
+        }
+        set(value) {
+            cache.putIntArray(
+                context.getString(R.string.pref_tool_quick_actions),
+                value.map { it.id }
+            )
+        }
+
+    var toolPinnedIds: List<Long>
+        get() {
+            return cache.getLongArray(context.getString(R.string.pref_pinned_tools)) ?: listOf(
+                Tools.NAVIGATION,
+                Tools.WEATHER,
+                Tools.ASTRONOMY,
+                Tools.USER_GUIDE
+            )
+        }
+        set(value) {
+            cache.putLongArray(context.getString(R.string.pref_pinned_tools), value)
+        }
 
     private fun getString(id: Int): String {
         return context.getString(id)

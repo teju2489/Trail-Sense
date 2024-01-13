@@ -2,8 +2,8 @@ import java.time.LocalDate
 
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
 }
 
@@ -16,8 +16,8 @@ android {
         applicationId = "com.kylecorry.trail_sense"
         minSdk = 23
         targetSdk = 34
-        versionCode = 107
-        versionName = "5.5.0"
+        versionCode = 112
+        versionName = "5.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -45,6 +45,7 @@ android {
     buildFeatures {
         // Support for view binding
         viewBinding = true
+        buildConfig = true
     }
     buildTypes {
         // Release build (Google Play / F-Droid)
@@ -52,6 +53,12 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        // Staging build (a release build with a ID)
+        create("staging") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
         }
         // Debug build (GitHub)
         create("dev") {
@@ -95,9 +102,8 @@ android {
 
 dependencies {
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     // AndroidX
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -105,17 +111,16 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    val roomVersion = "2.5.2"
-    kapt("androidx.room:room-compiler:$roomVersion")
+    val roomVersion = "2.6.1"
+    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     val lifecycleVersion = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    val cameraxVersion = "1.2.3"
+    val cameraxVersion = "1.3.0"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
@@ -125,13 +130,12 @@ dependencies {
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     // Andromeda
-    val andromedaVersion = "fa3bb4e4f8"
+    val andromedaVersion = "81d7c0b694"
     implementation("com.github.kylecorry31.andromeda:core:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:fragments:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:forms:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:csv:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:background:$andromedaVersion")
-    implementation("com.github.kylecorry31.andromeda:location:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:camera:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:gpx:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:sound:$andromedaVersion")
@@ -156,18 +160,12 @@ dependencies {
     implementation("com.github.kylecorry31.andromeda:pdf:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:exceptions:$andromedaVersion")
     implementation("com.github.kylecorry31.andromeda:print:$andromedaVersion")
-
-    // Ceres
-    val ceresVersion = "e087704b28"
-    implementation("com.github.kylecorry31.ceres:list:$ceresVersion")
-    implementation("com.github.kylecorry31.ceres:toolbar:$ceresVersion")
-    implementation("com.github.kylecorry31.ceres:badge:$ceresVersion")
-    implementation("com.github.kylecorry31.ceres:chart:$ceresVersion")
-    implementation("com.github.kylecorry31.ceres:image:$ceresVersion")
+    implementation("com.github.kylecorry31.andromeda:list:$andromedaVersion")
+    implementation("com.github.kylecorry31.andromeda:views:$andromedaVersion")
 
     // Misc
     implementation("com.github.kylecorry31:subsampling-scale-image-view:3.11.9")
-    implementation("com.github.kylecorry31:sol:8.0.1")
+    implementation("com.github.kylecorry31:sol:9.1.1")
     implementation("com.github.kylecorry31:luna:6a88851e2b")
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 
@@ -175,9 +173,9 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("org.junit.platform:junit-platform-runner:1.10.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("org.junit.platform:junit-platform-runner:1.10.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 }

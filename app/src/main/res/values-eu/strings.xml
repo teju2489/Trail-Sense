@@ -255,8 +255,6 @@
     <string name="guide_recommended_apps">Gomendatutako aplikazioak</string>
     <string name="unit_nautical_miles">Itsas miliak</string>
     <string name="inventory_empty_text">Elementurik ez</string>
-    <string name="guide_weather_prediction_title">Eguraldiaren iragarpena</string>
-    <string name="guide_conserving_battery_title">Bateria kontserbatu</string>
     <string name="no_group">Talderik ez</string>
     <string name="tool_user_guide_title">Erabiltzailearen gida</string>
     <string name="pref_email_title">Garatzaileari e-mail bat bidali</string>
@@ -301,7 +299,6 @@
     <string name="magnetic_field_format_precise">%s uT</string>
     <string name="guide_barometer_calibration_title">Barometroaren kalibrazioa</string>
     <string name="charging_wireless">Kargatzen (%s)</string>
-    <string name="guide_thermometer_calibration_title">Termometroaren kalibrazioa</string>
     <string name="create_beacon">Baliza sortu</string>
     <string name="pref_monitor_weather_title">Eguraldia monitorizatu</string>
     <string name="preview">Aurrebista</string>
@@ -418,7 +415,6 @@
     <string name="pref_show_linear_compass_summary">Mugikorra bertikalean dagoenean</string>
     <string name="pref_show_linear_compass_title">Erakutsi iparrorratz lineala</string>
     <string name="pref_show_sun_moon_compass_title">Erakutsi eguzkia/ilargia iparrorratzean</string>
-    <string name="cliff_height_guide">Balioetsi amildegiaren altuera</string>
     <string name="pref_center_sun_and_moon_title">Mantendu eguzkia/ilargia erdian</string>
     <string name="update_90_minutes">Ordu 1 eta 30 minutu</string>
     <string name="delete_map_group_message">%s eta bere mapa guztiak ezabatuko dira.</string>
@@ -457,7 +453,6 @@
     <string name="max_temp_uncalibrated">Mugikorraren gehienezko tenperatura (kalibratu gabea)</string>
     <string name="max_temp_calibrated">Gehienezko giro-tenperatura (kalibratua)</string>
     <string name="create_at_distance">Sortu urrutikoa</string>
-    <string name="guide_location_no_gps_title">Zehaztu kokapena GPSrik gabe</string>
     <string name="tool_white_noise_summary">Lo egiten laguntzen zaitu</string>
     <string name="pref_include_leading_zero_title">Gehitu zero bat aurretik orduari</string>
     <string name="strobe_warning_content">Kliskatze funtzioak argi keinukariak ditu, arriskutsuak izan daitezke erabiltzaile batzuentzako.</string>

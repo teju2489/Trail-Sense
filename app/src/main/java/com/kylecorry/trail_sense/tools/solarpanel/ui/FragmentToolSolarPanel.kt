@@ -13,12 +13,13 @@ import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.fragments.inBackground
 import com.kylecorry.andromeda.fragments.observe
-import com.kylecorry.andromeda.sense.orientation.GravityOrientationSensor
+import com.kylecorry.andromeda.sense.level.Level
 import com.kylecorry.sol.math.SolMath.deltaAngle
 import com.kylecorry.sol.units.Bearing
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolSolarPanelBinding
 import com.kylecorry.trail_sense.shared.CustomUiUtils
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.declination.DeclinationFactory
@@ -35,7 +36,7 @@ class FragmentToolSolarPanel : BoundFragment<FragmentToolSolarPanelBinding>() {
     private val sensorService by lazy { SensorService(requireContext()) }
     private val gps by lazy { sensorService.getGPS() }
     private val compass by lazy { sensorService.getCompass() }
-    private val orientation by lazy { GravityOrientationSensor(requireContext()) }
+    private val orientation by lazy { Level(sensorService.getOrientation()) }
     private val formatService by lazy { FormatService.getInstance(requireContext()) }
     private val declination by lazy { DeclinationFactory().getDeclinationStrategy(prefs, gps) }
     private val prefs by lazy { UserPreferences(requireContext()) }
@@ -118,13 +119,13 @@ class FragmentToolSolarPanel : BoundFragment<FragmentToolSolarPanelBinding>() {
         setButtonState(
             binding.solarTodayBtn,
             alignToRestOfDay,
-            Resources.getAndroidColorAttr(requireContext(), androidx.appcompat.R.attr.colorPrimary),
+            Resources.getPrimaryColor(requireContext()),
             Resources.color(requireContext(), R.color.colorSecondary)
         )
         setButtonState(
             binding.solarNowBtn,
             !alignToRestOfDay,
-            Resources.getAndroidColorAttr(requireContext(), androidx.appcompat.R.attr.colorPrimary),
+            Resources.getPrimaryColor(requireContext()),
             Resources.color(requireContext(), R.color.colorSecondary)
         )
     }
@@ -165,11 +166,10 @@ class FragmentToolSolarPanel : BoundFragment<FragmentToolSolarPanelBinding>() {
         binding.arrowRight.visibility =
             if (!azimuthAligned && azimuthDiff > 0) View.VISIBLE else View.INVISIBLE
 
-        val euler = orientation.orientation.toEuler()
-        val altitudeDiff = solarPosition.first + euler.pitch
+        val altitudeDiff = solarPosition.first - orientation.y
         val altitudeAligned = altitudeDiff.absoluteValue < ALTITUDE_THRESHOLD
         binding.altitudeComplete.visibility = if (altitudeAligned) View.VISIBLE else View.INVISIBLE
-        binding.currentAltitude.text = formatService.formatDegrees(-euler.pitch)
+        binding.currentAltitude.text = formatService.formatDegrees(orientation.y)
         binding.desiredAltitude.text = formatService.formatDegrees(solarPosition.first)
         binding.arrowUp.visibility =
             if (!altitudeAligned && altitudeDiff > 0) View.VISIBLE else View.INVISIBLE
@@ -178,7 +178,7 @@ class FragmentToolSolarPanel : BoundFragment<FragmentToolSolarPanelBinding>() {
 
         val energy = solarPanelService.getSolarEnergy(
             gps.location,
-            -euler.pitch,
+            orientation.y,
             compass.bearing.inverse(),
             if (alignToRestOfDay) Duration.ofDays(1) else nowDuration
         )

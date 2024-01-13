@@ -164,7 +164,6 @@
     <string name="notification_channel_clock_sync_description">Pemberitahuan untuk menyinkronkan jam Anda ke waktu GPS</string>
     <string name="clock_sync_notification">Sinkronisasi Jam - %s</string>
     <string name="notes_empty_text">Tidak ada catatan</string>
-    <string name="guide_location_no_gps_title">Tentukan lokasi tanpa GPS</string>
     <string name="waxing_gibbous">Bulan cembung awal</string>
     <string name="first_quarter">Kuartal pertama</string>
     <string name="sunset_alert_channel_title">Peringatan matahari terbenam</string>
@@ -290,7 +289,6 @@
     <string name="beacon_create_beacon">Suar</string>
     <string name="group">Grup</string>
     <string name="navigation_nearby_category">Di sekitar</string>
-    <string name="guide_weather_prediction_title">Prediksi cuaca</string>
     <string name="tool_bubble_level_title">Tingkat gelembung</string>
     <string name="tool_bubble_level_summary">Menentukan kedataran permukaan</string>
     <string name="other">Lainnya</string>
@@ -314,7 +312,6 @@
     <string name="pref_monitor_weather_title">Pantauan cuaca</string>
     <string name="update_120_minutes">2 jam</string>
     <string name="beacon_create">Buat</string>
-    <string name="guide_conserving_battery_title">Hemat baterai</string>
     <string name="pressure_24_hours">24 jam</string>
     <string name="height">Tinggi</string>
     <string name="todays_forecast">Perkiraan hari ini</string>
@@ -519,7 +516,6 @@
         <item quantity="other">%d jalur</item>
     </plurals>
     <string name="delete_path_group_message">%s dan semua jalur akan dihapus.</string>
-    <string name="cliff_height_guide">Perkiraan ketinggian tebing</string>
     <string name="location_override_updated">Penggantian lokasi diperbarui</string>
     <string name="backtrack">Mundur</string>
     <string name="backtrack_notification_channel_description">Backtrack lokasi diperbarui</string>
@@ -545,7 +541,6 @@
     <string name="pref_gps_override_title">Penggantian lokasi</string>
     <string name="delete_waypoint_prompt">Hapus titik jalan\?</string>
     <string name="delete_tide_prompt">Hapus air pasang\?</string>
-    <string name="guide_thermometer_calibration_title">Kalibrasi termometer</string>
     <string name="tool_thermometer_title">Termometer</string>
     <string name="battery_power_ac">AC</string>
     <string name="battery_power_usb">USB</string>
@@ -594,7 +589,6 @@
 \n- Setelah mengklik lanjutkan, Anda akan diminta untuk memberikan izin lokasi dan lokasi latar belakang. Menolak izin tersebut akan mencegah Trail Sense mengakses lokasi Anda, sehingga entri lokasi manual disarankan.</string>
     <string name="network_2g">2G</string>
     <string name="right_quick_action">Tindakan cepat kanan</string>
-    <string name="guide_light_meter_title">Menentukan efektivitas senter</string>
     <string name="left_quick_action">Tindakan cepat kiri</string>
     <string name="since_time">sejak %s</string>
     <string name="odometer">Odometer</string>
@@ -611,7 +605,6 @@
     <string name="on_map">Pada peta</string>
     <string name="create_map">Buat peta</string>
     <string name="create_map_description">Masukkan nama peta</string>
-    <string name="guide_importing_maps_title">Mengimpor peta</string>
     <string name="previous">Sebelumnya</string>
     <string name="next">Berikutnya</string>
     <string name="time_until_empty">sampai kosong</string>
@@ -629,7 +622,6 @@
     <string name="pref_default_path_style_title">Gaya jalur standar</string>
     <string name="pref_default_path_color_title">Warna jalur standar</string>
     <string name="backtrack_battery_warning">Interval kecil (di bawah 15 menit) dapat menyebabkan baterai terkuras secara berlebihan</string>
-    <string name="water_boil_guide_title">Membuat air aman untuk diminum</string>
     <string name="color">Warna</string>
     <string name="camera_permission_denied">Izin kamera ditolak, tidak dapat mengaktifkan fitur kamera. Anda dapat mengaktifkannya di pengaturan.</string>
     <string name="last_signal_beacon_name">Sinyal terakhir - %1$s (%2$s)</string>
@@ -686,7 +678,6 @@
     <string name="moon">Bulan</string>
     <string name="diamond">Berlian</string>
     <string name="sort">Urut</string>
-    <string name="no_compass_message">Perangkat Anda tidak memiliki sensor kompas</string>
     <string name="overridden">Tertimpa</string>
     <string name="gps_signal_lost">Sinyal GPS hilang</string>
     <string name="background_location_permission">Lokasi (Bolehkan sepanjang waktu)</string>

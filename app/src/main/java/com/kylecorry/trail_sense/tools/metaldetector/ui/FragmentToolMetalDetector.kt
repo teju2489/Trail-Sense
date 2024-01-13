@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.kylecorry.andromeda.core.system.Resources
+import com.kylecorry.andromeda.core.time.CoroutineTimer
 import com.kylecorry.andromeda.core.time.Throttle
-import com.kylecorry.andromeda.core.time.Timer
 import com.kylecorry.andromeda.core.ui.setCompoundDrawables
 import com.kylecorry.andromeda.fragments.BoundFragment
 import com.kylecorry.andromeda.sense.accelerometer.GravitySensor
@@ -20,12 +20,13 @@ import com.kylecorry.sol.science.physics.PhysicsService
 import com.kylecorry.trail_sense.R
 import com.kylecorry.trail_sense.databinding.FragmentToolMetalDetectorBinding
 import com.kylecorry.trail_sense.shared.CustomUiUtils
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 import com.kylecorry.trail_sense.shared.FormatService
 import com.kylecorry.trail_sense.shared.UserPreferences
 import com.kylecorry.trail_sense.shared.haptics.HapticSubsystem
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import java.time.Duration
-import kotlin.math.roundToInt
+import kotlin.math.absoluteValue
 
 class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding>() {
     private val magnetometer by lazy { Magnetometer(requireContext(), SensorService.MOTION_SENSOR_DELAY) }
@@ -42,38 +43,45 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
     private lateinit var chart: MetalDetectorChart
     private var lastReadingTime = System.currentTimeMillis() + 1000L
 
-    private var threshold = 65f
+    private var threshold = 5f
 
     private val readings = mutableListOf<Float>()
 
     private val throttle = Throttle(20)
     private val prefs by lazy { UserPreferences(requireContext()) }
 
+    private var isHighSensitivity = false
     private var calibratedField = Vector3.zero
     private var calibratedOrientation = Quaternion.zero
+    private var referenceMagnitude = 0f
 
-    private val calibrateTimer = Timer {
-        calibratedField = lowPassMagnetometer.magneticField
-        calibratedOrientation = orientation.orientation
+    private val calibrateTimer = CoroutineTimer {
+        calibrate()
     }
 
     private val haptics by lazy { HapticSubsystem.getInstance(requireContext()) }
+
+    private val isMetalDetected = Debouncer(Duration.ofMillis(100))
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chart = MetalDetectorChart(
             binding.metalChart,
-            Resources.getAndroidColorAttr(requireContext(), androidx.appcompat.R.attr.colorPrimary)
+            Resources.getPrimaryColor(requireContext())
         )
         binding.calibrateBtn.setOnClickListener {
-            binding.threshold.progress = magnetometer.magneticField.magnitude().roundToInt() + 5
-            if (prefs.metalDetector.showMetalDirection) {
-                calibratedField = lowPassMagnetometer.magneticField
-                calibratedOrientation = orientation.orientation
-                calibrateTimer.stop()
-            }
+            calibrate()
         }
         binding.magnetometerView.isVisible = prefs.metalDetector.showMetalDirection
+
+        binding.highSensitivityToggle.setOnCheckedChangeListener { _, isChecked ->
+            isHighSensitivity = isChecked
+            if (isChecked){
+                isMetalDetected.debounceTime = Duration.ofMillis(50)
+            } else {
+                isMetalDetected.debounceTime = Duration.ofMillis(100)
+            }
+        }
     }
 
     override fun onResume() {
@@ -84,8 +92,8 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
             lowPassMagnetometer.start(this::onLowPassMagnetometerUpdate)
             orientation.start(this::onMagnetometerUpdate)
             gravity.start(this::onMagnetometerUpdate)
-            calibrateTimer.once(Duration.ofSeconds(2))
         }
+        calibrateTimer.once(Duration.ofSeconds(2))
     }
 
     override fun onPause() {
@@ -95,10 +103,17 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
             lowPassMagnetometer.stop(this::onLowPassMagnetometerUpdate)
             orientation.stop(this::onMagnetometerUpdate)
             gravity.stop(this::onMagnetometerUpdate)
-            calibrateTimer.stop()
         }
+        calibrateTimer.stop()
         haptics.off()
         isVibrating = false
+    }
+
+    private fun calibrate(){
+        referenceMagnitude = readings.takeLast(20).average().toFloat()
+        calibratedField = lowPassMagnetometer.magneticField
+        calibratedOrientation = orientation.orientation
+        calibrateTimer.stop()
     }
 
     private fun onLowPassMagnetometerUpdate(): Boolean {
@@ -112,8 +127,8 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
             return
         }
 
+        // Update the metal direction dial
         if (prefs.metalDetector.showMetalDirection) {
-            val orientation = orientation.orientation.subtractRotation(calibratedOrientation)
             val metal = metalDetectionService.removeGeomagneticField(
                 lowPassMagnetometer.magneticField,
                 calibratedField,
@@ -127,22 +142,23 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
             binding.magnetometerView.setMetalDirection(direction)
             binding.magnetometerView.setSensitivity(prefs.metalDetector.directionSensitivity)
         }
-        val magneticField = filter.filter(magnetometer.magneticField.magnitude())
 
-        if (System.currentTimeMillis() - lastReadingTime > 20 && magneticField != 0f) {
-            readings.add(magneticField)
-            if (readings.size > 150) {
-                readings.removeAt(0)
-            }
-            lastReadingTime = System.currentTimeMillis()
-            chart.plot(readings, threshold)
+        val magneticField = getCurrentMagneticFieldStrength()
+
+        // Record the magnetic field
+        if (canAddReading(magneticField)) {
+            addReading(magneticField)
+            updateChart()
         }
 
-        threshold = binding.threshold.progress.toFloat()
-        binding.thresholdAmount.text = formatService.formatMagneticField(threshold)
+        // Update the threshold from the slider
+        updateThreshold()
 
-        val metalDetected = metalDetectionService.isMetal(magneticField, threshold)
+        // Update the title
         binding.metalDetectorTitle.title.text = formatService.formatMagneticField(magneticField)
+
+        // TODO: Have two methods: onMetalFound and onMetalLost
+        val metalDetected = isMetalDetected(magneticField)
         binding.metalDetectorTitle.title.setCompoundDrawables(
             Resources.dp(requireContext(), 24f).toInt(),
             right = if (metalDetected) R.drawable.metal else null
@@ -159,6 +175,44 @@ class FragmentToolMetalDetector : BoundFragment<FragmentToolMetalDetectorBinding
             isVibrating = false
             haptics.off()
         }
+    }
+
+    private fun getCurrentMagneticFieldStrength(): Float {
+        val filtered = filter.filter(magnetometer.magneticField.magnitude())
+        return if (isHighSensitivity){
+            magnetometer.magneticField.magnitude()
+        } else {
+            filtered
+        }
+    }
+
+    private fun isMetalDetected(reading: Float):  Boolean {
+        val delta = (reading - referenceMagnitude).absoluteValue
+        val current = delta >= threshold && referenceMagnitude != 0f
+
+        isMetalDetected.update(current)
+        return isMetalDetected.value
+    }
+
+    private fun canAddReading(reading: Float): Boolean {
+        return System.currentTimeMillis() - lastReadingTime > 20 && reading != 0f
+    }
+
+    private fun updateThreshold(){
+        threshold = (binding.threshold.progress.toFloat() / 10f).coerceAtLeast(0.1f)
+        binding.thresholdAmount.text = formatService.formatMagneticField(threshold, decimalPlaces = 1)
+    }
+
+    private fun addReading(reading: Float){
+        readings.add(reading)
+        if (readings.size > 150){
+            readings.removeAt(0)
+        }
+        lastReadingTime = System.currentTimeMillis()
+    }
+
+    private fun updateChart(){
+        chart.plot(readings, referenceMagnitude - threshold, referenceMagnitude + threshold)
     }
 
     private fun onMagnetometerUpdate(): Boolean {

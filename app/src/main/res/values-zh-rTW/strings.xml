@@ -127,8 +127,6 @@
     <string name="inventory_empty_text">無項目</string>
     <string name="tool_cliff_height_title">懸崖高度</string>
     <string name="tool_bubble_level_title">水平儀</string>
-    <string name="guide_weather_prediction_title">天氣預測</string>
-    <string name="guide_conserving_battery_title">節省電量</string>
     <string name="no_group">無群組</string>
     <string name="tool_user_guide_title">使用說明</string>
     <string name="pref_email_title">寄送電子郵件給開發者</string>
@@ -267,7 +265,6 @@
     <string name="water_boil_timer_done_content">您的水現在可以飲用</string>
     <string name="disclaimer_message_title">聲明</string>
     <string name="app_disclaimer_message_title">聲明/服務條款</string>
-    <string name="guide_thermometer_calibration_title">溫度計校正</string>
     <string name="theme_sunset_sunrise">日出/日落</string>
     <string name="battery_capacity_format">%s 毫安時</string>
     <string name="current_format">%s 毫安</string>

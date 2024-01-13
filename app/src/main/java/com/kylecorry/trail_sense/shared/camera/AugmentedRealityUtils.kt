@@ -1,14 +1,11 @@
 package com.kylecorry.trail_sense.shared.camera
 
-import android.hardware.SensorManager
+import android.graphics.RectF
 import android.opengl.Matrix
 import com.kylecorry.andromeda.core.units.PixelCoordinate
 import com.kylecorry.andromeda.sense.orientation.IOrientationSensor
-import com.kylecorry.sol.math.Euler
-import com.kylecorry.sol.math.Quaternion
-import com.kylecorry.sol.math.QuaternionMath
+import com.kylecorry.andromeda.sense.orientation.OrientationUtils
 import com.kylecorry.sol.math.SolMath
-import com.kylecorry.sol.math.SolMath.real
 import com.kylecorry.sol.math.SolMath.toDegrees
 import com.kylecorry.sol.math.SolMath.toRadians
 import com.kylecorry.sol.math.Vector3
@@ -16,16 +13,27 @@ import com.kylecorry.sol.math.geometry.Size
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.tools.augmented_reality.AugmentedRealityView
-import kotlin.math.asin
+import com.kylecorry.trail_sense.tools.augmented_reality.mapper.CameraAnglePixelMapper
+import com.kylecorry.trail_sense.tools.augmented_reality.mapper.LinearCameraAnglePixelMapper
+import com.kylecorry.trail_sense.tools.augmented_reality.mapper.SimplePerspectiveCameraAnglePixelMapper
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
 
 object AugmentedRealityUtils {
 
     private val worldVectorLock = Any()
     private val tempWorldVector = FloatArray(4)
+
+    // Constants for perspective projection
+    private const val minDistance = 0.1f
+    private const val maxDistance = 1000f
+
+    private val linear = LinearCameraAnglePixelMapper()
+    private val rect = RectF()
+    private val rectLock = Any()
+
+    val defaultMapper = SimplePerspectiveCameraAnglePixelMapper()
 
     /**
      * Gets the pixel coordinate of a point on the screen given the bearing and azimuth. The point is considered to be on a plane.
@@ -48,13 +56,17 @@ object AugmentedRealityUtils {
         val newBearing = SolMath.deltaAngle(azimuth, bearing)
         val newAltitude = altitude - inclination
 
-        val wPixelsPerDegree = size.width / fov.width
-        val hPixelsPerDegree = size.height / fov.height
-
-        val x = size.width / 2f + newBearing * wPixelsPerDegree
-        val y = size.height / 2f - newAltitude * hPixelsPerDegree
-
-        return PixelCoordinate(x, y)
+        return synchronized(rectLock) {
+            rect.right = size.width
+            rect.bottom = size.height
+            linear.getPixel(
+                newBearing,
+                newAltitude,
+                rect,
+                fov,
+                null
+            )
+        }
     }
 
     fun getAngularSize(diameter: Distance, distance: Distance): Float {
@@ -65,12 +77,90 @@ object AugmentedRealityUtils {
         return (2 * atan2(diameterMeters / 2f, distanceMeters)).toDegrees()
     }
 
-    fun getHorizonCoordinate(
+    /**
+     * Gets the pixel coordinate of a point on the screen given the bearing and azimuth.
+     * @param bearing The compass bearing in degrees of the point
+     * @param elevation The elevation in degrees of the point
+     * @param rotationMatrix The rotation matrix of the device in the AR coordinate system
+     * @param rect The rectangle of the view in pixels
+     * @param fov The field of view of the camera in degrees
+     */
+    fun getPixel(
+        bearing: Float,
+        elevation: Float,
+        distance: Float,
+        rotationMatrix: FloatArray,
+        rect: RectF,
+        fov: Size,
+        mapperOverride: CameraAnglePixelMapper? = null
+    ): PixelCoordinate {
+        val d = distance.coerceIn(minDistance, maxDistance)
+
+        return getPixel(
+            toEastNorthUp(bearing, elevation, d),
+            rotationMatrix,
+            rect,
+            fov,
+            mapperOverride
+        )
+    }
+
+    /**
+     * Gets the pixel coordinate of a point in the ENU coordinate system.
+     * @param enuCoordinate The ENU coordinate of the point
+     * @param rotationMatrix The rotation matrix of the device in the AR coordinate system
+     * @param rect The rectangle of the view in pixels
+     * @param fov The field of view of the camera in degrees
+     * @param mapperOverride A mapper to override the default mapper
+     * @return The pixel coordinate
+     */
+    fun getPixel(
+        enuCoordinate: Vector3,
+        rotationMatrix: FloatArray,
+        rect: RectF,
+        fov: Size,
+        mapperOverride: CameraAnglePixelMapper? = null
+    ): PixelCoordinate {
+        val mapper = mapperOverride ?: defaultMapper
+
+        val world = enuToAr(enuCoordinate, rotationMatrix)
+
+        return mapper.getPixel(
+            world,
+            rect,
+            fov
+        )
+    }
+
+
+    /**
+     * Computes the orientation of the device in the AR coordinate system.
+     * @param orientationSensor The orientation sensor
+     * @param rotationMatrix the array to store the rotation matrix in
+     * @param orientation The array to store the orientation in (azimuth, pitch, roll in degrees)
+     * @param declination The declination to use (default null)
+     */
+    fun getOrientation(
+        orientationSensor: IOrientationSensor,
+        rotationMatrix: FloatArray,
+        orientation: FloatArray,
+        declination: Float? = null
+    ) {
+        OrientationUtils.getAROrientation(
+            orientationSensor,
+            rotationMatrix,
+            orientation,
+            declination
+        )
+    }
+
+    fun toEastNorthUp(
         myLocation: Coordinate,
         myElevation: Float,
         destinationCoordinate: Coordinate,
         destinationElevation: Float? = null
-    ): AugmentedRealityView.HorizonCoordinate {
+    ): Vector3 {
+        // TODO: Go directly to ENU
         val bearing = myLocation.bearingTo(destinationCoordinate).value
         val distance = myLocation.distanceTo(destinationCoordinate)
         val elevationAngle = if (destinationElevation == null) {
@@ -78,143 +168,48 @@ object AugmentedRealityUtils {
         } else {
             atan2((destinationElevation - myElevation), distance).toDegrees()
         }
-        return AugmentedRealityView.HorizonCoordinate(bearing, elevationAngle, true)
+        return toEastNorthUp(bearing, elevationAngle, distance)
     }
 
     /**
-     * Gets the pixel coordinate of a point on the screen given the bearing and azimuth.
-     * @param bearing The compass bearing in degrees of the point
-     * @param elevation The elevation in degrees of the point
-     * @param rotationMatrix The rotation matrix of the device in the AR coordinate system
-     * @param size The size of the view in pixels
-     * @param fov The field of view of the camera in degrees
-     */
-    fun getPixel(
-        bearing: Float,
-        elevation: Float,
-        rotationMatrix: FloatArray,
-        size: Size,
-        fov: Size
-    ): PixelCoordinate {
-        val spherical = toRelative(bearing, elevation, 1f, rotationMatrix)
-        // The rotation of the device has been negated, so azimuth = 0 and inclination = 0 is used
-        return getPixelLinear(spherical.first, 0f, spherical.second, 0f, size, fov)
-    }
-
-    /**
-     * Computes the orientation of the device in the AR coordinate system.
-     * @param orientationSensor The orientation sensor
-     * @param quaternion The array to store the quaternion in
-     * @param rotationMatrix the array to store the rotation matrix in
-     * @param orientation The array to store the orientation in (azimuth, pitch, roll in degrees)
-     * @param declination The declination to use (default null)
-     */
-    fun getOrientation(
-        orientationSensor: IOrientationSensor,
-        quaternion: FloatArray,
-        rotationMatrix: FloatArray,
-        orientation: FloatArray,
-        declination: Float? = null
-    ) {
-        // Convert the orientation a rotation matrix
-        QuaternionMath.inverse(orientationSensor.rawOrientation, quaternion)
-        SensorManager.getRotationMatrixFromVector(rotationMatrix, quaternion)
-
-        // Remap the coordinate system to AR space
-        SensorManager.remapCoordinateSystem(
-            rotationMatrix,
-            SensorManager.AXIS_X,
-            SensorManager.AXIS_Z,
-            rotationMatrix
-        )
-
-        // Add declination
-        if (declination != null) {
-            Matrix.rotateM(rotationMatrix, 0, declination, 0f, 0f, 1f)
-        }
-
-        // Get orientation from rotation matrix
-        SensorManager.getOrientation(rotationMatrix, orientation)
-        orientation[0] = orientation[0].toDegrees()
-        orientation[1] = -orientation[1].toDegrees()
-        orientation[2] = -orientation[2].toDegrees()
-    }
-
-    /**
-     * Converts a spherical coordinate to a cartesian coordinate in the AR coordinate system.
+     * Converts a spherical coordinate to a cartesian coordinate in the East-North-Up (ENU) coordinate system.
      * @param bearing The azimuth in degrees (rotation around the z axis)
      * @param elevation The elevation in degrees (rotation around the x axis)
      * @param distance The distance in meters
      */
-    private fun toWorldCoordinate(
+    fun toEastNorthUp(
         bearing: Float,
         elevation: Float,
         distance: Float
     ): Vector3 {
-        val thetaRad = elevation.toRadians()
-        val phiRad = bearing.toRadians()
+        val d = distance.coerceIn(minDistance, maxDistance)
 
-        val cosTheta = cos(thetaRad)
-        val x = distance * cosTheta * sin(phiRad)
-        val y = distance * cosTheta * cos(phiRad)
-        val z = distance * sin(thetaRad)
+        val elevationRad = elevation.toRadians()
+        val bearingRad = bearing.toRadians()
+
+        val cosElevation = cos(elevationRad)
+        val x = d * cosElevation * sin(bearingRad) // East
+        val y = d * cosElevation * cos(bearingRad) // North
+        val z = d * sin(elevationRad) // Up
         return Vector3(x, y, z)
     }
 
-    private fun toSpherical(vector: Vector3): Vector3 {
-        val r = vector.magnitude()
-        val theta = asin(vector.z / r).toDegrees().real(0f)
-        val phi = atan2(vector.x, vector.y).toDegrees().real(0f)
-        return Vector3(r, theta, phi)
-    }
-
     /**
-     * Converts a geographic spherical coordinate to a relative spherical coordinate in the AR coordinate system.
-     * @return The relative spherical coordinate (bearing, inclination)
+     * Converts a cartesian coordinate in the East-North-Up (ENU) coordinate system to a cartesian coordinate in the AR coordinate system.
+     * @param enu The ENU coordinate
+     * @param rotationMatrix The rotation matrix of the device in the AR coordinate system
+     * @return The AR coordinate
      */
-    private fun toRelative(
-        bearing: Float,
-        elevation: Float,
-        distance: Float,
-        quaternion: Quaternion
-    ): Pair<Float, Float> {
-        // Convert to world space
-        val worldVector = toWorldCoordinate(bearing, elevation, distance)
-
-        // Rotate
-        val rotated = quaternion.rotate(worldVector)
-
-        // Convert back to spherical
-        val spherical = toSpherical(rotated)
-        return spherical.z to spherical.y
-    }
-
-    /**
-     * Converts a geographic spherical coordinate to a relative spherical coordinate in the AR coordinate system.
-     * @return The relative spherical coordinate (bearing, inclination)
-     */
-    private fun toRelative(
-        bearing: Float,
-        elevation: Float,
-        distance: Float,
-        rotationMatrix: FloatArray
-    ): Pair<Float, Float> {
-        // Convert to world space
-        val worldVector = toWorldCoordinate(bearing, elevation, distance)
-
-        // Rotate
-        val rotated = synchronized(worldVectorLock) {
-            tempWorldVector[0] = worldVector.x
-            tempWorldVector[1] = worldVector.y
-            tempWorldVector[2] = worldVector.z
+    private fun enuToAr(enu: Vector3, rotationMatrix: FloatArray): Vector3 {
+        return synchronized(worldVectorLock) {
+            tempWorldVector[0] = enu.x
+            tempWorldVector[1] = enu.y
+            tempWorldVector[2] = enu.z
             tempWorldVector[3] = 1f
             Matrix.multiplyMV(tempWorldVector, 0, rotationMatrix, 0, tempWorldVector, 0)
-            Vector3(tempWorldVector[0], tempWorldVector[1], tempWorldVector[2])
+            // Swap y and z to convert to AR coordinate system
+            Vector3(tempWorldVector[0], tempWorldVector[2], tempWorldVector[1])
         }
-
-        // Convert back to spherical
-        val spherical = toSpherical(rotated)
-        return spherical.z to spherical.y
     }
 
 }

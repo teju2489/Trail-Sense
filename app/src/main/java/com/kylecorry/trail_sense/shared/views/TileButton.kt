@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
 import com.kylecorry.andromeda.core.system.Resources
 import com.kylecorry.trail_sense.R
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getColorOnPrimary
+import com.kylecorry.trail_sense.shared.CustomUiUtils.getPrimaryColor
 
 class TileButton(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
 
@@ -47,13 +49,13 @@ class TileButton(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
         isOn = on
         if (isOn) {
             icon.backgroundTintList = ColorStateList.valueOf(
-                Resources.getAndroidColorAttr(icon.context, androidx.appcompat.R.attr.colorPrimary)
+                Resources.getPrimaryColor(icon.context)
             )
             textView.setTextColor(
-                Resources.color(icon.context, R.color.colorSecondary)
+                Resources.getColorOnPrimary(icon.context)
             )
             icon.imageTintList = ColorStateList.valueOf(
-                Resources.color(icon.context, R.color.colorSecondary)
+                Resources.getColorOnPrimary(icon.context)
             )
         } else {
             textView.setTextColor(Resources.androidTextColorSecondary(icon.context))
