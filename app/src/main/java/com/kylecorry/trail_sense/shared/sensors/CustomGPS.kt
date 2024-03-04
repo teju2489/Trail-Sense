@@ -79,7 +79,7 @@ class CustomGPS(
         get() = _isTimedOut
 
     // TODO: There should be a way to allow this to report faster than the GPS
-    private val baseGPS by lazy { KalmanGPS(GPS(context.applicationContext, frequency = frequency), frequency) }
+    private val baseGPS by lazy { KalmanGPS(GPS(context.applicationContext, frequency = Duration.ofMillis(20)), frequency) }
     private val cache by lazy { PreferencesSubsystem.getInstance(context).preferences }
     private val userPrefs by lazy { UserPreferences(context) }
 
