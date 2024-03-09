@@ -25,6 +25,7 @@ import com.kylecorry.sol.math.filters.MovingAverageFilter
 import com.kylecorry.trail_sense.settings.infrastructure.ICompassPreferences
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sensors.compass.CompassSource
+import com.kylecorry.trail_sense.shared.sensors.compass.GMSFusedOrientationProvider
 import com.kylecorry.trail_sense.shared.sensors.compass.MagQualityCompassWrapper
 import com.kylecorry.trail_sense.shared.sensors.compass.MockCompass
 import com.kylecorry.trail_sense.shared.sensors.compass.QuickRecalibrationOrientationSensor
@@ -91,7 +92,7 @@ class CompassProvider(private val context: Context, private val prefs: ICompassP
         }
 
         if (source == CompassSource.RotationVector) {
-            return RotationSensor(context, sensorDelay)
+            return GMSFusedOrientationProvider(context)
         }
 
         if (source == CompassSource.GeomagneticRotationVector) {
@@ -107,12 +108,13 @@ class CompassProvider(private val context: Context, private val prefs: ICompassP
     fun getOrientationSensor(sensorDelay: Int): IOrientationSensor {
         val smoothing = prefs.compassSmoothing
 
-        val quickRecalibration = QuickRecalibrationOrientationSensor(
-            getCustomGeomagneticRotationSensor(false, sensorDelay),
-            getBaseOrientationSensor(sensorDelay),
-            1f,
-            45f
-        )
+//        val quickRecalibration = QuickRecalibrationOrientationSensor(
+//            getCustomGeomagneticRotationSensor(false, sensorDelay),
+//            getBaseOrientationSensor(sensorDelay),
+//            1f,
+//            45f
+//        )
+        val quickRecalibration = getBaseOrientationSensor(sensorDelay)
 
         // Smoothing isn't needed
         if (smoothing <= 1) {

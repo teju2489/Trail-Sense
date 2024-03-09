@@ -172,6 +172,9 @@ dependencies {
     implementation("com.github.kylecorry31:luna:0.3.0")
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 
+    // Play Services
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
