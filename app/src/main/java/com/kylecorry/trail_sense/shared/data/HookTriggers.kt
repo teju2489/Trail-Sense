@@ -1,9 +1,37 @@
 package com.kylecorry.trail_sense.shared.data
 
+import com.kylecorry.luna.cache.StateEffect
 import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import java.time.Duration
 import java.time.Instant
+
+class CustomHooks {
+    private val effects = mutableMapOf<String, StateEffect>()
+    private val effectLock = Any()
+
+    fun effect(key: String, vararg values: Any?, action: () -> Unit) {
+        val evaluated = values.map {
+            if (it is HookTrigger) {
+                it.evaluate(key)
+            } else {
+                it
+            }
+        }
+
+        val effect = synchronized(effectLock) {
+            effects.getOrPut(key) { StateEffect() }
+        }
+
+        effect.runIfChanged(*evaluated.toTypedArray()) {
+            action()
+        }
+    }
+}
+
+fun interface HookTrigger {
+    fun evaluate(name: String): Boolean
+}
 
 class HookTriggers {
     private val locationTriggers = mutableMapOf<String, LocationHookTrigger>()
@@ -12,18 +40,22 @@ class HookTriggers {
     private val timeTriggers = mutableMapOf<String, TimeHookTrigger>()
     private val timeLock = Any()
 
-    fun location(name: String, location: Coordinate, threshold: Distance): Boolean {
-        val conditional = synchronized(locationLock) {
-            locationTriggers.getOrPut(name) { LocationHookTrigger() }
+    fun location(location: Coordinate, threshold: Distance): HookTrigger {
+        return HookTrigger { name ->
+            val conditional = synchronized(locationLock) {
+                locationTriggers.getOrPut(name) { LocationHookTrigger() }
+            }
+            conditional.getValue(location, threshold)
         }
-        return conditional.getValue(location, threshold)
     }
 
-    fun time(name: String, threshold: Duration): Boolean {
-        val conditional = synchronized(timeLock) {
-            timeTriggers.getOrPut(name) { TimeHookTrigger() }
+    fun time(threshold: Duration): HookTrigger {
+        return HookTrigger { name ->
+            val conditional = synchronized(timeLock) {
+                timeTriggers.getOrPut(name) { TimeHookTrigger() }
+            }
+            conditional.getValue(Instant.now(), threshold)
         }
-        return conditional.getValue(Instant.now(), threshold)
     }
 
     private class LocationHookTrigger {

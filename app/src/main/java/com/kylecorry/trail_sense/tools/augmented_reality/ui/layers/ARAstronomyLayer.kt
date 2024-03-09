@@ -13,6 +13,7 @@ import com.kylecorry.sol.units.Coordinate
 import com.kylecorry.sol.units.Distance
 import com.kylecorry.trail_sense.tools.navigation.ui.DrawerBitmapLoader
 import com.kylecorry.trail_sense.shared.colors.AppColor
+import com.kylecorry.trail_sense.shared.data.CustomHooks
 import com.kylecorry.trail_sense.shared.data.HookTriggers
 import com.kylecorry.trail_sense.tools.astronomy.domain.AstronomyService
 import com.kylecorry.trail_sense.tools.astronomy.ui.MoonPhaseImageMapper
@@ -53,7 +54,7 @@ class ARAstronomyLayer(
 
     private var bitmapLoader: DrawerBitmapLoader? = null
 
-    private val hooks = Hooks()
+    private val hooks = CustomHooks()
     private val triggers = HookTriggers()
 
     private val updateFrequency = Duration.ofMinutes(1)
@@ -67,9 +68,10 @@ class ARAstronomyLayer(
         hooks.effect(
             "positions",
             timeOverride,
-            triggers.time("positions", updateFrequency),
-            triggers.location("positions", location, updateDistance)
+            triggers.time(updateFrequency),
+            triggers.location(location, updateDistance)
         ) {
+            println("Updating positions")
             updatePositions(drawer, location, timeOverride ?: ZonedDateTime.now())
         }
 
