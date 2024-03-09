@@ -16,6 +16,7 @@ import com.kylecorry.andromeda.sense.magnetometer.Magnetometer
 import com.kylecorry.andromeda.sense.mock.MockMagnetometer
 import com.kylecorry.andromeda.sense.orientation.CustomGeomagneticRotationSensor
 import com.kylecorry.andromeda.sense.orientation.GeomagneticRotationSensor
+import com.kylecorry.andromeda.sense.orientation.Gyroscope
 import com.kylecorry.andromeda.sense.orientation.IOrientationSensor
 import com.kylecorry.andromeda.sense.orientation.RotationSensor
 import com.kylecorry.andromeda.sense.orientation.filter.FilteredOrientationSensor
@@ -25,6 +26,7 @@ import com.kylecorry.sol.math.filters.MovingAverageFilter
 import com.kylecorry.trail_sense.settings.infrastructure.ICompassPreferences
 import com.kylecorry.trail_sense.shared.sensors.SensorService
 import com.kylecorry.trail_sense.shared.sensors.compass.CompassSource
+import com.kylecorry.trail_sense.shared.sensors.compass.CustomRotationSensor
 import com.kylecorry.trail_sense.shared.sensors.compass.MagQualityCompassWrapper
 import com.kylecorry.trail_sense.shared.sensors.compass.MockCompass
 import com.kylecorry.trail_sense.shared.sensors.compass.QuickRecalibrationOrientationSensor
@@ -91,7 +93,19 @@ class CompassProvider(private val context: Context, private val prefs: ICompassP
         }
 
         if (source == CompassSource.RotationVector) {
-            return RotationSensor(context, sensorDelay)
+            val magnetometer = if (Sensors.hasSensor(context, Sensor.TYPE_MAGNETIC_FIELD)) {
+                LowPassMagnetometer(context, sensorDelay, MAGNETOMETER_LOW_PASS)
+            } else {
+                MockMagnetometer()
+            }
+            val accelerometer = LowPassAccelerometer(context, sensorDelay, ACCELEROMETER_LOW_PASS)
+            return CustomRotationSensor(
+                magnetometer,
+                accelerometer,
+                Gyroscope(context, sensorDelay),
+                verbose = true
+            )
+//            return RotationSensor(context, sensorDelay)
         }
 
         if (source == CompassSource.GeomagneticRotationVector) {
@@ -107,12 +121,13 @@ class CompassProvider(private val context: Context, private val prefs: ICompassP
     fun getOrientationSensor(sensorDelay: Int): IOrientationSensor {
         val smoothing = prefs.compassSmoothing
 
-        val quickRecalibration = QuickRecalibrationOrientationSensor(
-            getCustomGeomagneticRotationSensor(false, sensorDelay),
-            getBaseOrientationSensor(sensorDelay),
-            1f,
-            45f
-        )
+//        val quickRecalibration = QuickRecalibrationOrientationSensor(
+//            getCustomGeomagneticRotationSensor(false, sensorDelay),
+//            getBaseOrientationSensor(sensorDelay),
+//            1f,
+//            45f
+//        )
+        val quickRecalibration = getBaseOrientationSensor(sensorDelay)
 
         // Smoothing isn't needed
         if (smoothing <= 1) {
@@ -128,7 +143,10 @@ class CompassProvider(private val context: Context, private val prefs: ICompassP
 
     }
 
-    private fun getCustomGeomagneticRotationSensor(useGyroIfAvailable: Boolean, sensorDelay: Int): CustomGeomagneticRotationSensor {
+    private fun getCustomGeomagneticRotationSensor(
+        useGyroIfAvailable: Boolean,
+        sensorDelay: Int
+    ): CustomGeomagneticRotationSensor {
         val magnetometer = if (Sensors.hasSensor(context, Sensor.TYPE_MAGNETIC_FIELD)) {
             LowPassMagnetometer(context, sensorDelay, MAGNETOMETER_LOW_PASS)
         } else {
